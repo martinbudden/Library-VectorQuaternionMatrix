@@ -1,0 +1,13 @@
+{
+    "name": "IMU_TYPES",
+    "description": "IMU types library, includes xyz_t (3D vector) and Quaternion types for use by Inertial Measurement Unit(IMU) and Attitude and Heading Reference Systems(AHRS)",
+    "keywords": "IMU AHRS 3D vector quaternion Euler angles",
+    "authors": {
+        "name": "Martin Budden",
+        "url": "https://github.com/martinbudden/Library-IMU_TYPES"
+    },
+    "license": "MIT",
+    "version": "0.0.1",
+    "frameworks": "*",
+    "platforms": "*"
+}

@@ -1,0 +1,37 @@
+#######################################
+# Syntax Coloring Map for IMU_TYPES
+#######################################
+
+#######################################
+# Data types (KEYWORD1)
+#######################################
+
+Quaternion              KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+calculateRollRadians    KEYWORD2
+calculatePitchRadians   KEYWORD2
+calculateYawRadians     KEYWORD2
+
+calculateRollDegrees    KEYWORD2
+calculatePitchDegrees   KEYWORD2
+calculateYawDegrees     KEYWORD2
+
+
+#######################################
+# Structures (KEYWORD3)
+#######################################
+
+xyz_t                   KEYWORD3
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+radiansToDegrees        LITERAL1
+degreesToRadians        LITERAL1
