@@ -64,8 +64,8 @@ public:
 
     // Conversion functions
     static inline float asinfClipped(float angleRadians) {
-        if (angleRadians <= -M_PI/2.0F) { return {-M_PI/2.0}; }
-        if (angleRadians >=  M_PI/2.0F) { return {M_PI/2.0}; }
+        if (angleRadians <= -M_PI_2) { return {-M_PI_2}; }
+        if (angleRadians >=  M_PI_2) { return {M_PI_2}; }
         return asinf(angleRadians);
     }
     inline float calculateRollRadians() const  { return atan2f(w*x + y*z, 0.5F - x*x - y*y); }

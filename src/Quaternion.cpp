@@ -7,12 +7,12 @@ Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadi
     const float halfPitch = 0.5F * pitchRadians;
     const float halfYaw = 0.5F * yawRadians;
 
-    const float sinHalfRoll = sin(halfRoll);
-    const float cosHalfRoll = cos(halfRoll);
-    const float sinHalfPitch = sin(halfPitch);
-    const float cosHalfPitch = cos(halfPitch);
-    const float sinHalfYaw = sin(halfYaw);
-    const float cosHalfYaw = cos(halfYaw);
+    const float sinHalfRoll = sinf(halfRoll);
+    const float cosHalfRoll = cosf(halfRoll);
+    const float sinHalfPitch = sinf(halfPitch);
+    const float cosHalfPitch = cosf(halfPitch);
+    const float sinHalfYaw = sinf(halfYaw);
+    const float cosHalfYaw = cosf(halfYaw);
 
     return Quaternion(
         cosHalfRoll * cosHalfPitch * cosHalfYaw + sinHalfRoll * sinHalfPitch * sinHalfYaw,
@@ -27,10 +27,10 @@ Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadi
     const float halfRoll = 0.5F * rollRadians;
     const float halfPitch = 0.5F * pitchRadians;
 
-    const float sinHalfPitch = sin(halfPitch);
-    const float cosHalfPitch = cos(halfPitch);
-    const float sinHalfRoll = sin(halfRoll);
-    const float cosHalfRoll = cos(halfRoll);
+    const float sinHalfPitch = sinf(halfPitch);
+    const float cosHalfPitch = cosf(halfPitch);
+    const float sinHalfRoll = sinf(halfRoll);
+    const float cosHalfRoll = cosf(halfRoll);
 
     return Quaternion(
         cosHalfRoll * cosHalfPitch,
