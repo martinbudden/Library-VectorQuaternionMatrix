@@ -10,8 +10,8 @@ public:
     static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
     static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians);
 public:
-    static constexpr float radiansToDegrees { 180.0 / M_PI };
-    static constexpr float degreesToRadians { M_PI / 180.0};
+    static constexpr float radiansToDegrees = static_cast<float>(180.0 / M_PI);
+    static constexpr float degreesToRadians = static_cast<float>(M_PI / 180.0);
 public:
     inline float getW() const { return w; }
     inline float getX() const { return x; }
