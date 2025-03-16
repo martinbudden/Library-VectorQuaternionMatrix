@@ -8,7 +8,7 @@ public:
 
     // Unary operators
     inline xyz_t operator+() const { return *this; } //<! Unary plus
-    inline xyz_t operator-() const { return xyz_t {-x, -y, -z }; } //<! Unary negation
+    inline xyz_t operator-() const { return xyz_t{-x, -y, -z }; } //<! Unary negation
 
     inline xyz_t operator+=(const xyz_t& v) { x += v.x; y += v.y; z += v.z; return *this; }
     inline xyz_t operator-=(const xyz_t& v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
@@ -28,6 +28,8 @@ public:
 
     // Other functions
     inline float magnitude_squared() const { return x*x + y*y + z*z; } //<! The square of the magnitude
+    static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; }
+    inline xyz_t clip(float min, float max) const { return xyz_t{clip(x, min, max), clip(y, min, max), clip(z, min, max)}; }
 public:
     float x;
     float y;
