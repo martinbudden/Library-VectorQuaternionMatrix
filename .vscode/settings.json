@@ -12,10 +12,21 @@
         "hicpp",
         "libc",
         "llvmlibc",
+        "noreturn",
         "pioenvs",
         "piolibdeps",
         "suppr",
         "unflags",
+        "Wcast",
+        "Wconversion",
+        "Wdisabled",
+        "Winline",
+        "Wmissing",
+        "Wpacked",
+        "Wpadded",
+        "Wshadow",
+        "Wsign",
+        "Wunreachable",
         "WXYZ"
     ]
 }
