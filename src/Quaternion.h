@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <xyz_type.h>
 
 class Quaternion {
 public:
@@ -56,6 +57,22 @@ public:
             w*q.z + x*q.y - y*q.x + z*q.w
         );
     }
+
+    inline Quaternion applyDelta(float delta) {
+        // equivalent to *= Quaternion(cos(delta/2), 0, 0, sin(delta/2))
+        const float c = cosf(delta/2);
+        const float s = sinf(delta/2);
+        const float wt = c*w - s*z;
+        const float xt = c*x - s*y;
+        const float yt = c*y + s*x;
+        z = c*z + s*w;
+        w = wt;
+        x = xt;
+        y = yt;
+        return *this;
+    }
+    
+    xyz_t rotate(const xyz_t& v) const;
 
     // Non-member operations
     inline friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
