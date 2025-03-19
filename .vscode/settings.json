@@ -15,11 +15,13 @@
         "noreturn",
         "pioenvs",
         "piolibdeps",
+        "Shuster",
         "suppr",
         "unflags",
         "Wcast",
         "Wconversion",
         "Wdisabled",
+        "Wfloat",
         "Winline",
         "Wmissing",
         "Wpacked",
@@ -28,5 +30,8 @@
         "Wsign",
         "Wunreachable",
         "WXYZ"
-    ]
+    ],
+    "files.associations": {
+        "array": "cpp"
+    }
 }

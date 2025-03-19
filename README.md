@@ -6,3 +6,4 @@ This library includes some basic types for use by Inertial Measurement Unit (IMU
 
 1. `xyz_t`, a vector of 3 `floats`, `{x, y, z}`
 2. `Quaternion`, a basic [quaternion](https://en.wikipedia.org/wiki/Quaternion) class
+3. `Matrix3x3`, a basic 3x3 matrix class

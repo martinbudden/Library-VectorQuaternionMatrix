@@ -6,6 +6,7 @@
 # Data types (KEYWORD1)
 #######################################
 
+Matrix3x3               KEYWORD1
 Quaternion              KEYWORD1
 
 

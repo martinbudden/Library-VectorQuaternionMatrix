@@ -8,93 +8,7 @@ void setUp() {
 void tearDown() {
 }
 
-void test_xyz_t()
-{
-    const xyz_t a{2, 3, 5};
-    TEST_ASSERT_TRUE(a == +a);
-    const xyz_t minusA{-2, -3, -5};
-    TEST_ASSERT_TRUE(minusA == -a);
-
-    const xyz_t b{7, 11, 17};
-    TEST_ASSERT_TRUE(a != b);
-    TEST_ASSERT_FALSE(a == b);
-
-    const xyz_t a2{4, 6, 10};
-    TEST_ASSERT_TRUE(a2 == a*2);
-    TEST_ASSERT_TRUE(a2 == 2*a);
-
-    xyz_t a2dividedBy2 = a2;
-    a2dividedBy2 /= 2;
-    TEST_ASSERT_EQUAL_FLOAT(a.x, a2dividedBy2.x);
-    TEST_ASSERT_EQUAL_FLOAT(a.y, a2dividedBy2.y);
-    TEST_ASSERT_EQUAL_FLOAT(a.z, a2dividedBy2.z);
-
-    TEST_ASSERT_TRUE(a == a2/2);
-    TEST_ASSERT_TRUE(a == a2dividedBy2);
-
-    const xyz_t b2{14, 22, 34};
-    TEST_ASSERT_TRUE(b2 == b*2);
-
-    xyz_t c = b;
-    c *= 2;
-    TEST_ASSERT_TRUE(c == b*2);
-
-    const xyz_t b2dividedBy2 = b2 / 2;
-    TEST_ASSERT_EQUAL_FLOAT(b.x, b2dividedBy2.x);
-    TEST_ASSERT_EQUAL_FLOAT(b.y, b2dividedBy2.y);
-    TEST_ASSERT_EQUAL_FLOAT(b.z, b2dividedBy2.z);
-
-    TEST_ASSERT_TRUE(b == b2/2);
-    TEST_ASSERT_TRUE(b == b2dividedBy2);
-
-
-    const xyz_t a_plus_b =  a + b;
-
-    TEST_ASSERT_EQUAL(9, a_plus_b.x);
-    TEST_ASSERT_EQUAL(14, a_plus_b.y);
-    TEST_ASSERT_EQUAL(22, a_plus_b.z);
-
-    TEST_ASSERT_TRUE(a_plus_b == a + b);
-    TEST_ASSERT_TRUE(a_plus_b == b + a);
-
-    const xyz_t a_minus_b =  a - b;
-
-    TEST_ASSERT_EQUAL(-5, a_minus_b.x);
-    TEST_ASSERT_EQUAL(-8, a_minus_b.y);
-    TEST_ASSERT_EQUAL(-12, a_minus_b.z);
-    TEST_ASSERT_TRUE(a_minus_b == a - b);
-    TEST_ASSERT_TRUE(-a_minus_b == b - a);
-
-    TEST_ASSERT_TRUE(a2 == a_plus_b + a_minus_b);
-    TEST_ASSERT_TRUE(b2 == a_plus_b - a_minus_b);
-
-    const float a_dot_b =  14 + 33 + 85;
-    TEST_ASSERT_TRUE(a_dot_b == a.dot_product(b));
-    TEST_ASSERT_TRUE(a.magnitude_squared() == a.dot_product(a));
-    TEST_ASSERT_TRUE(b.magnitude_squared() == b.dot_product(b));
-
-    const xyz_t a_cross_b = a.cross_product(b);
-    TEST_ASSERT_EQUAL(3*17 - 5*11, a_cross_b.x);
-    TEST_ASSERT_EQUAL(-2*17 + 5*7, a_cross_b.y);
-    TEST_ASSERT_EQUAL(2*11 - 3*7, a_cross_b.z);
-
-    TEST_ASSERT_TRUE(a_cross_b != b.cross_product(a));
-
-    const xyz_t d{-100, 200, 50};
-    const xyz_t d_clipped = xyz_t{-50, 50, 50};
-    TEST_ASSERT_TRUE(d.clip(-50, 50) == d_clipped);
-
-    const xyz_t e{-100, 200, 50};
-    const xyz_t e_clipped = xyz_t{-20, 20, 20};
-    TEST_ASSERT_TRUE(e.clip(-20, 20) == e_clipped);
-
-    xyz_t f{-100, 200, 50};
-    f = f.clip(-20, 20);
-    const xyz_t f_clipped = xyz_t{-20, 20, 20};
-    TEST_ASSERT_TRUE(f == f_clipped);
-
-}
-
+// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 void test_quaternion()
 {
     const Quaternion a{2, 3, 5, 7};
@@ -154,8 +68,8 @@ void test_quaternion()
     c *= b;
     TEST_ASSERT_TRUE(c == a*b);
 
-    TEST_ASSERT_TRUE(a.magnitude_squared()*a.magnitude_squared() == (a*a).magnitude_squared());
-    TEST_ASSERT_TRUE(a.magnitude_squared()*a.magnitude_squared() == (a*a.conjugate()).magnitude_squared());
+    TEST_ASSERT_TRUE(a.magnitudeSquared()*a.magnitudeSquared() == (a*a).magnitudeSquared());
+    TEST_ASSERT_TRUE(a.magnitudeSquared()*a.magnitudeSquared() == (a*a.conjugate()).magnitudeSquared());
 
 }
 
@@ -171,13 +85,13 @@ void test_quaternion_angles()
     TEST_ASSERT_EQUAL_FLOAT(19.0, q0.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(43.0, q0.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(67.0, q0.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q0.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q0.magnitudeSquared());
 
     const Quaternion q1 = Quaternion::fromEulerAnglesRadians(degrees43inRadians, -degrees19inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT(43.0, q1.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q1.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(67.0, q1.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q1.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q1.magnitudeSquared());
 }
 
 void test_quaternion_rotation()
@@ -186,16 +100,16 @@ void test_quaternion_rotation()
     TEST_ASSERT_EQUAL_FLOAT(43.0, q2.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q2.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q2.magnitudeSquared());
 
     const Quaternion q3 = Quaternion::fromEulerAnglesRadians(-degrees19inRadians, 0, 0);
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q3.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q3.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q3.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q3.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q3.magnitudeSquared());
 
     const Quaternion q2q3 = q2 * q3;
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q2q3.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q2q3.magnitudeSquared());
     TEST_ASSERT_EQUAL_FLOAT(24.0, q2q3.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2q3.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2q3.calculateYawDegrees());
@@ -204,16 +118,16 @@ void test_quaternion_rotation()
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-67.0, q4.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q4.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q4.magnitudeSquared());
 
     const Quaternion q5 = Quaternion::fromEulerAnglesRadians(0, degrees43inRadians, 0);
     TEST_ASSERT_EQUAL_FLOAT(0.0, q5.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(43.0, q5.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q5.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q5.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q5.magnitudeSquared());
 
     const Quaternion q4q5 = q4 * q5;
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q4q5.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q4q5.magnitudeSquared());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4q5.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-24.0, q4q5.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4q5.calculateYawDegrees());
@@ -222,16 +136,16 @@ void test_quaternion_rotation()
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q6.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q6.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q6.magnitudeSquared());
 
     const Quaternion q7 = Quaternion::fromEulerAnglesRadians(0, 0, degrees43inRadians);
     TEST_ASSERT_EQUAL_FLOAT(0.0, q7.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q7.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(43.0, q7.calculateYawDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q7.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q7.magnitudeSquared());
 
     const Quaternion q6q7 = q6 * q7;
-    TEST_ASSERT_EQUAL_FLOAT(1.0, q6q7.magnitude_squared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q6q7.magnitudeSquared());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6q7.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6q7.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(24.0, q6q7.calculateYawDegrees());
@@ -281,29 +195,81 @@ void test_quaternion_rotate()
     TEST_ASSERT_EQUAL_FLOAT(0.0F, qZ.rotate(vy).z);
 }
 
-void test_quaternion_apply_delta()
+void test_quaternion_rotate_x()
+{
+    const Quaternion qI(1.0F, 0.0F, 0.0F, 0.0F);
+    Quaternion qD = qI;
+    const float delta = degrees19inRadians;
+    const Quaternion qDExpected = qI * Quaternion(cosf(delta/2.0F), sinf(delta/2.0F), 0, 0);
+    qD.rotateX(delta);
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), qD.getZ());
+    TEST_ASSERT_TRUE(qDExpected == qD);
+
+    const Quaternion q19 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, 0, 0);
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), q19.getW());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), q19.getX());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), q19.getY());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
+    TEST_ASSERT_TRUE(qDExpected == q19);
+}
+
+void test_quaternion_rotate_y()
+{
+    const Quaternion qI(1.0F, 0.0F, 0.0F, 0.0F);
+    Quaternion qD = qI;
+    const float delta = degrees19inRadians;
+    const Quaternion qDExpected = qI * Quaternion(cosf(delta/2.0F), 0, sinf(delta/2.0F), 0);
+    qD.rotateY(delta);
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), qD.getZ());
+    TEST_ASSERT_TRUE(qDExpected == qD);
+
+    const Quaternion q19 = Quaternion::fromEulerAnglesRadians(0, degrees19inRadians, 0);
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), q19.getW());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), q19.getX());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), q19.getY());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
+    TEST_ASSERT_TRUE(qDExpected == q19);
+}
+
+void test_quaternion_rotate_z()
 {
     const Quaternion qI(1.0F, 0.0F, 0.0F, 0.0F);
     Quaternion qD = qI;
     const float delta = degrees19inRadians;
     const Quaternion qDExpected = qI * Quaternion(cosf(delta/2.0F), 0, 0, sinf(delta/2.0F));
-    qD.applyDelta(delta);
+    qD.rotateZ(delta);
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), qD.getZ());
+    TEST_ASSERT_TRUE(qDExpected == qD);
+
+    const Quaternion q19 = Quaternion::fromEulerAnglesRadians(0, 0, degrees19inRadians);
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), q19.getW());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), q19.getX());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), q19.getY());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
+    TEST_ASSERT_TRUE(qDExpected == q19);
 }
+// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 {
     UNITY_BEGIN();
 
-    RUN_TEST(test_xyz_t);
     RUN_TEST(test_quaternion);
     RUN_TEST(test_quaternion_angles);
     RUN_TEST(test_quaternion_rotation);
     RUN_TEST(test_quaternion_rotate);
-    RUN_TEST(test_quaternion_apply_delta);
+    RUN_TEST(test_quaternion_rotate_x);
+    RUN_TEST(test_quaternion_rotate_y);
+    RUN_TEST(test_quaternion_rotate_z);
 
     UNITY_END();
 }

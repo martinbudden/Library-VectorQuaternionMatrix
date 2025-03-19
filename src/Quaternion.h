@@ -32,6 +32,7 @@ public:
     inline Quaternion operator+=(const Quaternion& q) { w += q.w; x += q.x; y += q.y; z += q.z; return *this; }
     inline Quaternion operator-=(const Quaternion& q) { w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this; }
     inline Quaternion operator*=(float k) { w*=k; x*=k; y*=k; z*=k; return *this; } //<! Multiplication by a scalar
+    inline friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
     inline Quaternion operator/=(float k) { const float r = 1.0F/k; w*=r; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
     inline Quaternion operator*=(const Quaternion& q) {
         const float wt = w*q.w - x*q.x - y*q.y - z*q.z;
@@ -58,26 +59,49 @@ public:
         );
     }
 
-    inline Quaternion applyDelta(float delta) {
-        // equivalent to *= Quaternion(cos(delta/2), 0, 0, sin(delta/2))
-        const float c = cosf(delta/2);
-        const float s = sinf(delta/2);
-        const float wt = c*w - s*z;
-        const float xt = c*x - s*y;
-        const float yt = c*y + s*x;
-        z = c*z + s*w;
+    inline Quaternion rotateX(float theta) {
+        // rotate about the x-axis
+        // equivalent to *= Quaternion(cos(theta/2), sin(theta/2), 0, 0)
+        const float c = cosf(theta/2);
+        const float s = sinf(theta/2);
+        const float wt =  w*c - x*s;
+        x              =  w*s + x*c;
+        const float yt =  y*c + z*s;
+        z              = -y*s + z*c;
         w = wt;
-        x = xt;
         y = yt;
         return *this;
     }
-    
-    xyz_t rotate(const xyz_t& v) const;
-
-    // Non-member operations
-    inline friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
+    inline Quaternion rotateY(float theta) {
+        // rotate about the y-axis
+        // equivalent to *= Quaternion(cos(theta/2), 0, sin(theta/2), 0)
+        const float c = cosf(theta/2);
+        const float s = sinf(theta/2);
+        const float wt = w*c - y*s;
+        const float xt = x*c - z*s;
+        y              = w*s + y*c;
+        z              = x*s - z*c;
+        w = wt;
+        x = xt;
+        return *this;
+    }
+    inline Quaternion rotateZ(float theta) {
+        // rotate about the z-axis
+        // equivalent to *= Quaternion(cos(theta/2), 0, 0, sin(theta/2))
+        const float c = cosf(theta/2);
+        const float s = sinf(theta/2);
+        const float wt = w*c - z*s;
+        const float xt = x*c - y*s;
+        y              = x*s + y*c;
+        z              = w*s + z*c;
+        w = wt;
+        x = xt;
+        return *this;
+    }
+    xyz_t rotate(const xyz_t& v) const; //<! Rotate a vector
 public:
-    inline float magnitude_squared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
+    inline float magnitudeSquared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
+    inline float magnitude() const { return sqrtf(w*w + x*x + y*y +z*z); } //<! The magnitude
 
     // Conversion functions
     static inline float asinfClipped(float angleRadians) {

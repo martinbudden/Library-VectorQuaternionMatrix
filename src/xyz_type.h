@@ -19,17 +19,17 @@ public:
     inline xyz_t operator+(const xyz_t& v) const { return xyz_t{x + v.x, y + v.y, z + v.z}; }
     inline xyz_t operator-(const xyz_t& v) const { return xyz_t{x - v.x, y - v.y, z - v.z}; }
     inline xyz_t operator*(float k) const { return xyz_t{x*k, y*k, z*k}; } //<! Multiplication by a scalar
+    inline friend xyz_t operator*(float k, const xyz_t& v) { return v*k; } //<! Pre-multiplication by a scalar
     inline xyz_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     inline float dot_product(const xyz_t& v) const { return  x*v.x + y*v.y + z*v.z; } //!< Vector dot product
     inline xyz_t cross_product(const xyz_t& v) const { return xyz_t{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x}; } //!< Vector cross product
 
-    // Non-member operators
-    inline friend xyz_t operator*(float k, const xyz_t& v) { return v*k; } //<! Pre-multiplication by a scalar
-
     // Other functions
-    inline float magnitude_squared() const { return x*x + y*y + z*z; } //<! The square of the magnitude
-    static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; }
-    inline xyz_t clip(float min, float max) const { return xyz_t{clip(x, min, max), clip(y, min, max), clip(z, min, max)}; }
+    inline float magnitudeSquared() const { return x*x + y*y + z*z; } //<! The square of the magnitude
+    inline float magnitude() const { return sqrtf(x*x + y*y + z*z); } //<! The  magnitude
+    static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clip helper function
+    static inline xyz_t clip(const xyz_t& v, float min, float max) { return xyz_t{clip(v.x, min, max), clip(v.y, min, max), clip(v.z, min, max)}; } //<! Return clipped value
+    inline xyz_t clip(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); z = clip(z, min, max); return *this; } //<! Clip in place
 public:
     float x;
     float y;
