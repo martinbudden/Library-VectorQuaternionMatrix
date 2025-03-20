@@ -96,12 +96,12 @@ _a[7] - _a[5] = 2(wx + yz) - 2(yz - wx) = 4xw
         // |(x,y)| is bigger than |(z,w)|?
         if (_a[0] > _a[4]) {
             // |x| bigger than |y|, so use x-form
-            const float t = 1.0F + (_a[0] - _a[4]) - _a[8]; // 1 + 2(xx-yy) - 1 + 2(xx + yy) = 4xx
+            const float t = 1.0F + (_a[0] - _a[4]) - _a[8]; // 1 + 2(xx - yy) - 1 + 2(xx + yy) = 4xx
             const Quaternion q = Quaternion(_a[7] - _a[5], t, _a[1] + _a[3], _a[6] + _a[2]);
-            return -q * (0.5F / sqrtf(t));
+            return q * (0.5F / sqrtf(t));
         }
         // |y| bigger than |x|, so use y-form
-        const float t = 1 - (_a[0] - _a[4]) - _a[8]; // 1 - 2(xx-yy) - 1 + 2(xx + yy) = 4yy
+        const float t = 1 - (_a[0] - _a[4]) - _a[8]; // 1 - 2(xx - yy) - 1 + 2(xx + yy) = 4yy
         const Quaternion q = Quaternion(_a[2] - _a[6], _a[1] + _a[3], t, _a[5] + _a[7]);
         return q * (0.5F / sqrtf(t));
     }
@@ -109,7 +109,7 @@ _a[7] - _a[5] = 2(wx + yz) - 2(yz - wx) = 4xw
     // |(z,w)| bigger than |(x,y)|
     if (_a[0] < -_a[4]) {
         // |z| bigger than |w|, so use z-form
-        const float t = 1.0F - _a[0] - (_a[4] - _a[8]); // 1 - (1 - 2*(yy + zz)) - (2(yy-zz)) = 4zz
+        const float t = 1.0F - _a[0] - (_a[4] - _a[8]); // 1 - (1 - 2*(yy + zz)) - (2(yy - zz)) = 4zz
         const Quaternion q = Quaternion(_a[3] - _a[1], _a[2] + _a[6], _a[5] + _a[7], t);
         return q * (0.5F / sqrtf(t));
     }

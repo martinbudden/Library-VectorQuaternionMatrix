@@ -85,6 +85,7 @@ public:
     }
 
     inline void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[4] = 1.0F; _a[8] = 1.0F; }
+    inline void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[4] = d; _a[8] = d; }
 
     //static inline Matrix3x3 transpose(const Matrix3x3& m) { return Matrix3x3(m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]); } //<! Returns transpose of matrix
     inline void transposeInPlace() { float t = _a[1]; _a[1]= _a[3]; _a[3] = t; t = _a[2]; _a[2]= _a[6]; _a[6] = t; t = _a[5]; _a[5]= _a[7]; _a[7] = t; }

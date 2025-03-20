@@ -18,7 +18,9 @@ public:
     inline float getX() const { return x; }
     inline float getY() const { return y; }
     inline float getZ() const { return z; }
-    inline void getWXYZ(float& w_, float& x_, float&y_, float& z_) const { w_ = w; x_ = x; y_ = y; z_ = z; }
+    inline void getWXYZ(float& w_, float& x_, float& y_, float& z_) const { w_ = w; x_ = x; y_ = y; z_ = z; }
+    inline void setToIdentity() { w = 1.0F; x = 0.0F; y = 0.0F; z = 0.0F; }
+    inline void set(float w_, float x_, float y_, float z_) { w = w_; x = x_; y = y_; z = z_; }
 public:
     // Equality operators
     bool operator==(const Quaternion& q) const { return w == q.w && x == q.x &&  y == q.y && z == q.z; }
