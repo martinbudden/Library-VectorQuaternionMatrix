@@ -9,7 +9,7 @@ void tearDown() {
 }
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
-void test_xyz_t()
+void test_xyz_t_operators()
 {
     const xyz_t a{2, 3, 5};
     TEST_ASSERT_TRUE(a == +a);
@@ -68,6 +68,29 @@ void test_xyz_t()
 
     TEST_ASSERT_TRUE(a2 == a_plus_b + a_minus_b);
     TEST_ASSERT_TRUE(b2 == a_plus_b - a_minus_b);
+}
+
+void test_xyz_t_functions()
+{
+    const xyz_t a{2, 3, 5};
+    const xyz_t b{7, 11, 17};
+ 
+    TEST_ASSERT_EQUAL_FLOAT(38, a.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(sqrtf(38.0F), a.magnitude());
+
+    const xyz_t aNE{2/sqrt(38.0F), 3.0F/sqrt(38.0F), 5.0F/sqrt(38.0F)};
+    const xyz_t aN = a.normalize();
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, aN.magnitude());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.x, aN.x);
+    TEST_ASSERT_EQUAL_FLOAT(aNE.y, aN.y);
+    TEST_ASSERT_EQUAL_FLOAT(aNE.z, aN.z);
+
+    xyz_t aN2 = a;
+    aN2.normalizeInPlace();
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, aN2.magnitude());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.x, aN2.x);
+    TEST_ASSERT_EQUAL_FLOAT(aNE.y, aN2.y);
+    TEST_ASSERT_EQUAL_FLOAT(aNE.z, aN2.z);
 
     const float a_dot_b =  14 + 33 + 85;
     TEST_ASSERT_TRUE(a_dot_b == a.dot_product(b));
@@ -90,7 +113,7 @@ void test_xyz_t()
     TEST_ASSERT_TRUE(xyz_t::clip(e, -20, 20) == e_clipped);
 
     xyz_t f{-100, 200, 50};
-    f.clip(-20, 20);
+    f.clipInPlace(-20, 20);
     const xyz_t f_clipped = xyz_t{-20, 20, 20};
     TEST_ASSERT_TRUE(f == f_clipped);
 }
@@ -100,7 +123,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 {
     UNITY_BEGIN();
 
-    RUN_TEST(test_xyz_t);
+    RUN_TEST(test_xyz_t_operators);
+    RUN_TEST(test_xyz_t_functions);
 
     UNITY_END();
 }

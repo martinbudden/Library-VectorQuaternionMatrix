@@ -9,7 +9,7 @@ void tearDown() {
 }
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
-void test_quaternion()
+void test_quaternion_operators()
 {
     const Quaternion a{2, 3, 5, 7};
     TEST_ASSERT_TRUE(a == +a);
@@ -67,10 +67,40 @@ void test_quaternion()
     Quaternion c = a;
     c *= b;
     TEST_ASSERT_TRUE(c == a*b);
+}
+
+void test_quaternion_functions()
+{
+    const Quaternion a{2, 3, 5, 7};
+    const Quaternion b{11, 13, 17, 23};
+
+    const Quaternion aC{2, -3, -5, -7};
+    TEST_ASSERT_TRUE(aC == a.conjugate());
+
+    TEST_ASSERT_EQUAL_FLOAT(87.0F, a.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(sqrtf(87.0F), a.magnitude());
+    TEST_ASSERT_EQUAL_FLOAT(1108.0F, b.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(sqrtf(1108.0F), b.magnitude());
+
+    const Quaternion aNE{2.0F/sqrt(87.0F), 3.0F/sqrt(87.0F), 5.0F/sqrt(87.0F), 7.0F/sqrt(87.0F)};
+    const Quaternion aN = a.normalize();
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, aN.magnitude());
+    
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getW(), aN.getW());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getX(), aN.getX());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getY(), aN.getY());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getZ(), aN.getZ());
+
+    Quaternion aN2 = a;
+    aN2.normalizeInPlace();
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, aN2.magnitude());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getW(), aN2.getW());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getX(), aN2.getX());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getY(), aN2.getY());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.getZ(), aN2.getZ());
 
     TEST_ASSERT_TRUE(a.magnitudeSquared()*a.magnitudeSquared() == (a*a).magnitudeSquared());
     TEST_ASSERT_TRUE(a.magnitudeSquared()*a.magnitudeSquared() == (a*a.conjugate()).magnitudeSquared());
-
 }
 
 constexpr float degrees19inRadians = 19.0F * Quaternion::degreesToRadians;
@@ -263,7 +293,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 {
     UNITY_BEGIN();
 
-    RUN_TEST(test_quaternion);
+    RUN_TEST(test_quaternion_operators);
+    RUN_TEST(test_quaternion_functions);
     RUN_TEST(test_quaternion_angles);
     RUN_TEST(test_quaternion_rotation);
     RUN_TEST(test_quaternion_rotate);

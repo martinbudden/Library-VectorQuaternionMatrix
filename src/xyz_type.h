@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 struct xyz_t {
 public:
     // Equality operators
@@ -16,8 +18,8 @@ public:
     inline xyz_t operator/=(float k) { const float r = 1.0F/k; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
 
     // Binary operators
-    inline xyz_t operator+(const xyz_t& v) const { return xyz_t{x + v.x, y + v.y, z + v.z}; }
-    inline xyz_t operator-(const xyz_t& v) const { return xyz_t{x - v.x, y - v.y, z - v.z}; }
+    inline xyz_t operator+(const xyz_t& v) const { return xyz_t{x + v.x, y + v.y, z + v.z}; } //<! Addition
+    inline xyz_t operator-(const xyz_t& v) const { return xyz_t{x - v.x, y - v.y, z - v.z}; } //<! Subtraction
     inline xyz_t operator*(float k) const { return xyz_t{x*k, y*k, z*k}; } //<! Multiplication by a scalar
     inline friend xyz_t operator*(float k, const xyz_t& v) { return v*k; } //<! Pre-multiplication by a scalar
     inline xyz_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
@@ -26,10 +28,12 @@ public:
 
     // Other functions
     inline float magnitudeSquared() const { return x*x + y*y + z*z; } //<! The square of the magnitude
-    inline float magnitude() const { return sqrtf(x*x + y*y + z*z); } //<! The  magnitude
+    inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The  magnitude
+    inline xyz_t normalize() const { const float r = 1.0F/magnitude(); return *this*r; } //<! Return the normalized vector
+    inline xyz_t normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize in place
     static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clip helper function
     static inline xyz_t clip(const xyz_t& v, float min, float max) { return xyz_t{clip(v.x, min, max), clip(v.y, min, max), clip(v.z, min, max)}; } //<! Return clipped value
-    inline xyz_t clip(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); z = clip(z, min, max); return *this; } //<! Clip in place
+    inline xyz_t clipInPlace(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); z = clip(z, min, max); return *this; } //<! Clip in place
 public:
     float x;
     float y;
