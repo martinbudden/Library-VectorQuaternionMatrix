@@ -8,6 +8,62 @@ void tearDown() {
 }
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
+void test_readme()
+{
+    // test to check code example in readme.md compiles
+
+
+    const xyz_t a{1.0F, 2.0F, 3.0F};
+    const xyz_t b{5.0F, 7.0F, 11.0F};
+
+    // vector arithmetic
+    const xyz_t c = a + b;
+    xyz_t d = (a - b)*2.0F;
+    d += a;
+    d = c - d;
+
+    // vector dot and cross product
+    const float dotProduct = a.dot(b);
+    const xyz_t crossProduct = a.cross(b);
+
+    const Matrix3x3 M( 2,  3,  5,
+                       7, 11, 13,
+                      17, 19, 23);
+    const Matrix3x3 N(29, 31, 37,
+                      41, 43, 47,
+                      53, 59, 61);
+
+    // Matrix arithmetic
+    Matrix3x3 P = M*N;
+    P += M;
+    P *= 2;
+    P = P + N*M;
+
+    // Multiplication of a vector by a matrix
+    const xyz_t v = P*a;
+
+    const Quaternion q{2, 3, 5, 7};
+    const Quaternion r{11, 13, 17, 23};
+
+    // quaternion arithmetic
+    const Quaternion s = q + r;
+    Quaternion t = (s - q)*2.0F;
+    t += s;
+    t = s - t;
+    t = s * t;
+
+
+    // dummy tests to avoid -Werror=unused-but-set-variable
+    const xyz_t z = {0.0F, 0.0F, 0.0F};
+    const Matrix3x3 Z(0.0F);
+    TEST_ASSERT_FALSE(d == z);
+    TEST_ASSERT_FALSE(dotProduct == 0);
+    TEST_ASSERT_FALSE(crossProduct == z);
+    TEST_ASSERT_FALSE(P == Z);
+    TEST_ASSERT_FALSE(v == z);
+    TEST_ASSERT_TRUE(t != s);
+}
+
 void test_matrix3x3_unary()
 {
     // 0 1 2
@@ -238,6 +294,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 {
     UNITY_BEGIN();
 
+    RUN_TEST(test_readme);
     RUN_TEST(test_matrix3x3_unary);
     RUN_TEST(test_matrix3x3_binary);
     RUN_TEST(test_matrix3x3_quaternion);

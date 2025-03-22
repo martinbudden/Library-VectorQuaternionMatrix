@@ -12,6 +12,7 @@
         "hicpp",
         "libc",
         "llvmlibc",
+        "microcontrollers",
         "noreturn",
         "pioenvs",
         "piolibdeps",
