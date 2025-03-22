@@ -2,6 +2,7 @@
 
 #include "Quaternion.h"
 #include <array>
+#include <limits>
 
 class Matrix3x3 {
 public:
