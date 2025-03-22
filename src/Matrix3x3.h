@@ -41,6 +41,7 @@ public:
     inline Matrix3x3 operator+() const { return *this; } //<! Unary plus
     inline Matrix3x3 operator-() const { Matrix3x3 m; for (size_t ii = 0; ii < _a.size(); ++ii) {m[ii] = -_a[ii];} return m; } //<! Unary negation
 
+    // cppcheck-suppress useStlAlgorithm
     inline Matrix3x3 operator*=(float k) { for (float& a : _a) { a*=k; } return *this; } //<! Multiplication by a scalar
     inline Matrix3x3 operator/=(float k) { const float r = 1.0F/k; return operator*=(r); } //<! Division by a scalar
 
