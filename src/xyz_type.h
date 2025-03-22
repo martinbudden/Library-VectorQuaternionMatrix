@@ -23,8 +23,8 @@ public:
     inline xyz_t operator*(float k) const { return xyz_t{x*k, y*k, z*k}; } //<! Multiplication by a scalar
     inline friend xyz_t operator*(float k, const xyz_t& v) { return v*k; } //<! Pre-multiplication by a scalar
     inline xyz_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
-    inline float dot_product(const xyz_t& v) const { return  x*v.x + y*v.y + z*v.z; } //!< Vector dot product
-    inline xyz_t cross_product(const xyz_t& v) const { return xyz_t{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x}; } //!< Vector cross product
+    inline float dot(const xyz_t& v) const { return  x*v.x + y*v.y + z*v.z; } //!< Vector dot product
+    inline xyz_t cross(const xyz_t& v) const { return xyz_t{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x}; } //!< Vector cross product
 
     // Other functions
     inline float magnitudeSquared() const { return x*x + y*y + z*z; } //<! The square of the magnitude

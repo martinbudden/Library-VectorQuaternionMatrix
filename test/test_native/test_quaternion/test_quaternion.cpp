@@ -228,10 +228,11 @@ void test_quaternion_rotate()
 void test_quaternion_rotate_x()
 {
     const Quaternion qI(1.0F, 0.0F, 0.0F, 0.0F);
-    Quaternion qD = qI;
     const float delta = degrees19inRadians;
-    const Quaternion qDExpected = qI * Quaternion(cosf(delta/2.0F), sinf(delta/2.0F), 0, 0);
+    Quaternion qD = qI;
     qD.rotateX(delta);
+
+    const Quaternion qDExpected = Quaternion(cosf(delta/2.0F), sinf(delta/2.0F), 0, 0) * qI;
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
@@ -249,10 +250,11 @@ void test_quaternion_rotate_x()
 void test_quaternion_rotate_y()
 {
     const Quaternion qI(1.0F, 0.0F, 0.0F, 0.0F);
-    Quaternion qD = qI;
     const float delta = degrees19inRadians;
-    const Quaternion qDExpected = qI * Quaternion(cosf(delta/2.0F), 0, sinf(delta/2.0F), 0);
+    Quaternion qD = qI;
     qD.rotateY(delta);
+
+    const Quaternion qDExpected = Quaternion(cosf(delta/2.0F), 0, sinf(delta/2.0F), 0) *qI;
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
@@ -270,10 +272,11 @@ void test_quaternion_rotate_y()
 void test_quaternion_rotate_z()
 {
     const Quaternion qI(1.0F, 0.0F, 0.0F, 0.0F);
-    Quaternion qD = qI;
     const float delta = degrees19inRadians;
-    const Quaternion qDExpected = qI * Quaternion(cosf(delta/2.0F), 0, 0, sinf(delta/2.0F));
+    Quaternion qD = qI;
     qD.rotateZ(delta);
+
+    const Quaternion qDExpected = Quaternion(cosf(delta/2.0F), 0, 0, sinf(delta/2.0F)) *qI;
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());

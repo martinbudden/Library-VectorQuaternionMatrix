@@ -108,7 +108,7 @@ public:
 
         const float det = _a[0]*A + _a[1]*B + _a[2]*C; // a*A + b*B + c*C;
 
-        if ((fabs(det) <= std::numeric_limits<float>::epsilon())) {
+        if ((fabsf(det) <= std::numeric_limits<float>::epsilon())) {
             return false;
         }
 

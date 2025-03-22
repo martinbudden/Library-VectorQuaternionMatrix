@@ -93,16 +93,16 @@ void test_xyz_t_functions()
     TEST_ASSERT_EQUAL_FLOAT(aNE.z, aN2.z);
 
     const float a_dot_b =  14 + 33 + 85;
-    TEST_ASSERT_TRUE(a_dot_b == a.dot_product(b));
-    TEST_ASSERT_TRUE(a.magnitudeSquared() == a.dot_product(a));
-    TEST_ASSERT_TRUE(b.magnitudeSquared() == b.dot_product(b));
+    TEST_ASSERT_TRUE(a_dot_b == a.dot(b));
+    TEST_ASSERT_TRUE(a.magnitudeSquared() == a.dot(a));
+    TEST_ASSERT_TRUE(b.magnitudeSquared() == b.dot(b));
 
-    const xyz_t a_cross_b = a.cross_product(b);
+    const xyz_t a_cross_b = a.cross(b);
     TEST_ASSERT_EQUAL(3*17 - 5*11, a_cross_b.x);
     TEST_ASSERT_EQUAL(-2*17 + 5*7, a_cross_b.y);
     TEST_ASSERT_EQUAL(2*11 - 3*7, a_cross_b.z);
 
-    TEST_ASSERT_TRUE(a_cross_b != b.cross_product(a));
+    TEST_ASSERT_TRUE(a_cross_b != b.cross(a));
 
     const xyz_t d{-100, 200, 50};
     const xyz_t d_clipped = xyz_t{-50, 50, 50};
