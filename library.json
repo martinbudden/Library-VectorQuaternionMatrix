@@ -4,10 +4,15 @@
     "keywords": "IMU AHRS 3D vector quaternion matrix Euler angles",
     "authors": {
         "name": "Martin Budden",
+        "url": "https://github.com/martinbudden"
+    },
+    "repository": {
+        "type": "git",
         "url": "https://github.com/martinbudden/Library-IMU_TYPES"
     },
     "license": "MIT",
     "version": "0.0.2",
     "frameworks": "*",
-    "platforms": "*"
+    "platforms": "*",
+    "headers": ["xyz_type.h, Matrix3x3.h, Quaternion.h"]
 }
