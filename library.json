@@ -14,5 +14,5 @@
     "version": "0.0.2",
     "frameworks": "*",
     "platforms": "*",
-    "headers": ["xyz_type.h, Matrix3x3.h, Quaternion.h"]
+    "headers": ["xyz_type.h", "Matrix3x3.h", "Quaternion.h"]
 }
