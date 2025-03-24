@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/martinbudden/Library-IMU_TYPES"
+        "url": "https://github.com/martinbudden/Library-IMU_TYPES.git"
     },
     "license": "MIT",
     "version": "0.0.2",
