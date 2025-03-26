@@ -104,7 +104,7 @@ public:
     inline float magnitudeSquared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
     inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The magnitude
     inline Quaternion normalize() const { const float r = 1.0F/magnitude(); return *this*r; } //<! Return the normalized quaternion
-    inline Quaternion normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize in place
+    inline Quaternion normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize, in-place
 
     // Conversion functions
     static inline float asinfClipped(float angleRadians) {

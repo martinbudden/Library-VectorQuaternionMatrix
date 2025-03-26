@@ -73,11 +73,11 @@ void test_matrix3x3_unary()
     std::array<float, 9> z;
     z.fill(0.0F);
     const Matrix3x3 Z(z);
-    const float e[9] = {  2,  3,  5,  7, 11, 13, 17, 19, 23 }; // NOLINT(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
-    const Matrix3x3 E(e); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
-    TEST_ASSERT_EQUAL_FLOAT(2.0F, E[0]);
-    TEST_ASSERT_EQUAL_FLOAT(3.0F, E[1]);
-    TEST_ASSERT_EQUAL_FLOAT(23.0F, E[8]);
+    const float f[9] = {  2,  3,  5,  7, 11, 13, 17, 19, 23 }; // NOLINT(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
+    const Matrix3x3 F(f); // NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+    TEST_ASSERT_EQUAL_FLOAT(2.0F, F[0]);
+    TEST_ASSERT_EQUAL_FLOAT(3.0F, F[1]);
+    TEST_ASSERT_EQUAL_FLOAT(23.0F, F[8]);
 
 
     const Matrix3x3 I(1.0F);
@@ -174,6 +174,59 @@ void test_matrix3x3_unary()
     const float d = A.determinant();
     const float dE =  A[0]*(A[4]*A[8] - A[5]*A[7]) + A[1]*(A[5]*A[6] - A[3]*A[8]) + A[2]*(A[3]*A[7] - A[4]*A[6]);
     TEST_ASSERT_EQUAL_FLOAT(dE, d);
+
+    const Matrix3x3 D(29, 0, 0, 0, 31, 0, 0, 0, 37);
+    Matrix3x3 D_inv = D;
+    D_inv.invertInPlaceAssumingDiagonal();
+    TEST_ASSERT_EQUAL_FLOAT(1.0F / 29.0F, D_inv[0]);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F / 31.0F, D_inv[4]);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F / 37.0F, D_inv[8]);
+
+    const Matrix3x3 D_times_D_inv = D * D_inv;
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, D_times_D_inv[0]);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, D_times_D_inv[4]);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, D_times_D_inv[8]);
+
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[1]);
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[2]);
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[3]);
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[5]);
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[6]);
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[7]);
+
+    const Matrix3x3 D_inv2 = D.inverseAssumingDiagonal();
+    TEST_ASSERT_EQUAL_FLOAT(1.0F / 29.0F, D_inv2[0]);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F / 31.0F, D_inv2[4]);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F / 37.0F, D_inv2[8]);
+    TEST_ASSERT_TRUE(D_inv == D_inv2);
+
+    const xyz_t v{2, 3, 5};
+    const Matrix3x3 DplusV = D.addToDiagonal(v);
+    TEST_ASSERT_EQUAL_FLOAT(31, DplusV[0]);
+    TEST_ASSERT_EQUAL_FLOAT(34, DplusV[4]);
+    TEST_ASSERT_EQUAL_FLOAT(42, DplusV[8]);
+    Matrix3x3 DplusVinPlace = D;
+    DplusVinPlace.addToDiagonalInPlace(v);
+    TEST_ASSERT_TRUE(DplusV == DplusVinPlace);
+
+    const Matrix3x3 DminusV = D.subtractFromDiagonal(v);
+    TEST_ASSERT_EQUAL_FLOAT(27, DminusV[0]);
+    TEST_ASSERT_EQUAL_FLOAT(28, DminusV[4]);
+    TEST_ASSERT_EQUAL_FLOAT(32, DminusV[8]);
+    Matrix3x3 DminusVinPlace = D;
+    DminusVinPlace.subtractFromDiagonalInPlace(v);
+    TEST_ASSERT_TRUE(DminusV == DminusVinPlace);
+
+    const Matrix3x3 DminusVplusV = DminusV.addToDiagonal(v);
+    TEST_ASSERT_TRUE(D == DminusVplusV);
+
+    const Matrix3x3 E(2, 0, 0, 0, 3, 0, 0, 0, 5);
+    const Matrix3x3 DtimesE(29*2, 0, 0, 0, 31*3, 0, 0, 0, 37*5);
+    TEST_ASSERT_TRUE(DtimesE == D.multiplyAssumingDiagonal(E));
+
+    Matrix3x3 DtimesEinPlace = D;
+    DtimesEinPlace.multiplyAssumingDiagonalInPlace(E);
+    TEST_ASSERT_TRUE(DtimesE == DtimesEinPlace);
 }
 
 void test_matrix3x3_binary()
@@ -212,6 +265,18 @@ void test_matrix3x3_binary()
     const xyz_t v  = {29, 31, 37};
     const xyz_t Av = {2*29 + 3*31 +5*37, 7*29 + 11*31 +13*37, 17*29 + 19*31 + 23*37};
     TEST_ASSERT_TRUE(Av == A*v);
+
+    const Matrix3x3 D(67, 0, 0, 0, 71, 0, 0, 0, 73);
+    const Matrix3x3 DA = D * A;
+    TEST_ASSERT_EQUAL_FLOAT(134.0F , DA[0]);
+    TEST_ASSERT_EQUAL_FLOAT(201.0F , DA[1]);
+    TEST_ASSERT_EQUAL_FLOAT(335.0F , DA[2]);
+    TEST_ASSERT_EQUAL_FLOAT(497.0F , DA[3]);
+    TEST_ASSERT_EQUAL_FLOAT(781.0F , DA[4]);
+    TEST_ASSERT_EQUAL_FLOAT(923.0F , DA[5]);
+    TEST_ASSERT_EQUAL_FLOAT(1241.0F , DA[6]);
+    TEST_ASSERT_EQUAL_FLOAT(1387.0F , DA[7]);
+    TEST_ASSERT_EQUAL_FLOAT(1679.0F , DA[8]);
 }
 
 constexpr float degrees19inRadians = 19.0F * Quaternion::degreesToRadians;

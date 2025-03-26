@@ -11,7 +11,7 @@
         "url": "https://github.com/martinbudden/Library-IMU_TYPES.git"
     },
     "license": "MIT",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "frameworks": "*",
     "platforms": "*",
     "headers": ["xyz_type.h", "Matrix3x3.h", "Quaternion.h"]

@@ -30,12 +30,12 @@ public:
         _a[8] = 1.0F - 2.0F*(x*x + y*y);
     }
 public:
-    inline float operator[](size_t pos) const { return _a[pos]; }
-    inline float& operator[](size_t pos) { return _a[pos]; }
+    inline float operator[](size_t pos) const { return _a[pos]; } //<! Index operator
+    inline float& operator[](size_t pos) { return _a[pos]; } //<! Index operator
 
     // Equality operators
-    inline bool operator!=(const Matrix3x3& m) const { for (size_t ii = 0; ii < _a.size(); ++ii) { if (_a[ii] != m[ii]) {return true;} } return false; }
-    inline bool operator==(const Matrix3x3& m) const { return !operator!=(m); }
+    inline bool operator!=(const Matrix3x3& m) const { for (size_t ii = 0; ii < _a.size(); ++ii) { if (_a[ii] != m[ii]) {return true;} } return false; } //<! Inequality operator
+    inline bool operator==(const Matrix3x3& m) const { return !operator!=(m); } //<! Equality operator
 
     // Unary operations
     inline Matrix3x3 operator+() const { return *this; } //<! Unary plus
@@ -47,6 +47,7 @@ public:
 
     inline Matrix3x3 operator+=(const Matrix3x3& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] += m[ii];} return *this; } //<! Unary addition
     inline Matrix3x3 operator-=(const Matrix3x3& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] -= m[ii];} return *this; } //<! Unary subtraction
+    //! Unary multiplication
     inline Matrix3x3 operator*=(const Matrix3x3& m) {
         std::array<float, 9> a {
             _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
@@ -72,6 +73,7 @@ public:
 
     inline Matrix3x3 operator+(const Matrix3x3& m) const { Matrix3x3 ret; for (size_t ii = 0; ii < _a.size(); ++ii) { ret[ii] = _a[ii] + m[ii]; } return ret; } //<! Addition
     inline Matrix3x3 operator-(const Matrix3x3& m) const { Matrix3x3 ret; for (size_t ii = 0; ii < _a.size(); ++ii) { ret[ii] = _a[ii] - m[ii]; } return ret; } //<! Subtraction
+    //! Multiplication
     inline Matrix3x3 operator*(const Matrix3x3& m) const {
         return Matrix3x3 (
             _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
@@ -86,14 +88,23 @@ public:
         );
     }
 
-    inline void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[4] = 1.0F; _a[8] = 1.0F; }
-    inline void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[4] = d; _a[8] = d; }
+    inline void addToDiagonalInPlace(const xyz_t& v) { _a[0]+=v.x; _a[4]+=v.y; _a[8]+=v.z; } //<! Add vector to diagonal of matrix, in-place
+    inline void subtractFromDiagonalInPlace(const xyz_t& v) { _a[0]-=v.x, _a[4]-=v.y; _a[8]-=v.z; } //<! Subtract vector from diagonal of matrix, in-place
+    //! Multiply by matrix, in-place, assuming both matrices are diagonal
+     inline void multiplyAssumingDiagonalInPlace(const Matrix3x3& m) { _a[0]*=m[0]; _a[4]*=m[4]; _a[8]*=m[8]; }
 
-    //static inline Matrix3x3 transpose(const Matrix3x3& m) { return Matrix3x3(m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]); } //<! Returns transpose of matrix
-    inline void transposeInPlace() { float t = _a[1]; _a[1]= _a[3]; _a[3] = t; t = _a[2]; _a[2]= _a[6]; _a[6] = t; t = _a[5]; _a[5]= _a[7]; _a[7] = t; }
+    inline Matrix3x3 addToDiagonal(const xyz_t& v) const { return Matrix3x3 (_a[0]+v.x, _a[1], _a[2], _a[3], _a[4]+v.y, _a[5], _a[6], _a[7], _a[8]+v.z); } //<! Add vector to diagonal of matrix
+    inline Matrix3x3 subtractFromDiagonal(const xyz_t& v) const { return Matrix3x3 (_a[0]-v.x, _a[1], _a[2], _a[3], _a[4]-v.y, _a[5], _a[6], _a[7], _a[8]-v.z); } //<! Subtract vector from diagonal of matrix
+    //! Multiply by matrix, assuming both matrices are diagonal
+    inline Matrix3x3 multiplyAssumingDiagonal(const Matrix3x3& m) const { return Matrix3x3 (_a[0]*m[0], 0.0F, 0.0F, 0.0F, _a[4]*m[4], 0.0F, 0.0F, 0.0F, _a[8]*m[8]); }
+
+    inline void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[4] = 1.0F; _a[8] = 1.0F; } //<! Sets matrix to identity matrix
+    inline void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[4] = d; _a[8] = d; } //<! Sets diagonal of matrix to d
+
+    inline void transposeInPlace() { float t = _a[1]; _a[1]= _a[3]; _a[3] = t; t = _a[2]; _a[2]= _a[6]; _a[6] = t; t = _a[5]; _a[5]= _a[7]; _a[7] = t; } //<! Transposes matrix, in=place
     inline Matrix3x3 transpose() const { return Matrix3x3(_a[0], _a[3], _a[6], _a[1], _a[4], _a[7], _a[2], _a[5], _a[8]); } //<! Returns transpose of matrix
 
-    //! Invert matrix in-place
+    //! Invert matrix, in-place
     inline bool invertInPlace() {
         // a b c
         // d e f
@@ -130,6 +141,9 @@ public:
         return true;
     }
     inline Matrix3x3 inverse() const { Matrix3x3 ret = *this; (void)ret.invertInPlace(); return ret; } //<! Returns inverse of matrix
+
+    inline void invertInPlaceAssumingDiagonal() { _a[0] = 1.0F / _a[0]; _a[4] = 1.0F / _a[4]; _a[8] = 1.0F / _a[8]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
+    inline Matrix3x3 inverseAssumingDiagonal() const { Matrix3x3 ret = *this; ret.invertInPlaceAssumingDiagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
 
     inline float determinant() const { return _a[0]*(_a[4]*_a[8] - _a[5]*_a[7]) - _a[1]*(_a[3]*_a[8] - _a[5]*_a[6]) + _a[2]*(_a[3]*_a[7] - _a[4]*_a[6]); } //<! Matrix determinant
 

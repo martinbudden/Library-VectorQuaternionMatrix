@@ -30,10 +30,10 @@ public:
     inline float magnitudeSquared() const { return x*x + y*y + z*z; } //<! The square of the magnitude
     inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The  magnitude
     inline xyz_t normalize() const { const float r = 1.0F/magnitude(); return *this*r; } //<! Return the normalized vector
-    inline xyz_t normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize in place
+    inline xyz_t normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize, in-place
     static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clip helper function
     static inline xyz_t clip(const xyz_t& v, float min, float max) { return xyz_t{clip(v.x, min, max), clip(v.y, min, max), clip(v.z, min, max)}; } //<! Return clipped value
-    inline xyz_t clipInPlace(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); z = clip(z, min, max); return *this; } //<! Clip in place
+    inline xyz_t clipInPlace(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); z = clip(z, min, max); return *this; } //<! Clip, in-place
 public:
     float x;
     float y;
