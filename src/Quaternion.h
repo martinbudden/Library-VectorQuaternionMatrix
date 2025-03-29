@@ -7,11 +7,13 @@ public:
     Quaternion() : w(1.0F), x(0.0F), y(0.0F), z(0.0F) {}
     Quaternion(float w_, float x_, float y_, float z_) : w(w_), x(x_), y(y_), z(z_) {}
 public:
-    static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
-    static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians);
-public:
     static constexpr float radiansToDegrees = static_cast<float>(180.0 / M_PI);
     static constexpr float degreesToRadians = static_cast<float>(M_PI / 180.0);
+public:
+    static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
+    static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians);
+    static Quaternion fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees);
+    static Quaternion fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees);
 public:
     inline float getW() const { return w; }
     inline float getX() const { return x; }
@@ -107,13 +109,13 @@ public:
     inline Quaternion normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize, in-place
 
     // Conversion functions
-    static inline float asinfClipped(float angleRadians) {
+    static inline float asinClippedf(float angleRadians) {
         if (angleRadians <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
         if (angleRadians >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
         return asinf(angleRadians);
     }
     inline float calculateRollRadians() const  { return atan2f(w*x + y*z, 0.5F - x*x - y*y); }
-    inline float calculatePitchRadians() const { return asinfClipped(2.0F*(w*y - x*z)); }
+    inline float calculatePitchRadians() const { return asinClippedf(2.0F*(w*y - x*z)); }
     inline float calculateYawRadians() const   { return atan2f(w*z + x*y, 0.5F - y*y - z*z); } // alternatively atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z)
 
     inline float calculateRollDegrees() const  { return radiansToDegrees * calculateRollRadians(); }

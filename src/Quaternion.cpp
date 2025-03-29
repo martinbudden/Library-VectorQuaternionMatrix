@@ -14,7 +14,7 @@ xyz_t Quaternion::rotate(const xyz_t& v) const
 }
 
 /*!
-Create a Quaternion using roll, pitch, and yaw Euler angles.
+Create a Quaternion from roll, pitch, and yaw Euler angles (in radians).
 */
 Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians)
 {
@@ -38,24 +38,39 @@ Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadi
 }
 
 /*!
-Create a Quaternion using roll and pitch Euler angles, assumes yaw angle is zero.
+Create a Quaternion from roll and pitch Euler angles (in radians), assumes yaw angle is zero.
 */
 Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadians)
 {
     const float halfRoll = 0.5F * rollRadians;
     const float halfPitch = 0.5F * pitchRadians;
 
-    const float sinHalfPitch = sinf(halfPitch);
-    const float cosHalfPitch = cosf(halfPitch);
     const float sinHalfRoll = sinf(halfRoll);
     const float cosHalfRoll = cosf(halfRoll);
+    const float sinHalfPitch = sinf(halfPitch);
+    const float cosHalfPitch = cosf(halfPitch);
 
     return {
         cosHalfRoll * cosHalfPitch,
         sinHalfRoll * cosHalfPitch,
         cosHalfRoll * sinHalfPitch,
-        sinHalfRoll * sinHalfPitch
+        -sinHalfRoll * sinHalfPitch
     };
+}
+/*!
+Create a Quaternion from roll, pitch, and yaw Euler angles (in degrees).
+*/
+Quaternion Quaternion::fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees)
+{
+    return fromEulerAnglesRadians(rollDegrees*degreesToRadians, pitchDegrees*degreesToRadians, yawDegrees*degreesToRadians);
+}
+
+/*!
+Create a Quaternion from roll and pitch Euler angles (in degrees), assumes yaw angle is zero.
+*/
+Quaternion Quaternion::fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees)
+{
+    return fromEulerAnglesRadians(rollDegrees*degreesToRadians, pitchDegrees*degreesToRadians);
 }
 
 /*!
