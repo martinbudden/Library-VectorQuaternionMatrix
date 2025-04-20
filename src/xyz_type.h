@@ -12,8 +12,8 @@ public:
     inline xyz_t operator+() const { return *this; } //<! Unary plus
     inline xyz_t operator-() const { return xyz_t{-x, -y, -z }; } //<! Unary negation
 
-    inline xyz_t operator+=(const xyz_t& v) { x += v.x; y += v.y; z += v.z; return *this; }
-    inline xyz_t operator-=(const xyz_t& v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
+    inline xyz_t operator+=(const xyz_t& v) { x += v.x; y += v.y; z += v.z; return *this; } //<! Addition
+    inline xyz_t operator-=(const xyz_t& v) { x -= v.x; y -= v.y; z -= v.z; return *this; } //<! Subtraction
     inline xyz_t operator*=(float k) { x*=k; y*=k; z*=k; return *this; } //<! Multiplication by a scalar
     inline xyz_t operator/=(float k) { const float r = 1.0F/k; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
 

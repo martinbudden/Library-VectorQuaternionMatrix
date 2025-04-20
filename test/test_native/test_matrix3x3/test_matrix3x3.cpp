@@ -205,7 +205,7 @@ void test_matrix3x3_unary()
     TEST_ASSERT_EQUAL_FLOAT(31, DplusV[0]);
     TEST_ASSERT_EQUAL_FLOAT(34, DplusV[4]);
     TEST_ASSERT_EQUAL_FLOAT(42, DplusV[8]);
-    Matrix3x3 DplusVinPlace = D;
+    Matrix3x3 DplusVinPlace = D; // NOLINT(misc-const-correctness) false positive
     DplusVinPlace.addToDiagonalInPlace(v);
     TEST_ASSERT_TRUE(DplusV == DplusVinPlace);
 
@@ -213,7 +213,7 @@ void test_matrix3x3_unary()
     TEST_ASSERT_EQUAL_FLOAT(27, DminusV[0]);
     TEST_ASSERT_EQUAL_FLOAT(28, DminusV[4]);
     TEST_ASSERT_EQUAL_FLOAT(32, DminusV[8]);
-    Matrix3x3 DminusVinPlace = D;
+    Matrix3x3 DminusVinPlace = D; // NOLINT(misc-const-correctness) false positive
     DminusVinPlace.subtractFromDiagonalInPlace(v);
     TEST_ASSERT_TRUE(DminusV == DminusVinPlace);
 

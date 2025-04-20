@@ -83,7 +83,7 @@ rather than the Hamilton multiplication convention used by the Quaternion class.
 Quaternion Matrix3x3::quaternion() const // NOLINT(readability-convert-member-functions-to-static) false positive
 {
 /*
-_a[0] = 1 - 2*(yy + zz);
+_a[0] = 1 - 2(yy + zz);
 _a[1] = 2(xy - wz);
 _a[2] = 2(wy + xz);
 _a[3] = 2(wz + xy);

@@ -30,10 +30,10 @@ public:
     // Unary operations
     inline Quaternion operator+() const { return *this; } //<! Unary plus
     inline Quaternion operator-() const { return Quaternion(-w, -x, -y, -z); } //<! Unary negation
-    inline Quaternion conjugate() const { return Quaternion(w, -x, -y, -z); }
+    inline Quaternion conjugate() const { return Quaternion(w, -x, -y, -z); } //<! Conjugate
 
-    inline Quaternion operator+=(const Quaternion& q) { w += q.w; x += q.x; y += q.y; z += q.z; return *this; }
-    inline Quaternion operator-=(const Quaternion& q) { w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this; }
+    inline Quaternion operator+=(const Quaternion& q) { w += q.w; x += q.x; y += q.y; z += q.z; return *this; } //<! Addition
+    inline Quaternion operator-=(const Quaternion& q) { w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this; } //<! Subtraction
     inline Quaternion operator*=(float k) { w*=k; x*=k; y*=k; z*=k; return *this; } //<! Multiplication by a scalar
     inline friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
     inline Quaternion operator/=(float k) { const float r = 1.0F/k; w*=r; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
@@ -49,8 +49,8 @@ public:
     }
 
     // Binary operations
-    inline Quaternion operator+(const Quaternion& q) const { return Quaternion(w + q.w, x + q.x, y + q.y, z + q.z); }
-    inline Quaternion operator-(const Quaternion& q) const { return Quaternion(w - q.w, x - q.x, y - q.y, z - q.z); }
+    inline Quaternion operator+(const Quaternion& q) const { return Quaternion(w + q.w, x + q.x, y + q.y, z + q.z); } //<! Addition
+    inline Quaternion operator-(const Quaternion& q) const { return Quaternion(w - q.w, x - q.x, y - q.y, z - q.z); } //<! Subtraction
     inline Quaternion operator*(float k) const { return Quaternion(w*k, x*k, y*k, z*k); } //<! Multiplication by a scalar
     inline Quaternion operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     inline Quaternion operator*(const Quaternion& q) const {
@@ -62,9 +62,11 @@ public:
         );
     }
 
+    /*!
+    Rotate about the x-axis,
+    equivalent to *= Quaternion(cos(theta/2), sin(theta/2), 0, 0)
+    */
     inline Quaternion rotateX(float theta) {
-        // rotate about the x-axis
-        // equivalent to *= Quaternion(cos(theta/2), sin(theta/2), 0, 0)
         const float c = cosf(theta/2);
         const float s = sinf(theta/2);
         const float wt =  w*c - x*s;
@@ -75,9 +77,11 @@ public:
         y = yt;
         return *this;
     }
+    /*!
+    Rotate about the y-axis.
+    equivalent to *= Quaternion(cos(theta/2), 0, sin(theta/2), 0)
+    */
     inline Quaternion rotateY(float theta) {
-        // rotate about the y-axis
-        // equivalent to *= Quaternion(cos(theta/2), 0, sin(theta/2), 0)
         const float c = cosf(theta/2);
         const float s = sinf(theta/2);
         const float wt = w*c - y*s;
@@ -88,9 +92,11 @@ public:
         x = xt;
         return *this;
     }
+    /*!
+    Rotate about the z-axis,
+    equivalent to *= Quaternion(cos(theta/2), 0, 0, sin(theta/2))
+    */
     inline Quaternion rotateZ(float theta) {
-        // rotate about the z-axis
-        // equivalent to *= Quaternion(cos(theta/2), 0, 0, sin(theta/2))
         const float c = cosf(theta/2);
         const float s = sinf(theta/2);
         const float wt = w*c - z*s;
