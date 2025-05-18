@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map for IMU_TYPES
+# Syntax Coloring Map for VectorQuaternionMatrix
 #######################################
 
 #######################################

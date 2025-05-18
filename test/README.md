@@ -1,3 +1,3 @@
 # Test
 
-Tests for the IMU_TYPES library.
+Tests for the VectorQuaternionMatrix library.

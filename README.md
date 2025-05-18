@@ -1,8 +1,8 @@
 ![license](https://img.shields.io/badge/license-MIT-green) ![open source](https://badgen.net/badge/open/source/blue?icon=github)
 
-# IMU_TYPES library
+# Vector, Quaternion, and Matrix Library
 
-This library includes some basic types for use by Inertial Measurement Unit (IMU) and Attitude and Heading Reference Systems (AHRS), namely:
+This library includes some basic classes for use by Inertial Measurement Unit (IMU) and Attitude and Heading Reference Systems (AHRS), namely:
 
 1. `xyz_t`, a vector of 3 `floats`, `{x, y, z}` (named `xyz_t` rather than (say) `vector_3d_t` to avoid confusion with the C++ `vector` class.
 2. `Quaternion`, a basic [quaternion](https://en.wikipedia.org/wiki/Quaternion) class.
@@ -10,7 +10,7 @@ This library includes some basic types for use by Inertial Measurement Unit (IMU
 
 The library uses inlining, operator overloading, and return value optimization (RVO) to facilitate performant readable code.
 
-Additionally care has been taken to avoid inadvertent double promotion so the code runs efficiently on microcontrollers  with single precision floating point coprocessors.
+Additionally care has been taken to avoid inadvertent double promotion so the code runs efficiently on microcontrollers with single precision floating point coprocessors.
 
 ## Example code
 
