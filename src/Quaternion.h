@@ -111,22 +111,38 @@ public:
 public:
     inline float magnitudeSquared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
     inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The magnitude
-    inline Quaternion normalize() const { const float r = 1.0F/magnitude(); return *this*r; } //<! Return the normalized quaternion
-    inline Quaternion normalizeInPlace() { const float r = 1.0F/magnitude(); *this*=r; return *this; } //<! Normalize, in-place
+    Quaternion normalize() const; //<! Return the normalized quaternion
+    inline Quaternion normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
 
-    // Conversion functions
-    static inline float asinClippedf(float angleRadians) {
-        if (angleRadians <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
-        if (angleRadians >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
-        return asinf(angleRadians);
-    }
-    inline float calculateRollRadians() const  { return atan2f(w*x + y*z, 0.5F - x*x - y*y); }
-    inline float calculatePitchRadians() const { return asinClippedf(2.0F*(w*y - x*z)); }
-    inline float calculateYawRadians() const   { return atan2f(w*z + x*y, 0.5F - y*y - z*z); } // alternatively atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z)
+    // Euler angle calculations. Note that these are computationally expensive.
+    float calculateRollRadians() const;
+    float calculatePitchRadians() const;
+    float calculateYawRadians() const;
 
     inline float calculateRollDegrees() const  { return radiansToDegrees * calculateRollRadians(); }
     inline float calculatePitchDegrees() const { return radiansToDegrees * calculatePitchRadians(); }
     inline float calculateYawDegrees() const   { return radiansToDegrees * calculateYawRadians(); }
+
+    // Functions to calculate the sin, cos, and tan of the Euler angles.
+    // Sometimes this can avoid the computationally expensive calculation of the angles themselves.
+    float sinRoll() const;
+    float cosRoll() const;
+    inline float tanRoll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
+    inline float sinPitch() const { return 2.0F*(w*y - x*z); }
+    float cosPitch() const;
+    float tanPitch() const;
+    float sinYaw() const;
+    float cosYaw() const;
+    inline float tanYaw() const { return (w*z + x*y)/(0.5F - y*y - z*z); }
+
+public:
+    // implementation functions, made public for test code
+    static float asinClippedf(float angleRadians);
+    static float asinPositiveX(float x);
+    static float arcsinOrder9f(float x);
+    static float arccosOrder9f(float x);
+    static float atanOrder7f(float x);
+    static float atan2Order7f(float y, float x);
 protected:
     float w;
     float x;

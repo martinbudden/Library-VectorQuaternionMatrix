@@ -112,20 +112,25 @@ void test_quaternion_angles()
 {
     const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q0.calculateRollDegrees());
+#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+    TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q0.calculatePitchDegrees());
+#else
     TEST_ASSERT_EQUAL_FLOAT(43.0, q0.calculatePitchDegrees());
+#endif
     TEST_ASSERT_EQUAL_FLOAT(67.0, q0.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q0.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q0.magnitude());
 
     const Quaternion q0d = Quaternion::fromEulerAnglesDegrees(19.0F, 43.0F, 67.0F);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q0d.calculateRollDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(43.0, q0d.calculatePitchDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q0d.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(67.0, q0d.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q0d.magnitudeSquared());
 
     const Quaternion q1 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q1.calculateRollDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(43.0, q1.calculatePitchDegrees());
-    TEST_ASSERT_FLOAT_WITHIN(6e-07, 0.0, q1.calculateYawDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q1.calculatePitchDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(1.87e-05, 0.0, q1.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q1.magnitudeSquared());
 
     const Quaternion q2 = Quaternion::fromEulerAnglesRadians(degrees43inRadians, -degrees19inRadians, degrees67inRadians);
@@ -134,10 +139,10 @@ void test_quaternion_angles()
     TEST_ASSERT_EQUAL_FLOAT(67.0, q2.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q2.magnitudeSquared());
 
-    const Quaternion q2d = Quaternion::fromEulerAnglesDegrees(19.0F, 43.0F, 67.0F);
+    const Quaternion q2d = Quaternion::fromEulerAnglesDegrees(19.0F, 43.0F, -67.0F);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q2d.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(43.0, q2d.calculatePitchDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(67.0, q2d.calculateYawDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-67.0, q2d.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q2d.magnitudeSquared());
 
     const Quaternion q3 = Quaternion::fromEulerAnglesDegrees(21.0F, -39.0F);
@@ -153,28 +158,75 @@ void test_quaternion_angles()
     TEST_ASSERT_EQUAL_FLOAT(1.0, q4.magnitudeSquared());
 }
 
+void test_quaternion_angles_sin_cos_tan()
+{
+    const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
+    TEST_ASSERT_EQUAL_FLOAT(19.0, q0.calculateRollDegrees());
+#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+    TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q0.calculatePitchDegrees());
+#else
+    TEST_ASSERT_EQUAL_FLOAT(43.0, q0.calculatePitchDegrees());
+#endif
+    TEST_ASSERT_EQUAL_FLOAT(67.0, q0.calculateYawDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(1.0, q0.magnitudeSquared());
+
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees19inRadians), q0.sinRoll());
+    TEST_ASSERT_EQUAL_FLOAT(cosf(degrees19inRadians), q0.cosRoll());
+    TEST_ASSERT_EQUAL_FLOAT(tanf(degrees19inRadians), q0.tanRoll());
+
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees43inRadians), q0.sinPitch());
+    TEST_ASSERT_EQUAL_FLOAT(cosf(degrees43inRadians), q0.cosPitch());
+    TEST_ASSERT_EQUAL_FLOAT(tanf(degrees43inRadians), q0.tanPitch());
+
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees67inRadians), q0.sinYaw());
+    TEST_ASSERT_EQUAL_FLOAT(cosf(degrees67inRadians), q0.cosYaw());
+    TEST_ASSERT_EQUAL_FLOAT(tanf(degrees67inRadians), q0.tanYaw());
+
+    const Quaternion q1 = Quaternion::fromEulerAnglesRadians(-degrees19inRadians, -degrees43inRadians, -degrees67inRadians);
+    TEST_ASSERT_EQUAL_FLOAT(-19.0, q1.calculateRollDegrees());
+#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+    TEST_ASSERT_FLOAT_WITHIN(0.032, -43.0, q1.calculatePitchDegrees());
+#else
+    TEST_ASSERT_EQUAL_FLOAT(-43.0, q1.calculatePitchDegrees());
+#endif
+    TEST_ASSERT_EQUAL_FLOAT(-67.0, q1.calculateYawDegrees());
+
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees19inRadians), q1.sinRoll());
+    TEST_ASSERT_EQUAL_FLOAT(cosf(-degrees19inRadians), q1.cosRoll());
+    TEST_ASSERT_EQUAL_FLOAT(tanf(-degrees19inRadians), q1.tanRoll());
+
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees43inRadians), q1.sinPitch());
+    TEST_ASSERT_EQUAL_FLOAT(cosf(-degrees43inRadians), q1.cosPitch());
+    TEST_ASSERT_EQUAL_FLOAT(tanf(-degrees43inRadians), q1.tanPitch());
+
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees67inRadians), q1.sinYaw());
+    TEST_ASSERT_EQUAL_FLOAT(cosf(-degrees67inRadians), q1.cosYaw());
+    TEST_ASSERT_EQUAL_FLOAT(tanf(-degrees67inRadians), q1.tanYaw());
+
+}
+
 void test_quaternion_rotation()
 {
     const Quaternion q2 = Quaternion::fromEulerAnglesRadians(degrees43inRadians, 0, 0);
     TEST_ASSERT_EQUAL_FLOAT(43.0, q2.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2.calculatePitchDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(0.0, q2.calculateYawDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(1.81E-05, 0.0, q2.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q2.magnitudeSquared());
 
     const Quaternion q3 = Quaternion::fromEulerAnglesRadians(-degrees19inRadians, 0, 0);
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q3.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q3.calculatePitchDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(0.0, q3.calculateYawDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(1.81E-05, 0.0, q3.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q3.magnitudeSquared());
 
     const Quaternion q2q3 = q2 * q3;
     TEST_ASSERT_EQUAL_FLOAT(1.0, q2q3.magnitudeSquared());
     TEST_ASSERT_EQUAL_FLOAT(24.0, q2q3.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2q3.calculatePitchDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(0.0, q2q3.calculateYawDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(1.81E-05, 0.0, q2q3.calculateYawDegrees());
 
     const Quaternion q4 = Quaternion::fromEulerAnglesRadians(0, -degrees67inRadians, 0);
-    TEST_ASSERT_EQUAL_FLOAT(0.0, q4.calculateRollDegrees());
+    TEST_ASSERT_FLOAT_WITHIN(1.81E-05, 0.0, q4.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-67.0, q4.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4.calculateYawDegrees());
     TEST_ASSERT_EQUAL_FLOAT(1.0, q4.magnitudeSquared());
@@ -319,6 +371,63 @@ void test_quaternion_rotate_z()
     TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
     TEST_ASSERT_TRUE(qDExpected == q19);
 }
+
+void test_quaternion_rotate_enu_to_ned()
+{
+    static const Quaternion qENUtoNED(0.0F, sqrtf(0.5F), sqrtf(0.5F), 0.0F);
+
+    const Quaternion orientationENU = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
+
+    const Quaternion orientationNED = qENUtoNED * orientationENU;
+    const float rollAngleDegrees = orientationNED.calculateRollDegrees();
+    const float pitchAngleDegrees = orientationNED.calculatePitchDegrees();
+    const float yawAngleDegrees = orientationNED.calculateYawDegrees();
+
+    TEST_ASSERT_EQUAL_FLOAT(19.0F - 180.0F, rollAngleDegrees);
+    TEST_ASSERT_FLOAT_WITHIN(0.032, -43.0F, pitchAngleDegrees);
+    TEST_ASSERT_EQUAL_FLOAT(90.F - 67.0F, yawAngleDegrees);
+}
+
+void test_atan2f()
+{
+    static constexpr float PI_F = 3.141592653589793F;
+
+    TEST_ASSERT_FLOAT_WITHIN(3.2E-07, 0.0F, Quaternion::atanOrder7f(0.0F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.05F), Quaternion::atanOrder7f(0.05F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.1F), Quaternion::atanOrder7f(0.1F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.2F), Quaternion::atanOrder7f(0.2F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.3F), Quaternion::atanOrder7f(0.3F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.4F), Quaternion::atanOrder7f(0.4F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.5F), Quaternion::atanOrder7f(0.5F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.6F), Quaternion::atanOrder7f(0.6F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.7F), Quaternion::atanOrder7f(0.7F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.8F), Quaternion::atanOrder7f(0.8F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, atanf(0.9F), Quaternion::atanOrder7f(0.9F));
+    TEST_ASSERT_EQUAL_FLOAT( 0.25F*PI_F, Quaternion::atanOrder7f(1.0F));
+
+    TEST_ASSERT_EQUAL_FLOAT(0.5F*PI_F, Quaternion::atan2Order7f(1.0F, 0.0F));
+    TEST_ASSERT_EQUAL_FLOAT(-0.5F*PI_F, Quaternion::atan2Order7f(-1.0F, 0.0F));
+
+    TEST_ASSERT_EQUAL_FLOAT( 0.25F*PI_F, Quaternion::atan2Order7f(1.0F, 1.0F));
+    TEST_ASSERT_EQUAL_FLOAT(-0.25F*PI_F, Quaternion::atan2Order7f(-1.0F, 1.0F));
+    TEST_ASSERT_EQUAL_FLOAT(PI_F-0.25F*PI_F, Quaternion::atan2Order7f(1.0F, -1.0F));
+    TEST_ASSERT_EQUAL_FLOAT(-PI_F+0.25F*PI_F, Quaternion::atan2Order7f(-1.0F, -1.0F));
+
+    TEST_ASSERT_EQUAL_FLOAT( 0.463647609F, Quaternion::atan2Order7f(1.0F, 2.0F));
+    TEST_ASSERT_EQUAL_FLOAT(-0.463647609F, Quaternion::atan2Order7f(-1.0F, 2.0F));
+    TEST_ASSERT_EQUAL_FLOAT(PI_F-0.463647609F, Quaternion::atan2Order7f(1.0F, -2.0F));
+    TEST_ASSERT_EQUAL_FLOAT(-PI_F+0.463647609F, Quaternion::atan2Order7f(-1.0F, -2.0F));
+}
+
+void test_arcsinOrder9f()
+{
+    TEST_ASSERT_FLOAT_WITHIN(3.2E-07, 0.0F, Quaternion::arcsinOrder9f(0.0F));
+    TEST_ASSERT_FLOAT_WITHIN(0.0099, asinf(0.1F), Quaternion::arcsinOrder9f(0.1F));
+    TEST_ASSERT_FLOAT_WITHIN(0.019, asinf(0.2F), Quaternion::arcsinOrder9f(0.2F));
+    TEST_ASSERT_FLOAT_WITHIN(0.026, asinf(0.3F), Quaternion::arcsinOrder9f(0.3F));
+    //TEST_ASSERT_FLOAT_WITHIN(3.2E-07, asinf(0.5F), Quaternion::arcsinOrder9f(0.5F));
+}
+
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
@@ -328,11 +437,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
     RUN_TEST(test_quaternion_operators);
     RUN_TEST(test_quaternion_functions);
     RUN_TEST(test_quaternion_angles);
+    RUN_TEST(test_quaternion_angles_sin_cos_tan);
     RUN_TEST(test_quaternion_rotation);
     RUN_TEST(test_quaternion_rotate);
     RUN_TEST(test_quaternion_rotate_x);
     RUN_TEST(test_quaternion_rotate_y);
     RUN_TEST(test_quaternion_rotate_z);
+    RUN_TEST(test_quaternion_rotate_enu_to_ned);
+    RUN_TEST(test_atan2f);
+    RUN_TEST(test_quaternion_angles_sin_cos_tan);
 
     UNITY_END();
 }

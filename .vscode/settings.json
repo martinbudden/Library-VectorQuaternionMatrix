@@ -17,6 +17,7 @@
         "noreturn",
         "pioenvs",
         "piolibdeps",
+        "Pizer",
         "Shuster",
         "suppr",
         "unflags",
@@ -36,11 +37,11 @@
         "Wpadded",
         "Wshadow",
         "Wsign",
+        "Wstrict",
         "Wtrampolines",
         "Wunreachable",
-        "WXYZ"
-    ],
-    "files.associations": {
-        "array": "cpp"
-    }
+        "Wunused",
+        "WXYZ",
+        "Xtensa"
+    ]
 }
