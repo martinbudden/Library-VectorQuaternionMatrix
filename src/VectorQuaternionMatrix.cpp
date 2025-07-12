@@ -2,6 +2,10 @@
 #include <Quaternion.h>
 #include <cstdint>
 
+/*
+NOTE: USE_TRIGONOMETRIC_APPROXIMATIONS not fully working and should not be used
+*/
+
 /*!
 Reciprocal square root
 Implementation of [fast inverse square root](http://en.wikipedia.org/wiki/Fast_inverse_square_root)
@@ -193,18 +197,18 @@ Quaternion Quaternion::normalize() const
 }
 
 // Conversion functions
-float Quaternion::asinClippedf(float angleRadians)
+float Quaternion::arcsinClippedf(float angleRadians)
 {
     if (angleRadians <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
     if (angleRadians >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
 #if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
-    return arcsinOrder9f(angleRadians);
+    return arcsinApproximatef(angleRadians);
 #else
     return asinf(angleRadians);
 #endif
 }
 
-float Quaternion::atanOrder7f(float x)
+float Quaternion::arctanApproximatef(float x)
 {
     // NOTE: assumes x is in the range [0, 1.0F]
     static constexpr float c1 =  3.14551666E-07F;
@@ -218,7 +222,7 @@ float Quaternion::atanOrder7f(float x)
     return (c1 + x*(c2 + x*(c3 + x*(c4 - x*c5)))) / (1.0F + x*(c6 + x*c7));
 }
 
-float Quaternion::atan2Order7f(float y, float x)
+float Quaternion::arctan2Approximatef(float y, float x)
 {
     static constexpr float PI_F = 3.141592653589793F;
     static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
@@ -230,9 +234,9 @@ float Quaternion::atan2Order7f(float y, float x)
     // atan(x) = pi/2 - atan(1/x) for x > 1
     float a = 0.0F;
     if (r > 0) {
-        a = (r > 1.0F) ? HALF_PI_F - atanOrder7f(1.0F/r) : atanOrder7f(r);
+        a = (r > 1.0F) ? HALF_PI_F - arctanApproximatef(1.0F/r) : arctanApproximatef(r);
     } else {
-        a = (r < -1.0F) ? HALF_PI_F + atanOrder7f(-1.0F/r) : -atanOrder7f(-r);
+        a = (r < -1.0F) ? HALF_PI_F + arctanApproximatef(-1.0F/r) : -arctanApproximatef(-r);
     }
     if (x > 0.0F) {
         return a;
@@ -241,44 +245,46 @@ float Quaternion::atan2Order7f(float y, float x)
 
 }
 
-float Quaternion::asinPositiveX(float x)
+float Quaternion::arcsinRestrictedXf(float x)
 {
-    static constexpr float c1 =  1.5707288F;
-    static constexpr float c2 = -0.2121144F;
-    static constexpr float c3 =  0.0742610F;
-    static constexpr float c4 = -0.0187293F;
+    // works for x in range [0, SQUARE_ROOT_HALF]
+    // see https://wrfranklin.org/Research/Short_Notes/arcsin/top.shtml
+    // numerator coefficients
+    static constexpr float n1 =  0.5689111419F;
+    static constexpr float n2 = -0.2644381021F;
+    static constexpr float n3 = -0.4212611542F;
+    static constexpr float n4 =  0.1475622352F;
+    // denominator coefficients
+    static constexpr float d1 =  2.006022274F;
+    static constexpr float d2 = -2.343685222F;
+    static constexpr float d3 =  0.3316406750F;
+    static constexpr float d4 =  0.02607135626F;
 
-    return sqrtf(1.0F - x)*(c1 + x*(c2 + x*(c3 + c4*x)));
-}
+    const float y = 2.0F*x - 1.0F;
+    const float y2 = y*y;
+    const float y3 = y2*y;
 
-float Quaternion::arcsinOrder9f(float x)
-{
-#if false
-    //This approximation does not work very well at all
-    static constexpr float c3 = 1.0F / 6.0F;
-    static constexpr float c5 = 3.0F / 40.0F;
-    static constexpr float c7 = 5.0F / 112.0F;
-    static constexpr float c9 = 35.0F / 1152.0F;
-    static constexpr float c11 = 63.0F / 28672.0F;
-    static const float x2 = x*x;
-
-    const float ret = x*(1.0F + x2*(c3 + x2*(c5 + x2*(c7 + x2*(c9 + x2*c11)))));
+    const float ret = (n1 + n2*x + n3*y2 + n4*y3) / (d1 + d2*x + d3*y2 + d4*y3);
     return ret;
-#else
-    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
-
-    if(x < 0.0f) {
-        return asinPositiveX(-x) - HALF_PI_F;
-    }
-    return HALF_PI_F - asinPositiveX(x);
-#endif
 }
 
-float Quaternion::arccosOrder9f(float x)
+float Quaternion::arcsinApproximatef(float x)
+{
+    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
+    static constexpr float SQUARE_ROOT_HALF_F = 0.707106781186548F;
+
+    // for abs(x) > SQUARE_ROOT_HALF_F, arcsin(x) = HALF_PI_F - arcsin(sqrtf(1.0F - x*x))
+    if(x < 0.0F) {
+        return (x >= -SQUARE_ROOT_HALF_F) ? -arcsinRestrictedXf(-x) : -HALF_PI_F + arcsinRestrictedXf(sqrtf(1.0F - x*x));
+    }
+    return (x < SQUARE_ROOT_HALF_F) ? arcsinRestrictedXf(x) : HALF_PI_F - arcsinRestrictedXf(sqrtf(1.0F - x*x));
+}
+
+float Quaternion::arccosApproximatef(float x)
 {
     static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
 
-    return HALF_PI_F - arcsinOrder9f(x);
+    return HALF_PI_F - arcsinApproximatef(x);
 }
 
 /*
@@ -289,7 +295,7 @@ for Quaternion to Euler angles conversion.
 float Quaternion::calculateRollRadians() const
 {
 #if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
-    return atan2Order7f(w*x + y*z, 0.5F - x*x - y*y);
+    return arctan2Approximatef(w*x + y*z, 0.5F - x*x - y*y);
 #else
     return atan2f(w*x + y*z, 0.5F - x*x - y*y); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 #endif
@@ -297,13 +303,14 @@ float Quaternion::calculateRollRadians() const
 
 float Quaternion::calculatePitchRadians() const
 {
-    return asinClippedf(2.0F*(w*y - x*z)); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    return arcsinClippedf(2.0F*(w*y - x*z)); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 }
 
 float Quaternion::calculateYawRadians() const
 {
 #if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
-    return atan2Order7f(w*z + x*y, 0.5F - y*y - z*z); // alternatively atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z)
+    return atan2f(w*z + x*y, 0.5F - y*y - z*z); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    //return arctan2Approximatef(w*z + x*y, 0.5F - y*y - z*z); // alternatively atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z)
 #else
     return atan2f(w*z + x*y, 0.5F - y*y - z*z); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     // alternatively 

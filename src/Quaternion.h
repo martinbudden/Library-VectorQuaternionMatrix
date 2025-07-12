@@ -137,12 +137,12 @@ public:
 
 public:
     // implementation functions, made public for test code
-    static float asinClippedf(float angleRadians);
-    static float asinPositiveX(float x);
-    static float arcsinOrder9f(float x);
-    static float arccosOrder9f(float x);
-    static float atanOrder7f(float x);
-    static float atan2Order7f(float y, float x);
+    static float arcsinClippedf(float angleRadians);
+    static float arcsinRestrictedXf(float x);
+    static float arcsinApproximatef(float x);
+    static float arccosApproximatef(float x);
+    static float arctanApproximatef(float x);
+    static float arctan2Approximatef(float y, float x);
 protected:
     float w;
     float x;
