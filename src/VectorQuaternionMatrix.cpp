@@ -196,7 +196,6 @@ Quaternion Quaternion::normalize() const
     return *this*r;
 }
 
-// Conversion functions
 float Quaternion::arcsinClippedf(float angleRadians)
 {
     if (angleRadians <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
@@ -206,85 +205,6 @@ float Quaternion::arcsinClippedf(float angleRadians)
 #else
     return asinf(angleRadians);
 #endif
-}
-
-float Quaternion::arctanApproximatef(float x)
-{
-    // NOTE: assumes x is in the range [0, 1.0F]
-    static constexpr float c1 =  3.14551666E-07F;
-    static constexpr float c2 =  0.99997357F;
-    static constexpr float c3 =  0.14744007F;
-    static constexpr float c4 =  0.30998143F;
-    static constexpr float c5 =  0.050301764F;
-    static constexpr float c6 =  0.14710391F;
-    static constexpr float c7 =  0.64446417F;
-
-    return (c1 + x*(c2 + x*(c3 + x*(c4 - x*c5)))) / (1.0F + x*(c6 + x*c7));
-}
-
-float Quaternion::arctan2Approximatef(float y, float x)
-{
-    static constexpr float PI_F = 3.141592653589793F;
-    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
-
-    if (x == 0.0F) {
-        return y > 0.0F ? HALF_PI_F : -HALF_PI_F;
-    }
-    const float r = y/x;
-    // atan(x) = pi/2 - atan(1/x) for x > 1
-    float a = 0.0F;
-    if (r > 0) {
-        a = (r > 1.0F) ? HALF_PI_F - arctanApproximatef(1.0F/r) : arctanApproximatef(r);
-    } else {
-        a = (r < -1.0F) ? HALF_PI_F + arctanApproximatef(-1.0F/r) : -arctanApproximatef(-r);
-    }
-    if (x > 0.0F) {
-        return a;
-    }
-    return (y < 0.0F) ? a - PI_F : a + PI_F;
-
-}
-
-float Quaternion::arcsinRestrictedXf(float x)
-{
-    // works for x in range [0, SQUARE_ROOT_HALF]
-    // see https://wrfranklin.org/Research/Short_Notes/arcsin/top.shtml
-    // numerator coefficients
-    static constexpr float n1 =  0.5689111419F;
-    static constexpr float n2 = -0.2644381021F;
-    static constexpr float n3 = -0.4212611542F;
-    static constexpr float n4 =  0.1475622352F;
-    // denominator coefficients
-    static constexpr float d1 =  2.006022274F;
-    static constexpr float d2 = -2.343685222F;
-    static constexpr float d3 =  0.3316406750F;
-    static constexpr float d4 =  0.02607135626F;
-
-    const float y = 2.0F*x - 1.0F;
-    const float y2 = y*y;
-    const float y3 = y2*y;
-
-    const float ret = (n1 + n2*x + n3*y2 + n4*y3) / (d1 + d2*x + d3*y2 + d4*y3);
-    return ret;
-}
-
-float Quaternion::arcsinApproximatef(float x)
-{
-    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
-    static constexpr float SQUARE_ROOT_HALF_F = 0.707106781186548F;
-
-    // for abs(x) > SQUARE_ROOT_HALF_F, arcsin(x) = HALF_PI_F - arcsin(sqrtf(1.0F - x*x))
-    if(x < 0.0F) {
-        return (x >= -SQUARE_ROOT_HALF_F) ? -arcsinRestrictedXf(-x) : -HALF_PI_F + arcsinRestrictedXf(sqrtf(1.0F - x*x));
-    }
-    return (x < SQUARE_ROOT_HALF_F) ? arcsinRestrictedXf(x) : HALF_PI_F - arcsinRestrictedXf(sqrtf(1.0F - x*x));
-}
-
-float Quaternion::arccosApproximatef(float x)
-{
-    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
-
-    return HALF_PI_F - arcsinApproximatef(x);
 }
 
 /*
@@ -356,4 +276,87 @@ float Quaternion::sinYaw() const
     const float a = w*z + x*y;
     const float b = 0.5F - y*y - z*z;
     return a * reciprocalSqrtf(a*a + b*b);
+}
+
+
+/*
+Trigonometric approximations
+*/
+float Quaternion::arctanApproximatef(float x)
+{
+    // NOTE: assumes x is in the range [0, 1.0F]
+    static constexpr float c1 =  3.14551666E-07F;
+    static constexpr float c2 =  0.99997357F;
+    static constexpr float c3 =  0.14744007F;
+    static constexpr float c4 =  0.30998143F;
+    static constexpr float c5 =  0.050301764F;
+    static constexpr float d1 =  0.14710391F;
+    static constexpr float d2 =  0.64446417F;
+
+    return (c1 + x*(c2 + x*(c3 + x*(c4 - x*c5)))) / (1.0F + x*(d1 + x*d2));
+}
+
+float Quaternion::arctan2Approximatef(float y, float x)
+{
+    static constexpr float PI_F = 3.141592653589793F;
+    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
+
+    if (x == 0.0F) {
+        return y > 0.0F ? HALF_PI_F : -HALF_PI_F;
+    }
+    const float r = y/x;
+    // atan(x) = pi/2 - atan(1/x) for x > 1
+    float a = 0.0F;
+    if (r > 0) {
+        a = (r > 1.0F) ? HALF_PI_F - arctanApproximatef(1.0F/r) : arctanApproximatef(r);
+    } else {
+        a = (r < -1.0F) ? HALF_PI_F + arctanApproximatef(-1.0F/r) : -arctanApproximatef(-r);
+    }
+    if (x > 0.0F) {
+        return a;
+    }
+    return (y < 0.0F) ? a - PI_F : a + PI_F;
+
+}
+
+float Quaternion::arcsinRestrictedXf(float x)
+{
+    // works for x in range [0, SQUARE_ROOT_HALF]
+    // see https://wrfranklin.org/Research/Short_Notes/arcsin/top.shtml
+    // numerator coefficients
+    static constexpr float n1 =  0.5689111419F;
+    static constexpr float n2 = -0.2644381021F;
+    static constexpr float n3 = -0.4212611542F;
+    static constexpr float n4 =  0.1475622352F;
+    // denominator coefficients
+    static constexpr float d1 =  2.006022274F;
+    static constexpr float d2 = -2.343685222F;
+    static constexpr float d3 =  0.3316406750F;
+    static constexpr float d4 =  0.02607135626F;
+
+    const float y = 2.0F*x - 1.0F;
+    const float y2 = y*y;
+    const float y3 = y2*y;
+
+    const float ret = (n1 + n2*x + n3*y2 + n4*y3) / (d1 + d2*x + d3*y2 + d4*y3);
+    return ret;
+}
+
+float Quaternion::arcsinApproximatef(float x)
+{
+    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
+    static constexpr float SQUARE_ROOT_HALF_F = 0.707106781186548F;
+
+    // for abs(x) > SQUARE_ROOT_HALF_F, arcsin(x) = HALF_PI_F - arcsin(sqrtf(1.0F - x*x))
+    if(x < 0.0F) {
+        return (x >= -SQUARE_ROOT_HALF_F) ? -arcsinRestrictedXf(-x) : -HALF_PI_F + arcsinRestrictedXf(sqrtf(1.0F - x*x));
+    }
+    return (x < SQUARE_ROOT_HALF_F) ? arcsinRestrictedXf(x) : HALF_PI_F - arcsinRestrictedXf(sqrtf(1.0F - x*x));
+}
+
+float Quaternion::arccosApproximatef(float x)
+{
+    static constexpr float HALF_PI_F = 0.5F * 3.141592653589793F;
+
+    return HALF_PI_F - arcsinApproximatef(x);
 }

@@ -106,7 +106,9 @@ constexpr float degrees19inRadians = 19.0F * Quaternion::degreesToRadians;
 constexpr float degrees43inRadians = 43.0F * Quaternion::degreesToRadians;
 constexpr float degrees45inRadians = 45.0F * Quaternion::degreesToRadians;
 constexpr float degrees67inRadians = 67.0F * Quaternion::degreesToRadians;
+constexpr float degrees89inRadians = 89.0F * Quaternion::degreesToRadians;
 constexpr float degrees90inRadians = 90.0F * Quaternion::degreesToRadians;
+constexpr float degrees91inRadians = 91.0F * Quaternion::degreesToRadians;
 
 void test_quaternion_angles()
 {
@@ -495,6 +497,98 @@ void test_arcsin()
 
 }
 
+void test_roll_angle_clip()
+{
+   TEST_ASSERT_EQUAL(false, std::signbit(0.01F));
+   TEST_ASSERT_EQUAL(true, std::signbit(-0.01F));
+
+    // float tanRoll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
+    const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees89inRadians, 0.0F, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(89.0, q0.calculateRollDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q0.getW()*q0.getX() + q0.getY()*q0.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(0.008726209F, 0.5F - q0.getX()*q0.getX() - q0.getY()*q0.getY());
+    TEST_ASSERT_EQUAL(false, std::signbit(0.5F - q0.getX()*q0.getX() - q0.getY()*q0.getY()));
+    TEST_ASSERT_EQUAL(sinf(degrees89inRadians), q0.sinRoll());
+    TEST_ASSERT_EQUAL(sinf(degrees89inRadians), q0.sinRollClipped());
+
+    const Quaternion q1 = Quaternion::fromEulerAnglesRadians(-degrees89inRadians, 0.0F, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(-89.0, q1.calculateRollDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-0.4999238F, q1.getW()*q1.getX() + q1.getY()*q1.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(0.008726209F, 0.5F - q1.getX()*q1.getX() - q1.getY()*q1.getY());
+    TEST_ASSERT_EQUAL(false, std::signbit(0.5F - q1.getX()*q1.getX() - q1.getY()*q1.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sinRoll());
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sinRollClipped());
+
+    const Quaternion q2 = Quaternion::fromEulerAnglesRadians(degrees91inRadians, 0.0F, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(91.0, q2.calculateRollDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.getW()*q2.getX() + q2.getY()*q2.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(-0.008726209F, 0.5F - q2.getX()*q2.getX() - q2.getY()*q2.getY());
+    TEST_ASSERT_EQUAL(true, std::signbit(0.5F - q2.getX()*q2.getX() - q2.getY()*q2.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees91inRadians), q2.sinRoll());
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.sinRollClipped());
+
+    const Quaternion q3 = Quaternion::fromEulerAnglesRadians(-degrees91inRadians, 0.0F, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(-91.0, q3.calculateRollDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-0.4999238F, q3.getW()*q3.getX() + q3.getY()*q3.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(-0.008726209F, 0.5F - q3.getX()*q3.getX() - q3.getY()*q3.getY());
+    TEST_ASSERT_EQUAL(true, std::signbit(0.5F - q3.getX()*q3.getX() - q3.getY()*q3.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees91inRadians), q3.sinRoll());
+    TEST_ASSERT_EQUAL_FLOAT(-1.0F, q3.sinRollClipped());
+}
+
+void test_pitch_angle_clip()
+{
+    // float sinPitch() const { return 2.0F*(w*y - x*z); }
+
+    const Quaternion q0 = Quaternion::fromEulerAnglesRadians(0.0F, degrees89inRadians, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q0.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(89.0, q0.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(0.01745245F, q0.getW()*q0.getW() - q0.getY()*q0.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.7132504F, q0.getW());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q0.getX());
+    TEST_ASSERT_EQUAL_FLOAT(0.7009092, q0.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q0.getZ());
+    TEST_ASSERT_EQUAL(false, std::signbit(q0.getW()*q0.getW() - q0.getY()*q0.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees89inRadians), q0.sinPitch());
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees89inRadians), q0.sinPitchClipped());
+
+    const Quaternion q1 = Quaternion::fromEulerAnglesRadians(0.0F, -degrees89inRadians, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q1.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(-89.0, q1.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(0.01745245F, q1.getW()*q1.getW() - q1.getY()*q1.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.7132504F, q1.getW());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q1.getX());
+    TEST_ASSERT_EQUAL_FLOAT(-0.7009092, q1.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q1.getZ());
+    TEST_ASSERT_EQUAL(false, std::signbit(q1.getW()*q1.getW() - q1.getY()*q1.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sinPitch());
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sinPitchClipped());
+
+    const Quaternion q2 = Quaternion::fromEulerAnglesRadians(0.0F, degrees91inRadians, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.magnitudeSquared());
+    //TEST_ASSERT_EQUAL_FLOAT(91.0, q2.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q2.getW()*q2.getW() - q2.getY()*q2.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.7009092F, q2.getW());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q2.getX());
+    TEST_ASSERT_EQUAL_FLOAT(0.7132504, q2.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q2.getZ());
+    TEST_ASSERT_EQUAL(true, std::signbit(q2.getW()*q2.getW() - q2.getY()*q2.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(degrees91inRadians), q2.sinPitch());
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.sinPitchClipped());
+
+    const Quaternion q3 = Quaternion::fromEulerAnglesRadians(0.0F, -degrees91inRadians, 0.0F);
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q3.magnitudeSquared());
+    //TEST_ASSERT_EQUAL_FLOAT(-91.0, q3.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q3.getW()*q3.getW() - q3.getY()*q3.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.7009092, q3.getW());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q3.getX());
+    TEST_ASSERT_EQUAL_FLOAT(-0.7132504F, q3.getY());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q3.getZ());
+    TEST_ASSERT_EQUAL(true, std::signbit(q3.getW()*q3.getW() - q3.getY()*q3.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees91inRadians), q3.sinPitch());
+    TEST_ASSERT_EQUAL_FLOAT(-1.0F, q3.sinPitchClipped());
+}
+
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
@@ -512,6 +606,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
     RUN_TEST(test_quaternion_rotate_enu_to_ned);
     RUN_TEST(test_arctan);
     RUN_TEST(test_arcsin);
+    RUN_TEST(test_roll_angle_clip);
+    RUN_TEST(test_pitch_angle_clip);
 
     UNITY_END();
 }
