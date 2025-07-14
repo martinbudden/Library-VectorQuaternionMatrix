@@ -127,7 +127,7 @@ public:
     // Sometimes this can avoid the computationally expensive calculation of the angles themselves.
     float sinRoll() const;
     //! clip sin(rollAngle) to +/-1.0F when pitch angle outside range [-90 degrees, 90 degrees]
-    float sinRollClipped() const { const float d = 0.5F - x*x - y*y; return std::signbit(d) ? std::copysignf(1.0F, sinRoll()) : sinRoll(); }
+    float sinRollClipped() const;
     float cosRoll() const;
     inline float tanRoll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
     inline float sinPitch() const { return 2.0F*(w*y - x*z); }

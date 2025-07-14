@@ -245,6 +245,13 @@ float Quaternion::sinRoll() const
     return a * reciprocalSqrtf(a*a + b*b);
 }
 
+float Quaternion::sinRollClipped() const
+{
+    const float a = w*x + y*z;
+    const float b = 0.5F - x*x - y*y;
+    return std::signbit(b) ? std::copysignf(1.0F, a) : a * reciprocalSqrtf(a*a + b*b);
+}
+
 float Quaternion::cosRoll() const
 {
     const float a = w*x + y*z;
