@@ -83,13 +83,16 @@ void test_quaternion_functions()
 
     const Quaternion aNE{2.0F/sqrt(87.0F), 3.0F/sqrt(87.0F), 5.0F/sqrt(87.0F), 7.0F/sqrt(87.0F)};
     const Quaternion aN = a.normalize();
+#if defined(USE_FAST_RECIPROCAL_SQUARE_ROOT)
+    TEST_ASSERT_FLOAT_WITHIN(0.00047, 1.0F, aN.magnitude());
+    TEST_ASSERT_FLOAT_WITHIN(0.000081, aNE.getW(), aN.getW());
+#else
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN.magnitude());
-    
     TEST_ASSERT_EQUAL_FLOAT(aNE.getW(), aN.getW());
     TEST_ASSERT_EQUAL_FLOAT(aNE.getX(), aN.getX());
     TEST_ASSERT_EQUAL_FLOAT(aNE.getY(), aN.getY());
     TEST_ASSERT_EQUAL_FLOAT(aNE.getZ(), aN.getZ());
-
+#endif
     Quaternion aN2 = a;
     aN2.normalizeInPlace();
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN2.magnitude());

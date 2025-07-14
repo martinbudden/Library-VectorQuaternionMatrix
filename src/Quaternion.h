@@ -141,7 +141,7 @@ public:
 
 public:
     // implementation functions, made public for test code
-    static float arcsinClippedf(float angleRadians);
+    static float arcsinClippedf(float x);
     static float arcsinRestrictedXf(float x);
     static float arcsinApproximatef(float x);
     static float arccosApproximatef(float x);

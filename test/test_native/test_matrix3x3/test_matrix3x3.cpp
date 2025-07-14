@@ -296,10 +296,15 @@ void test_matrix3x3_quaternion()
     TEST_ASSERT_FALSE(m0[8] < 0.0F);
     TEST_ASSERT_FALSE(m0[0] < -m0[4]);
     const Quaternion m0q = m0.quaternion();
+#if defined(USE_FAST_RECIPROCAL_SQUARE_ROOT)
+    TEST_ASSERT_FLOAT_WITHIN(0.00047, q0.getW(), m0q.getW());
+    TEST_ASSERT_FLOAT_WITHIN(0.00021, q0.getX(), m0q.getX());
+#else
     TEST_ASSERT_EQUAL_FLOAT(q0.getW(), m0q.getW());
     TEST_ASSERT_EQUAL_FLOAT(q0.getX(), m0q.getX());
     TEST_ASSERT_EQUAL_FLOAT(q0.getY(), m0q.getY());
     TEST_ASSERT_EQUAL_FLOAT(q0.getZ(), m0q.getZ());
+#endif
 
     const Quaternion qX(0.25F, sqrtf(50.0F/64.0F), 0.125F, 0.375F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, qX.magnitude());

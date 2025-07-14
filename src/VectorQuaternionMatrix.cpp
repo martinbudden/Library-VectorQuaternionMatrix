@@ -196,14 +196,14 @@ Quaternion Quaternion::normalize() const
     return *this*r;
 }
 
-float Quaternion::arcsinClippedf(float angleRadians)
+float Quaternion::arcsinClippedf(float x)
 {
-    if (angleRadians <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
-    if (angleRadians >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
+    if (x <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
+    if (x >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
 #if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
-    return arcsinApproximatef(angleRadians);
+    return arcsinApproximatef(x);
 #else
-    return asinf(angleRadians);
+    return asinf(x);
 #endif
 }
 
