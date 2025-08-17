@@ -8,6 +8,27 @@ void tearDown() {
 }
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
+void test_xyz_t_assignment()
+{
+    xyz_t a{2.0F, 3.0F, 5.0F};
+    const xyz_t b{7.0F, 11.0F, 13.0F};
+
+    a = b;
+    TEST_ASSERT_EQUAL(b.x, a.x);
+    TEST_ASSERT_EQUAL(b.y, a.y);
+    TEST_ASSERT_EQUAL(b.z, a.z);
+
+    a = 17.0F;
+    TEST_ASSERT_EQUAL(17.0F, a.x);
+    TEST_ASSERT_EQUAL(17.0F, a.y);
+    TEST_ASSERT_EQUAL(17.0F, a.z);
+
+    a = 0.0F;
+    TEST_ASSERT_EQUAL(0.0F, a.x);
+    TEST_ASSERT_EQUAL(0.0F, a.y);
+    TEST_ASSERT_EQUAL(0.0F, a.z);
+}
+
 void test_xyz_t_operators()
 {
     const xyz_t a{2, 3, 5};
@@ -122,6 +143,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 {
     UNITY_BEGIN();
 
+    RUN_TEST(test_xyz_t_assignment);
     RUN_TEST(test_xyz_t_operators);
     RUN_TEST(test_xyz_t_functions);
 

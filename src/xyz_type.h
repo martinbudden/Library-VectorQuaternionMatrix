@@ -4,6 +4,9 @@
 
 struct xyz_t {
 public:
+    // Assignment
+    xyz_t& operator=(float k) { *this = {k, k, k}; return *this; }
+
     // Equality operators
     inline bool operator==(const xyz_t& v) const { return x == v.x &&  y == v.y && z == v.z; }
     inline bool operator!=(const xyz_t& v) const { return x != v.x ||  y != v.y || z != v.z; }
