@@ -83,7 +83,7 @@ void test_quaternion_functions()
 
     const Quaternion aNE{2.0F/sqrt(87.0F), 3.0F/sqrt(87.0F), 5.0F/sqrt(87.0F), 7.0F/sqrt(87.0F)};
     const Quaternion aN = a.normalize();
-#if defined(USE_FAST_RECIPROCAL_SQUARE_ROOT)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT)
     TEST_ASSERT_FLOAT_WITHIN(0.00047, 1.0F, aN.magnitude());
     TEST_ASSERT_FLOAT_WITHIN(0.000081, aNE.getW(), aN.getW());
 #else
@@ -117,7 +117,7 @@ void test_quaternion_angles()
 {
     const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q0.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q0.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(43.0, q0.calculatePitchDegrees());
@@ -128,7 +128,7 @@ void test_quaternion_angles()
 
     const Quaternion q0d = Quaternion::fromEulerAnglesDegrees(19.0F, 43.0F, 67.0F);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q0d.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q0d.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(43.0, q0d.calculatePitchDegrees());
@@ -144,7 +144,7 @@ void test_quaternion_angles()
 
     const Quaternion q2 = Quaternion::fromEulerAnglesRadians(degrees43inRadians, -degrees19inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT(43.0, q2.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.0033, -19.0, q2.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q2.calculatePitchDegrees());
@@ -154,7 +154,7 @@ void test_quaternion_angles()
 
     const Quaternion q2d = Quaternion::fromEulerAnglesDegrees(19.0F, 43.0F, -67.0F);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q2d.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.0028, 43.0, q2d.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(43.0, q2d.calculatePitchDegrees());
@@ -164,7 +164,7 @@ void test_quaternion_angles()
 
     const Quaternion q3 = Quaternion::fromEulerAnglesDegrees(21.0F, -39.0F);
     TEST_ASSERT_EQUAL_FLOAT(21.0, q3.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.006, -39.0, q3.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(-39.0, q3.calculatePitchDegrees());
@@ -174,7 +174,7 @@ void test_quaternion_angles()
 
     const Quaternion q4 = Quaternion::fromEulerAnglesDegrees(21.0F, -39.0F, -37.0F);
     TEST_ASSERT_EQUAL_FLOAT(21.0, q4.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.006, -39.0, q4.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(-39.0, q4.calculatePitchDegrees());
@@ -187,7 +187,7 @@ void test_quaternion_angles_sin_cos_tan()
 {
     const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT(19.0, q0.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.032, 43.0, q0.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(43.0, q0.calculatePitchDegrees());
@@ -209,7 +209,7 @@ void test_quaternion_angles_sin_cos_tan()
 
     const Quaternion q1 = Quaternion::fromEulerAnglesRadians(-degrees19inRadians, -degrees43inRadians, -degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q1.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.032, -43.0, q1.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(-43.0, q1.calculatePitchDegrees());
@@ -234,7 +234,7 @@ void test_quaternion_rotation()
 {
     const Quaternion q2 = Quaternion::fromEulerAnglesRadians(degrees43inRadians, 0, 0);
     TEST_ASSERT_EQUAL_FLOAT(43.0, q2.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.0022, 0.0, q2.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2.calculatePitchDegrees());
@@ -244,7 +244,7 @@ void test_quaternion_rotation()
 
     const Quaternion q3 = Quaternion::fromEulerAnglesRadians(-degrees19inRadians, 0, 0);
     TEST_ASSERT_EQUAL_FLOAT(-19.0, q3.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.0022, 0.0, q3.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q3.calculatePitchDegrees());
@@ -255,7 +255,7 @@ void test_quaternion_rotation()
     const Quaternion q2q3 = q2 * q3;
     TEST_ASSERT_EQUAL_FLOAT(1.0, q2q3.magnitudeSquared());
     TEST_ASSERT_EQUAL_FLOAT(24.0, q2q3.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     TEST_ASSERT_FLOAT_WITHIN(0.0022, 0.0, q2q3.calculatePitchDegrees());
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q2q3.calculatePitchDegrees());
@@ -264,7 +264,7 @@ void test_quaternion_rotation()
 
     const Quaternion q4 = Quaternion::fromEulerAnglesRadians(0, -degrees67inRadians, 0);
     TEST_ASSERT_FLOAT_WITHIN(1.81E-05, 0.0, q4.calculateRollDegrees());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
 #else
     TEST_ASSERT_EQUAL_FLOAT(-67.0, q4.calculatePitchDegrees());
 #endif
@@ -272,7 +272,7 @@ void test_quaternion_rotation()
     TEST_ASSERT_EQUAL_FLOAT(1.0, q4.magnitudeSquared());
 
     const Quaternion q5 = Quaternion::fromEulerAnglesRadians(0, degrees43inRadians, 0);
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q5.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(43.0, q5.calculatePitchDegrees());
@@ -282,7 +282,7 @@ void test_quaternion_rotation()
 
     const Quaternion q4q5 = q4 * q5;
     TEST_ASSERT_EQUAL_FLOAT(1.0, q4q5.magnitudeSquared());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4q5.calculateRollDegrees());
 #endif
@@ -290,7 +290,7 @@ void test_quaternion_rotation()
     TEST_ASSERT_EQUAL_FLOAT(0.0, q4q5.calculateYawDegrees());
 
     const Quaternion q6 = Quaternion::fromEulerAnglesRadians(0, 0, -degrees19inRadians);
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6.calculatePitchDegrees());
@@ -299,7 +299,7 @@ void test_quaternion_rotation()
     TEST_ASSERT_EQUAL_FLOAT(1.0, q6.magnitudeSquared());
 
     const Quaternion q7 = Quaternion::fromEulerAnglesRadians(0, 0, degrees43inRadians);
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q7.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q7.calculatePitchDegrees());
@@ -309,7 +309,7 @@ void test_quaternion_rotation()
 
     const Quaternion q6q7 = q6 * q7;
     TEST_ASSERT_EQUAL_FLOAT(1.0, q6q7.magnitudeSquared());
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
 #else
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6q7.calculateRollDegrees());
     TEST_ASSERT_EQUAL_FLOAT(0.0, q6q7.calculatePitchDegrees());

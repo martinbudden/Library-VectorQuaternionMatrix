@@ -18,7 +18,7 @@ However benchmarking shows that FAST_RECIPROCAL_SQUARE_ROOT is approximately 3.5
 */
 inline float reciprocalSqrtf(float x)
 {
-#if defined(USE_FAST_RECIPROCAL_SQUARE_ROOT) || defined(USE_FAST_RECIPROCAL_SQUARE_ROOT_TWO_ITERATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT) || defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT_TWO_ITERATIONS)
     union {
         float f;
         int32_t i;
@@ -28,7 +28,7 @@ inline float reciprocalSqrtf(float x)
     u.i = 0x5f1f1412 - (u.i >> 1); // Initial estimate for Newton–Raphson method
     // single iteration gives accuracy to 4.5 significant figures
     u.f *= 1.69000231F - 0.714158168F * x * u.f * u.f; // First iteration
-#if defined(USE_FAST_RECIPROCAL_SQUARE_ROOT_TWO_ITERATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT_TWO_ITERATIONS)
     // two iterations gives floating point accuracy to within 2 significant bits, and will pass platformio's Unity TEST_ASSERT_EQUAL_FLOAT
     u.f *= 1.5F - (0.5F * x * u.f * u.f); // Second iteration
 #endif
@@ -200,7 +200,7 @@ float Quaternion::arcsinClippedf(float x)
 {
     if (x <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
     if (x >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     return arcsinApproximatef(x);
 #else
     return asinf(x);
@@ -214,7 +214,7 @@ for Quaternion to Euler angles conversion.
 */
 float Quaternion::calculateRollRadians() const
 {
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     return arctan2Approximatef(w*x + y*z, 0.5F - x*x - y*y);
 #else
     return atan2f(w*x + y*z, 0.5F - x*x - y*y); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
@@ -228,7 +228,7 @@ float Quaternion::calculatePitchRadians() const
 
 float Quaternion::calculateYawRadians() const
 {
-#if defined(USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
     return atan2f(w*z + x*y, 0.5F - y*y - z*z); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     //return arctan2Approximatef(w*z + x*y, 0.5F - y*y - z*z); // alternatively atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z)
 #else

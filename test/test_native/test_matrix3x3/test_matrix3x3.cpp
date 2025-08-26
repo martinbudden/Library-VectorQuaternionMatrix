@@ -296,7 +296,7 @@ void test_matrix3x3_quaternion()
     TEST_ASSERT_FALSE(m0[8] < 0.0F);
     TEST_ASSERT_FALSE(m0[0] < -m0[4]);
     const Quaternion m0q = m0.quaternion();
-#if defined(USE_FAST_RECIPROCAL_SQUARE_ROOT)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT)
     TEST_ASSERT_FLOAT_WITHIN(0.00047, q0.getW(), m0q.getW());
     TEST_ASSERT_FLOAT_WITHIN(0.00021, q0.getX(), m0q.getX());
 #else
