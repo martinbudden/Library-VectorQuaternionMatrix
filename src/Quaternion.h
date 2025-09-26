@@ -141,13 +141,6 @@ public:
     inline float tanYaw() const { return (w*z + x*y)/(0.5F - y*y - z*z); }
 
 public:
-    // implementation functions, made public for test code
-    static float arcsinRestrictedXf(float x);
-    static float arcsinApproximatef(float x);
-    static float arccosApproximatef(float x);
-    static float arctanApproximatef(float x);
-    static float arctan2Approximatef(float y, float x);
-public:
     float w;
     float x;
     float y;
