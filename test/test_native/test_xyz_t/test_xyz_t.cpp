@@ -139,8 +139,11 @@ void test_xyz_t_functions()
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
+int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
+
     UNITY_BEGIN();
 
     RUN_TEST(test_xyz_t_assignment);

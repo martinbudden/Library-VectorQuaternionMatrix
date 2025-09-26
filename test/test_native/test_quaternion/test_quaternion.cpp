@@ -523,8 +523,11 @@ void test_pitch_angle_clip()
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
+int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
+
     UNITY_BEGIN();
 
     RUN_TEST(test_quaternion_operators);
