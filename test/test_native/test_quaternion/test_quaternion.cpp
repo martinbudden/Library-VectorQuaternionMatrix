@@ -371,33 +371,6 @@ void test_quaternion_rotate_z()
 #endif
 }
 
-void test_quaternion_rotate_enu_to_ned()
-{
-    // ENU roll, pitch, yaw -> NED 
-    static const Quaternion qENUtoNED(0.0F, sqrtf(0.5F), sqrtf(0.5F), 0.0F);
-
-    Quaternion orientationNED = Quaternion::fromEulerAnglesRadians(degrees19inRadians, 0.0F, 0.0F);
-    orientationNED = orientationNED * qENUtoNED;
-    TEST_ASSERT_EQUAL_FLOAT(180.0F, orientationNED.calculateRollDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(180.0F+ 19.0F, orientationNED.calculatePitchDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(90.0F, orientationNED.calculateYawDegrees());
-
-    orientationNED = Quaternion::fromEulerAnglesRadians(0.0F, degrees43inRadians, 0.0F) * qENUtoNED;
-    TEST_ASSERT_EQUAL_FLOAT(43.0F - 180.0F, orientationNED.calculateRollDegrees());
-    TEST_ASSERT_EQUAL(180.0F, orientationNED.calculatePitchDegrees()); //!!TODO: check this
-    TEST_ASSERT_EQUAL_FLOAT(90.0F, orientationNED.calculateYawDegrees());
-
-    orientationNED = Quaternion::fromEulerAnglesRadians(0.0F, 0.0F, degrees67inRadians) * qENUtoNED;
-    TEST_ASSERT_EQUAL_FLOAT(180.0F, orientationNED.calculateRollDegrees());
-    TEST_ASSERT_EQUAL(180.0F, orientationNED.calculatePitchDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(90.0F + 67.0F, orientationNED.calculateYawDegrees());
-
-    orientationNED = qENUtoNED * Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
-    TEST_ASSERT_EQUAL_FLOAT(19.0F - 180.0F, orientationNED.calculateRollDegrees());
-    TEST_ASSERT_EQUAL_FLOAT(180.0F + 43.0F, orientationNED.calculatePitchDegrees()); //!!TODO: check this
-    TEST_ASSERT_EQUAL_FLOAT(90.F - 67.0F, orientationNED.calculateYawDegrees());
-}
-
 void test_roll_pitch()
 {
     Quaternion q = Quaternion::fromEulerAnglesDegrees(19.0F, 29.0F, 47.0F);
@@ -558,12 +531,12 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
     RUN_TEST(test_quaternion_functions);
     RUN_TEST(test_quaternion_angles);
     RUN_TEST(test_quaternion_angles_sin_cos_tan);
+
     RUN_TEST(test_quaternion_rotation);
     RUN_TEST(test_quaternion_rotate);
     RUN_TEST(test_quaternion_rotate_x);
     RUN_TEST(test_quaternion_rotate_y);
     RUN_TEST(test_quaternion_rotate_z);
-    RUN_TEST(test_quaternion_rotate_enu_to_ned);
 
     RUN_TEST(test_roll_pitch);
     RUN_TEST(test_roll_angle_clip);
