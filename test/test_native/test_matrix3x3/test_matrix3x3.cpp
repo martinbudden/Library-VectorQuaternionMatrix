@@ -288,7 +288,11 @@ void test_matrix3x3_quaternion()
 {
     const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT( 0.7986084F, q0.getW());
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
+    TEST_ASSERT_EQUAL_FLOAT(-0.07145791F, q0.getX());
+#else
     TEST_ASSERT_EQUAL_FLOAT(-0.07145718F, q0.getX());
+#endif
     TEST_ASSERT_EQUAL_FLOAT( 0.386186F, q0.getY());
     TEST_ASSERT_EQUAL_FLOAT( 0.4560472F, q0.getZ());
     const Matrix3x3 m0 = Matrix3x3(q0);

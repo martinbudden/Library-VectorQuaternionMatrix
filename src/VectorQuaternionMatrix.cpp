@@ -1,10 +1,8 @@
-#include <Matrix3x3.h>
-#include <Quaternion.h>
-#include <cstdint>
+#include "FastTrigonometry.h"
+#include "Matrix3x3.h"
+#include "Quaternion.h"
 
-/*
-NOTE: USE_TRIGONOMETRIC_APPROXIMATIONS not fully working and should not be used
-*/
+#include <cstdint>
 
 /*!
 Reciprocal square root
@@ -45,11 +43,13 @@ xyz_t Quaternion::rotate(const xyz_t& v) const
     const float x2 = x*x;
     const float y2 = y*y;
     const float z2 = z*z;
+    // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     return xyz_t {
         2.0F*(v.x*(0.5F - y2 - z2) + v.y*(x*y - w*z)      + v.z*(w*y + x*z)),
         2.0F*(v.x*(w*z + x*y)      + v.y*(0.5F - x2 - z2) + v.z*(y*z - w*x)),
         2.0F*(v.x*(x*z - w*y)      + v.y*(w*x + y*z)      + v.z*(0.5F - x2 - y2))
     };
+    // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 }
 
 /*!
@@ -59,6 +59,19 @@ https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Eu
 */
 Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians)
 {
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
+    // NOLINTBEGIN(misc-const-correctness)
+    float sinHalfRoll {};
+    float cosHalfRoll {};
+    FastTrigonometry::sincos(0.5F*rollRadians, sinHalfRoll, cosHalfRoll);
+    float sinHalfPitch {};
+    float cosHalfPitch {};
+    FastTrigonometry::sincos(0.5F*pitchRadians, sinHalfPitch, cosHalfPitch);
+    float sinHalfYaw {};
+    float cosHalfYaw {};
+    FastTrigonometry::sincos(0.5F*yawRadians, sinHalfYaw, cosHalfYaw);
+    // NOLINTEND(misc-const-correctness)
+#else
     const float halfRoll = 0.5F * rollRadians;
     const float halfPitch = 0.5F * pitchRadians;
     const float halfYaw = 0.5F * yawRadians;
@@ -69,7 +82,7 @@ Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadi
     const float cosHalfPitch = cosf(halfPitch);
     const float sinHalfYaw = sinf(halfYaw);
     const float cosHalfYaw = cosf(halfYaw);
-
+#endif
     return {
         cosHalfRoll * cosHalfPitch * cosHalfYaw + sinHalfRoll * sinHalfPitch * sinHalfYaw,
         sinHalfRoll * cosHalfPitch * cosHalfYaw - cosHalfRoll * sinHalfPitch * sinHalfYaw,
@@ -83,6 +96,16 @@ Create a Quaternion from roll and pitch Euler angles (in radians), assumes yaw a
 */
 Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadians)
 {
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
+    // NOLINTBEGIN(misc-const-correctness)
+    float sinHalfRoll {};
+    float cosHalfRoll {};
+    FastTrigonometry::sincos(0.5F*rollRadians, sinHalfRoll, cosHalfRoll);
+    float sinHalfPitch {};
+    float cosHalfPitch {};
+    FastTrigonometry::sincos(0.5F*pitchRadians, sinHalfPitch, cosHalfPitch);
+    // NOLINTEND(misc-const-correctness)
+#else
     const float halfRoll = 0.5F * rollRadians;
     const float halfPitch = 0.5F * pitchRadians;
 
@@ -90,6 +113,7 @@ Quaternion Quaternion::fromEulerAnglesRadians(float rollRadians, float pitchRadi
     const float cosHalfRoll = cosf(halfRoll);
     const float sinHalfPitch = sinf(halfPitch);
     const float cosHalfPitch = cosf(halfPitch);
+#endif
 
     return {
         cosHalfRoll * cosHalfPitch,
@@ -148,7 +172,7 @@ _a[7] - _a[5] = 2(wx + yz) - 2(yz - wx) = 4xw
 
 // NOLINTBEGIN(cppcoreguidelines-init-variables,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers) avoid false positives
     // Choose largest scale factor from 4w, 4x, 4y, and 4z, to avoid a scale factor of zero, or numerical instabilities caused by division of a small scale factor.
-    if (_a[8] < 0) { 
+    if (_a[8] < 0) {
         // |(x,y)| is bigger than |(z,w)|?
         if (_a[0] > _a[4]) {
             // |x| bigger than |y|, so use x-form
@@ -196,17 +220,6 @@ Quaternion Quaternion::normalize() const
     return *this*r;
 }
 
-float Quaternion::arcsinClippedf(float x)
-{
-    if (x <= -static_cast<float>(static_cast<float>(M_PI_2))) { return {-static_cast<float>(M_PI_2)}; }
-    if (x >=  static_cast<float>(M_PI_2)) { return {static_cast<float>(M_PI_2)}; }
-#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
-    return arcsinApproximatef(x);
-#else
-    return asinf(x);
-#endif
-}
-
 /*
 See
 https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Quaternion_to_Euler_angles_(in_3-2-1_sequence)_conversion
@@ -214,7 +227,7 @@ for Quaternion to Euler angles conversion.
 */
 float Quaternion::calculateRollRadians() const
 {
-#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_INVERSE_TRIGONOMETRIC_APPROXIMATIONS)
     return arctan2Approximatef(w*x + y*z, 0.5F - x*x - y*y);
 #else
     return atan2f(w*x + y*z, 0.5F - x*x - y*y); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
@@ -223,17 +236,21 @@ float Quaternion::calculateRollRadians() const
 
 float Quaternion::calculatePitchRadians() const
 {
-    return arcsinClippedf(2.0F*(w*y - x*z)); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    if (w*w - y*y < 0.0F) {
+        const float theta = asinf(2.0F*(w*y - x*z));
+        return (y > 0.0F) ? M_PI_F - theta : -theta - M_PI_F;
+    }
+    return asinf(2.0F*(w*y - x*z)); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 }
 
 float Quaternion::calculateYawRadians() const
 {
-#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_TRIGONOMETRIC_APPROXIMATIONS)
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_INVERSE_TRIGONOMETRIC_APPROXIMATIONS)
     return atan2f(w*z + x*y, 0.5F - y*y - z*z); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     //return arctan2Approximatef(w*z + x*y, 0.5F - y*y - z*z); // alternatively atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z)
 #else
     return atan2f(w*z + x*y, 0.5F - y*y - z*z); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-    // alternatively 
+    // alternatively
     // return atan2f(2*(w*z + x*y), w*w + x*x - y*y - z*z);
 #endif
 }
@@ -244,7 +261,9 @@ float Quaternion::sinRoll() const
     const float b = 0.5F - x*x - y*y;
     return a * reciprocalSqrtf(a*a + b*b);
 }
-
+/*!
+clip sin(rollAngle) to +/-1.0F when roll angle outside range [-90 degrees, 90 degrees]
+*/
 float Quaternion::sinRollClipped() const
 {
     const float a = w*x + y*z;

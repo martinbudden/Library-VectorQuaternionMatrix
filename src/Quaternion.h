@@ -1,6 +1,6 @@
 #pragma once
 
-#include <xyz_type.h>
+#include "xyz_type.h"
 
 class Quaternion {
 public:
@@ -9,6 +9,8 @@ public:
 public:
     static constexpr float radiansToDegrees = static_cast<float>(180.0 / M_PI);
     static constexpr float degreesToRadians = static_cast<float>(M_PI / 180.0);
+    static constexpr float M_PI_F = static_cast<float>(M_PI);
+    static constexpr float M_PI_2_F = static_cast<float>(M_PI_2);
 public:
     static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
     static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians);
@@ -126,7 +128,6 @@ public:
     // Functions to calculate the sin, cos, and tan of the Euler angles.
     // Sometimes this can avoid the computationally expensive calculation of the angles themselves.
     float sinRoll() const;
-    //! clip sin(rollAngle) to +/-1.0F when pitch angle outside range [-90 degrees, 90 degrees]
     float sinRollClipped() const;
     float cosRoll() const;
     inline float tanRoll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
@@ -141,13 +142,12 @@ public:
 
 public:
     // implementation functions, made public for test code
-    static float arcsinClippedf(float x);
     static float arcsinRestrictedXf(float x);
     static float arcsinApproximatef(float x);
     static float arccosApproximatef(float x);
     static float arctanApproximatef(float x);
     static float arctan2Approximatef(float y, float x);
-protected:
+public:
     float w;
     float x;
     float y;

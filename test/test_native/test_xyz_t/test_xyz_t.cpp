@@ -94,7 +94,7 @@ void test_xyz_t_functions()
 {
     const xyz_t a{2, 3, 5};
     const xyz_t b{7, 11, 17};
- 
+
     TEST_ASSERT_EQUAL_FLOAT(38, a.magnitudeSquared());
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(38.0F), a.magnitude());
 
