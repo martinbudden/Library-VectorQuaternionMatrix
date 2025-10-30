@@ -10,8 +10,8 @@ public:
     inline explicit Matrix3x3(float diagonal) { _a.fill(0.0F); _a[0] = diagonal; _a[4] = diagonal; _a[8] = diagonal; }
     inline Matrix3x3(float d0, float d1, float d2) { _a.fill(0.0F); _a[0] = d0; _a[4] = d1; _a[8] = d2; } //<! Set the matrix diagonal
     inline explicit Matrix3x3(const std::array<float, 9>& a) : _a(a) {}
-    inline explicit Matrix3x3(const float a[9]) : _a({ a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] }) {}
-    inline Matrix3x3(float a0, float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8) : _a({ a0, a1, a2, a3, a4, a5, a6, a7, a8 }) {}
+    inline explicit Matrix3x3(const float a[9]) : _a({{ a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] }}) {}
+    inline Matrix3x3(float a0, float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8) : _a({{ a0, a1, a2, a3, a4, a5, a6, a7, a8 }}) {}
     //! Create rotation matrix from quaternion
     inline explicit Matrix3x3(const Quaternion& q) {
         const float w = q.getW();
@@ -49,7 +49,7 @@ public:
     inline Matrix3x3 operator-=(const Matrix3x3& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] -= m[ii];} return *this; } //<! Unary subtraction
     //! Unary multiplication
     inline Matrix3x3 operator*=(const Matrix3x3& m) {
-        std::array<float, 9> a {
+        std::array<float, 9> a {{
             _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
             _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],
             _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8],
@@ -59,7 +59,7 @@ public:
             _a[6]*m[0] + _a[7]*m[3] + _a[8]*m[6],
             _a[6]*m[1] + _a[7]*m[4] + _a[8]*m[7],
             _a[6]*m[2] + _a[7]*m[5] + _a[8]*m[8]
-        };
+        }};
         _a = a;
         return *this;
     }
