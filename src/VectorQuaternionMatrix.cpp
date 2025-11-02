@@ -1,6 +1,7 @@
 #include "FastTrigonometry.h"
 #include "Matrix3x3.h"
 #include "Quaternion.h"
+#include "xy_type.h"
 
 #include <cstdint>
 
@@ -200,6 +201,15 @@ _a[7] - _a[5] = 2(wx + yz) - 2(yz - wx) = 4xw
     const Quaternion q = Quaternion(t, _a[7] - _a[5], _a[2] - _a[6], _a[3] - _a[1]);
     return q * (0.5F * reciprocalSqrtf(t)); // note brackets because we want perform the scalar multiply first, so it is only done once
 // NOLINTEND(cppcoreguidelines-init-variables,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+}
+
+/*!
+Return the normalized vector
+*/
+xy_t xy_t::normalize() const
+{
+    const float r = reciprocalSqrtf(magnitudeSquared());
+    return *this*r;
 }
 
 /*!

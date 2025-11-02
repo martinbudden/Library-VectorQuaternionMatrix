@@ -151,4 +151,3 @@ public:
 protected:
     std::array<float, 9> _a;
 };
-
