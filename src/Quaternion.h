@@ -40,7 +40,7 @@ public:
     inline Quaternion operator*=(float k) { w*=k; x*=k; y*=k; z*=k; return *this; } //<! Multiplication by a scalar
     inline friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
     inline Quaternion operator/=(float k) { const float r = 1.0F/k; w*=r; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
-    inline Quaternion operator*=(const Quaternion& q) {
+    Quaternion operator*=(const Quaternion& q) {
         const float wt = w*q.w - x*q.x - y*q.y - z*q.z;
         const float xt = w*q.x + x*q.w + y*q.z - z*q.y;
         const float yt = w*q.y - x*q.z + y*q.w + z*q.x;
@@ -56,7 +56,7 @@ public:
     inline Quaternion operator-(const Quaternion& q) const { return Quaternion(w - q.w, x - q.x, y - q.y, z - q.z); } //<! Subtraction
     inline Quaternion operator*(float k) const { return Quaternion(w*k, x*k, y*k, z*k); } //<! Multiplication by a scalar
     inline Quaternion operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
-    inline Quaternion operator*(const Quaternion& q) const {
+    Quaternion operator*(const Quaternion& q) const {
         return Quaternion(
             w*q.w - x*q.x - y*q.y - z*q.z,
             w*q.x + x*q.w + y*q.z - z*q.y,
@@ -113,7 +113,7 @@ public:
     xyz_t rotate(const xyz_t& v) const; //<! Rotate a vector
 public:
     inline float magnitudeSquared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
-    inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The magnitude
+    float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The magnitude
     Quaternion normalize() const; //<! Return the normalized quaternion
     inline Quaternion normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
 

@@ -27,11 +27,11 @@ public:
     inline friend xyz_t operator*(float k, const xyz_t& v) { return v*k; } //<! Pre-multiplication by a scalar
     inline xyz_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     inline float dot(const xyz_t& v) const { return  x*v.x + y*v.y + z*v.z; } //!< Vector dot product
-    inline xyz_t cross(const xyz_t& v) const { return xyz_t{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x}; } //!< Vector cross product
+    xyz_t cross(const xyz_t& v) const { return xyz_t{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x}; } //!< Vector cross product
 
     // Other functions
     inline float magnitudeSquared() const { return x*x + y*y + z*z; } //<! The square of the magnitude
-    inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The  magnitude
+    float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The  magnitude
     xyz_t normalize() const; //<! Return the normalized vector
     inline xyz_t normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
     inline xyz_t absolute() const { return{std::fabs(x), std::fabs(y), std::fabs(z) };  }//<! Return the vector consisting of the absolute value of all components
