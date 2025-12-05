@@ -69,7 +69,7 @@ public:
     Rotate about the x-axis,
     equivalent to *= Quaternion(cos(theta/2), sin(theta/2), 0, 0)
     */
-    inline Quaternion rotateX(float theta) {
+    Quaternion rotateX(float theta) {
         const float c = cosf(theta/2);
         const float s = sinf(theta/2);
         const float wt =  w*c - x*s;
@@ -84,7 +84,7 @@ public:
     Rotate about the y-axis.
     equivalent to *= Quaternion(cos(theta/2), 0, sin(theta/2), 0)
     */
-    inline Quaternion rotateY(float theta) {
+    Quaternion rotateY(float theta) {
         const float c = cosf(theta/2);
         const float s = sinf(theta/2);
         const float wt = w*c - y*s;
@@ -99,7 +99,7 @@ public:
     Rotate about the z-axis,
     equivalent to *= Quaternion(cos(theta/2), 0, 0, sin(theta/2))
     */
-    inline Quaternion rotateZ(float theta) {
+    Quaternion rotateZ(float theta) {
         const float c = cosf(theta/2);
         const float s = sinf(theta/2);
         const float wt = w*c - z*s;
