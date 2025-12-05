@@ -6,11 +6,12 @@ class Quaternion {
 public:
     Quaternion() : w(1.0F), x(0.0F), y(0.0F), z(0.0F) {}
     Quaternion(float w_, float x_, float y_, float z_) : w(w_), x(x_), y(y_), z(z_) {}
+	Quaternion(const xyz_t& src, const xyz_t& dst);
 public:
-    static constexpr float radiansToDegrees = static_cast<float>(180.0 / M_PI);
-    static constexpr float degreesToRadians = static_cast<float>(M_PI / 180.0);
-    static constexpr float M_PI_F = static_cast<float>(M_PI);
-    static constexpr float M_PI_2_F = static_cast<float>(M_PI_2);
+    static constexpr float M_PI_F = 3.14159265358979323846F;
+    static constexpr float M_PI_2_F = M_PI_F / 2.0F;
+    static constexpr float RADIANS_TO_DEGREES = 180.0F / M_PI_F;
+    static constexpr float DEGREES_TO_RADIANS = M_PI_F / 180.0F;
 public:
     static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
     static Quaternion fromEulerAnglesRadians(float rollRadians, float pitchRadians);
@@ -116,14 +117,17 @@ public:
     Quaternion normalize() const; //<! Return the normalized quaternion
     inline Quaternion normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
 
+    inline xyz_t imaginary() const { return xyz_t{x, y, z}; } //<! The imaginary part of the quaternion
+    inline xyz_t directionCosineMatrixZ() const { return xyz_t{2.0F*(w*y + x*z), 2.0F*(y*z - w*x), w*w - x*x - y*y + z*z }; } //!< Last column of the equivalent rotation matrix, but calculated more efficiently than a full conversion
+
     // Euler angle calculations. Note that these are computationally expensive.
     float calculateRollRadians() const;
     float calculatePitchRadians() const;
     float calculateYawRadians() const;
 
-    inline float calculateRollDegrees() const  { return radiansToDegrees * calculateRollRadians(); }
-    inline float calculatePitchDegrees() const { return radiansToDegrees * calculatePitchRadians(); }
-    inline float calculateYawDegrees() const   { return radiansToDegrees * calculateYawRadians(); }
+    inline float calculateRollDegrees() const  { return RADIANS_TO_DEGREES * calculateRollRadians(); }
+    inline float calculatePitchDegrees() const { return RADIANS_TO_DEGREES * calculatePitchRadians(); }
+    inline float calculateYawDegrees() const   { return RADIANS_TO_DEGREES * calculateYawRadians(); }
 
     // Functions to calculate the sin, cos, and tan of the Euler angles.
     // Sometimes this can avoid the computationally expensive calculation of the angles themselves.
@@ -139,6 +143,7 @@ public:
     float sinYaw() const;
     float cosYaw() const;
     inline float tanYaw() const { return (w*z + x*y)/(0.5F - y*y - z*z); }
+
 
 public:
     float w;

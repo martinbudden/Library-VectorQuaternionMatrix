@@ -279,10 +279,10 @@ void test_matrix3x3_binary()
     TEST_ASSERT_EQUAL_FLOAT(1679.0F , DA[8]);
 }
 
-constexpr float degrees19inRadians = 19.0F * Quaternion::degreesToRadians;
-constexpr float degrees43inRadians = 43.0F * Quaternion::degreesToRadians;
-constexpr float degrees45inRadians = 45.0F * Quaternion::degreesToRadians;
-constexpr float degrees67inRadians = 67.0F * Quaternion::degreesToRadians;
+constexpr float degrees19inRadians = 19.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees43inRadians = 43.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees45inRadians = 45.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees67inRadians = 67.0F * Quaternion::DEGREES_TO_RADIANS;
 
 void test_matrix3x3_quaternion()
 {

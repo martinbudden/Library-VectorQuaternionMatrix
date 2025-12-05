@@ -105,14 +105,14 @@ void test_quaternion_functions()
     TEST_ASSERT_TRUE(a.magnitudeSquared()*a.magnitudeSquared() == (a*a.conjugate()).magnitudeSquared());
 }
 
-constexpr float degrees19inRadians = 19.0F * Quaternion::degreesToRadians;
-constexpr float degrees43inRadians = 43.0F * Quaternion::degreesToRadians;
-constexpr float degrees45inRadians = 45.0F * Quaternion::degreesToRadians;
-constexpr float degrees67inRadians = 67.0F * Quaternion::degreesToRadians;
-constexpr float degrees89inRadians = 89.0F * Quaternion::degreesToRadians;
-constexpr float degrees90inRadians = 90.0F * Quaternion::degreesToRadians;
-constexpr float degrees91inRadians = 91.0F * Quaternion::degreesToRadians;
-constexpr float degrees95inRadians = 95.0F * Quaternion::degreesToRadians;
+constexpr float degrees19inRadians = 19.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees43inRadians = 43.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees45inRadians = 45.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees67inRadians = 67.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees89inRadians = 89.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees90inRadians = 90.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees91inRadians = 91.0F * Quaternion::DEGREES_TO_RADIANS;
+constexpr float degrees95inRadians = 95.0F * Quaternion::DEGREES_TO_RADIANS;
 
 void test_quaternion_angles()
 {

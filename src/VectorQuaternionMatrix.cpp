@@ -54,6 +54,47 @@ xyz_t Quaternion::rotate(const xyz_t& v) const
 }
 
 /*!
+Create a quaternion representing the rotation from the source to the destination vector.
+src and dst do not need to be normalized.
+*/
+Quaternion::Quaternion(const xyz_t& src, const xyz_t& dst)
+{
+    static constexpr float epsilon = 1E-5F;
+
+    xyz_t crossProduct = src.cross(dst);
+    const float dotProduct = src.dot(dst);
+
+    if (crossProduct.magnitude() < epsilon && dotProduct < 0.0F) {
+        // handle corner cases with 180 degree rotations
+        // if the two vectors are parallel, cross product is zero
+        // if they point opposite, the dot product is negative
+        w = 0.0F;
+        const xyz_t sourceAbsolute = src.absolute();
+        if (sourceAbsolute.x < sourceAbsolute.y) {
+            if (sourceAbsolute.x < sourceAbsolute.z) {
+                crossProduct = src.cross(xyz_t{1.0F, 0.0F, 0.0F});
+            } else {
+                crossProduct = src.cross(xyz_t{0.0F, 0.0F, 1.0F});
+            }
+        } else {
+            if (sourceAbsolute.y < sourceAbsolute.z) {
+                crossProduct = src.cross(xyz_t{0.0F, 1.0F, 0.0F});
+            } else {
+                crossProduct = src.cross(xyz_t{0.0F, 0.0F, 1.0F});
+            }
+        }
+    } else {
+        // normal case, do half-way quaternion solution
+        w = dotProduct + std::sqrt(src.magnitudeSquared() * dst.magnitudeSquared());
+    }
+    x = crossProduct.x;
+    y = crossProduct.y;
+    z = crossProduct.z;
+    normalizeInPlace();
+}
+
+
+/*!
 Create a Quaternion from roll, pitch, and yaw Euler angles (in radians).
 See:
 https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Euler_angles_(in_3-2-1_sequence)_to_quaternion_conversion
@@ -128,7 +169,7 @@ Create a Quaternion from roll, pitch, and yaw Euler angles (in degrees).
 */
 Quaternion Quaternion::fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees)
 {
-    return fromEulerAnglesRadians(rollDegrees*degreesToRadians, pitchDegrees*degreesToRadians, yawDegrees*degreesToRadians);
+    return fromEulerAnglesRadians(rollDegrees*DEGREES_TO_RADIANS, pitchDegrees*DEGREES_TO_RADIANS, yawDegrees*DEGREES_TO_RADIANS);
 }
 
 /*!
@@ -136,7 +177,7 @@ Create a Quaternion from roll and pitch Euler angles (in degrees), assumes yaw a
 */
 Quaternion Quaternion::fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees)
 {
-    return fromEulerAnglesRadians(rollDegrees*degreesToRadians, pitchDegrees*degreesToRadians);
+    return fromEulerAnglesRadians(rollDegrees*DEGREES_TO_RADIANS, pitchDegrees*DEGREES_TO_RADIANS);
 }
 
 /*!
@@ -201,6 +242,52 @@ _a[7] - _a[5] = 2(wx + yz) - 2(yz - wx) = 4xw
     const Quaternion q = Quaternion(t, _a[7] - _a[5], _a[2] - _a[6], _a[3] - _a[1]);
     return q * (0.5F * reciprocalSqrtf(t)); // note brackets because we want perform the scalar multiply first, so it is only done once
 // NOLINTEND(cppcoreguidelines-init-variables,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+}
+
+/*!
+Create a Rotation Matrix from roll, pitch, and yaw Euler angles (in degrees).
+*/
+Matrix3x3 Matrix3x3::fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians)
+{
+#if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
+    // NOLINTBEGIN(misc-const-correctness)
+    float sinPhi {};
+    float cosPhi {};
+    FastTrigonometry::sincos(rollRadians, sinPhi, cosPhi);
+    float sinTheta {};
+    float cosTheta {};
+    FastTrigonometry::sincos(pitchRadians, sinTheta, cosTheta);
+    float sinPsi {};
+    float cosPsi {};
+    FastTrigonometry::sincos(yawRadians, sinPsi, cosPsi);
+    // NOLINTEND(misc-const-correctness)
+#else
+    const float sinPhi = sinf(rollRadians);
+    const float cosPhi = cosf(rollRadians);
+    const float sinTheta = sinf(pitchRadians);
+    const float cosTheta = cosf(pitchRadians);
+    const float sinPsi = sinf(yawRadians);
+    const float cosPsi = cosf(yawRadians);
+#endif
+    return Matrix3x3 {
+         cosTheta*cosPsi,
+        -cosPhi*sinPsi + sinPhi*sinTheta*cosPsi,
+         sinPhi*sinPsi + cosPhi*sinTheta*cosPsi,
+         cosTheta*sinPsi,
+         cosPhi*cosPsi + sinPhi*sinTheta*sinPsi,
+        -sinPhi*cosPsi + cosPhi*sinTheta*sinPsi,
+        -sinTheta,
+         sinPhi*cosTheta,
+         cosPhi*cosTheta
+    };
+}
+
+/*!
+Create a Rotation Matrix from roll, pitch, and yaw Euler angles (in degrees).
+*/
+Matrix3x3 Matrix3x3::fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees)
+{
+    return fromEulerAnglesRadians(rollDegrees*Quaternion::DEGREES_TO_RADIANS, pitchDegrees*Quaternion::DEGREES_TO_RADIANS, yawDegrees*Quaternion::DEGREES_TO_RADIANS);
 }
 
 /*!

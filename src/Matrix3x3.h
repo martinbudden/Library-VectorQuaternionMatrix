@@ -29,6 +29,8 @@ public:
         _a[7] = 2.0F*(w*x + y*z);
         _a[8] = 1.0F - 2.0F*(x*x + y*y);
     }
+    static Matrix3x3 fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
+    static Matrix3x3 fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees);
 public:
     inline float operator[](size_t pos) const { return _a[pos]; } //<! Index operator
     inline float& operator[](size_t pos) { return _a[pos]; } //<! Index operator

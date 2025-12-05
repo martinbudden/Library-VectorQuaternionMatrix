@@ -34,5 +34,5 @@ xyz_t                   KEYWORD3
 # Constants (LITERAL1)
 #######################################
 
-radiansToDegrees        LITERAL1
-degreesToRadians        LITERAL1
+RADIANS_TO_DEGREES        LITERAL1
+DEGREES_TO_RADIANS        LITERAL1
