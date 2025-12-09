@@ -14,5 +14,5 @@
     "version": "0.4.5",
     "frameworks": "*",
     "platforms": "*",
-    "headers": ["xyz_type.h", "Matrix3x3.h", "Quaternion.h", "FastTrigonometry.h"]
+    "headers": ["xy_type.h", "xyz_type.h", "Matrix2x2.h", "Matrix3x3.h", "Quaternion.h", "FastTrigonometry.h"]
 }
