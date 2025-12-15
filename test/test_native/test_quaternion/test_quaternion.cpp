@@ -401,25 +401,26 @@ void test_roll_pitch()
     q = Quaternion::fromEulerAnglesDegrees(-119.0F, 29.0F, 47.0F);
     TEST_ASSERT_EQUAL_FLOAT(-119.0F, q.calculateRollDegrees());
 
+    // fromEulerAnglesDegrees will return angle in range [-90.0, 90.0]
     q = Quaternion::fromEulerAnglesDegrees(119.0F, 129.0F, 47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(129.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(51.0F, q.calculatePitchDegrees());
     q = Quaternion::fromEulerAnglesDegrees(119.0F, 179.0F, 47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(179.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(1.0F, q.calculatePitchDegrees());
     q = Quaternion::fromEulerAnglesDegrees(119.0F, 229.0F, 47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(229.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-49.0F, q.calculatePitchDegrees());
     q = Quaternion::fromEulerAnglesDegrees(119.0F, -229.0F, 47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(-229.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(49.0F, q.calculatePitchDegrees());
 
     q = Quaternion::fromEulerAnglesDegrees(119.0F, -29.0F, 47.0F);
     TEST_ASSERT_EQUAL_FLOAT(-29.0F, q.calculatePitchDegrees());
 
     q = Quaternion::fromEulerAnglesDegrees(119.0F, -129.0F, 47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(-129.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-51.0F, q.calculatePitchDegrees());
 
     q = Quaternion::fromEulerAnglesDegrees(119.0F, -129.0F, -47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(-129.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-51.0F, q.calculatePitchDegrees());
     q = Quaternion::fromEulerAnglesDegrees(-119.0F, -129.0F, -47.0F);
-    TEST_ASSERT_EQUAL_FLOAT(-129.0F, q.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-51.0F, q.calculatePitchDegrees());
 }
 
 void test_roll_angle_clip()
@@ -477,9 +478,10 @@ void test_pitch_angle_clip()
     TEST_ASSERT_EQUAL_FLOAT(sinf(degrees89inRadians), q0.sinPitch());
     TEST_ASSERT_EQUAL_FLOAT(sinf(degrees89inRadians), q0.sinPitchClipped());
 
+    // fromEulerAnglesDegrees will return angle in range [-90.0, 90.0]
     const Quaternion q2 = Quaternion::fromEulerAnglesRadians(0.0F, degrees91inRadians, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.magnitudeSquared());
-    TEST_ASSERT_EQUAL_FLOAT(91.0, q2.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(89.0, q2.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q2.getW()*q2.getW() - q2.getY()*q2.getY());
     TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.getW()*q2.getY() - q2.getX()*q2.getZ());
     TEST_ASSERT_EQUAL_FLOAT(0.7009092F, q2.getW());
@@ -504,7 +506,7 @@ void test_pitch_angle_clip()
 
     const Quaternion q3 = Quaternion::fromEulerAnglesRadians(0.0F, -degrees91inRadians, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q3.magnitudeSquared());
-    TEST_ASSERT_EQUAL_FLOAT(-91.0, q3.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-89.0, q3.calculatePitchDegrees());
     TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q3.getW()*q3.getW() - q3.getY()*q3.getY());
     TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.getW()*q2.getY() - q2.getX()*q2.getZ());
     TEST_ASSERT_EQUAL_FLOAT(0.7009092, q3.getW());
@@ -515,10 +517,10 @@ void test_pitch_angle_clip()
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees91inRadians), q3.sinPitch());
     TEST_ASSERT_EQUAL_FLOAT(-1.0F, q3.sinPitchClipped());
 
-    //TEST_ASSERT_EQUAL_FLOAT(91.0, q2.calculatePitchDegrees()); // was 88.99927
+    TEST_ASSERT_EQUAL_FLOAT(89.0, q2.calculatePitchDegrees()); // was 88.99927
 
     const Quaternion q4 = Quaternion::fromEulerAnglesRadians(0.0F, -degrees95inRadians, 0.0F);
-    TEST_ASSERT_EQUAL_FLOAT(-95.0F, q4.calculatePitchDegrees());
+    TEST_ASSERT_EQUAL_FLOAT(-85.0F, q4.calculatePitchDegrees());
 }
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)

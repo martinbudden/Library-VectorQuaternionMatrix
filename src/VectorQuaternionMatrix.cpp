@@ -329,10 +329,6 @@ float Quaternion::calculateRollRadians() const
 
 float Quaternion::calculatePitchRadians() const
 {
-    if (w*w - y*y < 0.0F) {
-        const float theta = asinf(2.0F*(w*y - x*z));
-        return (y > 0.0F) ? M_PI_F - theta : -theta - M_PI_F;
-    }
     return asinf(2.0F*(w*y - x*z)); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 }
 
