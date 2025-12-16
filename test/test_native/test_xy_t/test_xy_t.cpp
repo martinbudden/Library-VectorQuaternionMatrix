@@ -109,17 +109,17 @@ void test_xy_t_functions()
     TEST_ASSERT_TRUE(b.magnitudeSquared() == b.dot(b));
 
     const xy_t d{-100, 200};
-    const xy_t d_clipped = xy_t{-50, 50};
-    TEST_ASSERT_TRUE(xy_t::clip(d, -50, 50) == d_clipped);
+    const xy_t d_clamped = xy_t{-50, 50};
+    TEST_ASSERT_TRUE(xy_t::clamp(d, -50, 50) == d_clamped);
 
     const xy_t e{-100, 200};
-    const xy_t e_clipped = xy_t{-20, 20};
-    TEST_ASSERT_TRUE(xy_t::clip(e, -20, 20) == e_clipped);
+    const xy_t e_clamped = xy_t{-20, 20};
+    TEST_ASSERT_TRUE(xy_t::clamp(e, -20, 20) == e_clamped);
 
     xy_t f{-100, 200};
-    f.clipInPlace(-20, 20);
-    const xy_t f_clipped = xy_t{-20, 20};
-    TEST_ASSERT_TRUE(f == f_clipped);
+    f.clampInPlace(-20, 20);
+    const xy_t f_clamped = xy_t{-20, 20};
+    TEST_ASSERT_TRUE(f == f_clamped);
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 

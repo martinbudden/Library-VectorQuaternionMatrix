@@ -33,9 +33,9 @@ public:
     inline float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The  magnitude
     xy_t normalize() const; //<! Return the normalized vector
     inline xy_t normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
-    static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clip helper function
-    static inline xy_t clip(const xy_t& v, float min, float max) { return xy_t{clip(v.x, min, max), clip(v.y, min, max)}; } //<! Return clipped value
-    inline xy_t clipInPlace(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); return *this; } //<! Clip, in-place
+    static inline float clamp(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clamp helper function
+    static inline xy_t clamp(const xy_t& v, float min, float max) { return xy_t{clamp(v.x, min, max), clamp(v.y, min, max)}; } //<! Return clamped value
+    inline xy_t clampInPlace(float min, float max) { x = clamp(x, min, max); y = clamp(y, min, max); return *this; } //<! Clamp, in-place
 public:
     float x;
     float y;

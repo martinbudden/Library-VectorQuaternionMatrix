@@ -128,7 +128,7 @@ void test_matrix3x3_unary()
     TEST_ASSERT_TRUE(ATE == AT);
     const Matrix3x3 ATT = AT.transpose();
     TEST_ASSERT_TRUE(ATT == A);
-    Matrix3x3 A2 = A;
+    Matrix3x3 A2 = A; // NOLINT(misc-const-correctness)
     A2.transposeInPlace();
     TEST_ASSERT_TRUE(ATE == A2);
 

@@ -31,7 +31,7 @@ public:
     inline Matrix2x2 operator+=(const Matrix2x2& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] += m[ii];} return *this; } //<! Unary addition
     inline Matrix2x2 operator-=(const Matrix2x2& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] -= m[ii];} return *this; } //<! Unary subtraction
     //! Unary multiplication
-    inline Matrix2x2 operator*=(const Matrix2x2& m) {
+    Matrix2x2 operator*=(const Matrix2x2& m) {
         std::array<float, 4> a {{
             _a[0]*m[0] + _a[1]*m[2],
             _a[0]*m[1] + _a[1]*m[3],
@@ -52,7 +52,7 @@ public:
     inline Matrix2x2 operator+(const Matrix2x2& m) const { Matrix2x2 ret; for (size_t ii = 0; ii < _a.size(); ++ii) { ret[ii] = _a[ii] + m[ii]; } return ret; } //<! Addition
     inline Matrix2x2 operator-(const Matrix2x2& m) const { Matrix2x2 ret; for (size_t ii = 0; ii < _a.size(); ++ii) { ret[ii] = _a[ii] - m[ii]; } return ret; } //<! Subtraction
     //! Multiplication
-    inline Matrix2x2 operator*(const Matrix2x2& m) const {
+    Matrix2x2 operator*(const Matrix2x2& m) const {
         return Matrix2x2(
             _a[0]*m[0] + _a[1]*m[2],
             _a[0]*m[1] + _a[1]*m[3],
@@ -78,7 +78,7 @@ public:
     inline Matrix2x2 transpose() const { return Matrix2x2(_a[0], _a[2], _a[1], _a[3]); } //<! Returns transpose of matrix
 
     //! Invert matrix, in-place
-    inline bool invertInPlace() {
+    bool invertInPlace() {
         const float det = _a[0]*_a[3] -_a[1]*_a[2];
         if ((fabsf(det) <= std::numeric_limits<float>::epsilon())) {
             return false;
@@ -90,12 +90,12 @@ public:
         _a[3] = t/det;
         return true;
     }
-    inline Matrix2x2 inverse() const { Matrix2x2 ret = *this; (void)ret.invertInPlace(); return ret; } //<! Returns inverse of matrix
+    Matrix2x2 inverse() const { Matrix2x2 ret = *this; (void)ret.invertInPlace(); return ret; } //<! Returns inverse of matrix
 
-    inline void invertInPlaceAssumingDiagonal() { _a[0] = 1.0F / _a[0]; _a[3] = 1.0F / _a[3]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
-    inline Matrix2x2 inverseAssumingDiagonal() const { Matrix2x2 ret = *this; ret.invertInPlaceAssumingDiagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
+    void invertInPlaceAssumingDiagonal() { _a[0] = 1.0F / _a[0]; _a[3] = 1.0F / _a[3]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
+    Matrix2x2 inverseAssumingDiagonal() const { Matrix2x2 ret = *this; ret.invertInPlaceAssumingDiagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
 
-    inline float determinant() const { return _a[0]*_a[3] -_a[1]*_a[2]; } //<! Matrix determinant
+    float determinant() const { return _a[0]*_a[3] -_a[1]*_a[2]; } //<! Matrix determinant
 protected:
     std::array<float, 4> _a;
 };

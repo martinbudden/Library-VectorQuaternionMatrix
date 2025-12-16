@@ -125,17 +125,17 @@ void test_xyz_t_functions()
     TEST_ASSERT_TRUE(a_cross_b != b.cross(a));
 
     const xyz_t d{-100, 200, 50};
-    const xyz_t d_clipped = xyz_t{-50, 50, 50};
-    TEST_ASSERT_TRUE(xyz_t::clip(d, -50, 50) == d_clipped);
+    const xyz_t d_clamped = xyz_t{-50, 50, 50};
+    TEST_ASSERT_TRUE(xyz_t::clamp(d, -50, 50) == d_clamped);
 
     const xyz_t e{-100, 200, 50};
-    const xyz_t e_clipped = xyz_t{-20, 20, 20};
-    TEST_ASSERT_TRUE(xyz_t::clip(e, -20, 20) == e_clipped);
+    const xyz_t e_clamped = xyz_t{-20, 20, 20};
+    TEST_ASSERT_TRUE(xyz_t::clamp(e, -20, 20) == e_clamped);
 
     xyz_t f{-100, 200, 50};
-    f.clipInPlace(-20, 20);
-    const xyz_t f_clipped = xyz_t{-20, 20, 20};
-    TEST_ASSERT_TRUE(f == f_clipped);
+    f.clampInPlace(-20, 20);
+    const xyz_t f_clamped = xyz_t{-20, 20, 20};
+    TEST_ASSERT_TRUE(f == f_clamped);
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 

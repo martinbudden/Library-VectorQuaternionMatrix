@@ -36,9 +36,9 @@ public:
     inline xyz_t normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
     inline xyz_t absolute() const { return{std::fabs(x), std::fabs(y), std::fabs(z) };  }//<! Return the vector consisting of the absolute value of all components
     inline xyz_t absoluteInPlace() { *this=absolute(); return *this; } //<! Absolute value of all components, in-place
-    static inline float clip(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clip helper function
-    static inline xyz_t clip(const xyz_t& v, float min, float max) { return xyz_t{clip(v.x, min, max), clip(v.y, min, max), clip(v.z, min, max)}; } //<! Return clipped value
-    inline xyz_t clipInPlace(float min, float max) { x = clip(x, min, max); y = clip(y, min, max); z = clip(z, min, max); return *this; } //<! Clip, in-place
+    static inline float clamp(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! clamp helper function
+    static inline xyz_t clamp(const xyz_t& v, float min, float max) { return xyz_t{clamp(v.x, min, max), clamp(v.y, min, max), clamp(v.z, min, max)}; } //<! Return clampped value
+    inline xyz_t clampInPlace(float min, float max) { x = clamp(x, min, max); y = clamp(y, min, max); z = clamp(z, min, max); return *this; } //<! clamp, in-place
 public:
     float x;
     float y;

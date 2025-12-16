@@ -143,8 +143,6 @@ public:
     float sinYaw() const;
     float cosYaw() const;
     inline float tanYaw() const { return (w*z + x*y)/(0.5F - y*y - z*z); }
-
-
 public:
     float w;
     float x;

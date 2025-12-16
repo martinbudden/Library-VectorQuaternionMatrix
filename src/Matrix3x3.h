@@ -13,7 +13,7 @@ public:
     inline explicit Matrix3x3(const float a[9]) : _a({{ a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] }}) {}
     inline Matrix3x3(float a0, float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8) : _a({{ a0, a1, a2, a3, a4, a5, a6, a7, a8 }}) {}
     //! Create rotation matrix from quaternion
-    inline explicit Matrix3x3(const Quaternion& q) {
+    explicit Matrix3x3(const Quaternion& q) {
         const float w = q.getW();
         const float x = q.getX();
         const float y = q.getY();
@@ -50,7 +50,7 @@ public:
     inline Matrix3x3 operator+=(const Matrix3x3& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] += m[ii];} return *this; } //<! Unary addition
     inline Matrix3x3 operator-=(const Matrix3x3& m) { for (size_t ii = 0; ii < _a.size(); ++ii) {_a[ii] -= m[ii];} return *this; } //<! Unary subtraction
     //! Unary multiplication
-    inline Matrix3x3 operator*=(const Matrix3x3& m) {
+    Matrix3x3 operator*=(const Matrix3x3& m) {
         std::array<float, 9> a {{
             _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
             _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],
@@ -76,7 +76,7 @@ public:
     inline Matrix3x3 operator+(const Matrix3x3& m) const { Matrix3x3 ret; for (size_t ii = 0; ii < _a.size(); ++ii) { ret[ii] = _a[ii] + m[ii]; } return ret; } //<! Addition
     inline Matrix3x3 operator-(const Matrix3x3& m) const { Matrix3x3 ret; for (size_t ii = 0; ii < _a.size(); ++ii) { ret[ii] = _a[ii] - m[ii]; } return ret; } //<! Subtraction
     //! Multiplication
-    inline Matrix3x3 operator*(const Matrix3x3& m) const {
+    Matrix3x3 operator*(const Matrix3x3& m) const {
         return Matrix3x3 (
             _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
             _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],
@@ -103,11 +103,11 @@ public:
     inline void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[4] = 1.0F; _a[8] = 1.0F; } //<! Sets matrix to identity matrix
     inline void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[4] = d; _a[8] = d; } //<! Sets diagonal of matrix to d
 
-    inline void transposeInPlace() { float t = _a[1]; _a[1]= _a[3]; _a[3] = t; t = _a[2]; _a[2]= _a[6]; _a[6] = t; t = _a[5]; _a[5]= _a[7]; _a[7] = t; } //<! Transposes matrix, in=place
-    inline Matrix3x3 transpose() const { return Matrix3x3(_a[0], _a[3], _a[6], _a[1], _a[4], _a[7], _a[2], _a[5], _a[8]); } //<! Returns transpose of matrix
+    void transposeInPlace() { float t = _a[1]; _a[1]= _a[3]; _a[3] = t; t = _a[2]; _a[2]= _a[6]; _a[6] = t; t = _a[5]; _a[5]= _a[7]; _a[7] = t; } //<! Transposes matrix, in=place
+    Matrix3x3 transpose() const { return Matrix3x3(_a[0], _a[3], _a[6], _a[1], _a[4], _a[7], _a[2], _a[5], _a[8]); } //<! Returns transpose of matrix
 
     //! Invert matrix, in-place
-    inline bool invertInPlace() {
+    bool invertInPlace() {
         // a b c
         // d e f
         // g h i
@@ -142,12 +142,12 @@ public:
 
         return true;
     }
-    inline Matrix3x3 inverse() const { Matrix3x3 ret = *this; (void)ret.invertInPlace(); return ret; } //<! Returns inverse of matrix
+    Matrix3x3 inverse() const { Matrix3x3 ret = *this; (void)ret.invertInPlace(); return ret; } //<! Returns inverse of matrix
 
-    inline void invertInPlaceAssumingDiagonal() { _a[0] = 1.0F / _a[0]; _a[4] = 1.0F / _a[4]; _a[8] = 1.0F / _a[8]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
-    inline Matrix3x3 inverseAssumingDiagonal() const { Matrix3x3 ret = *this; ret.invertInPlaceAssumingDiagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
+    void invertInPlaceAssumingDiagonal() { _a[0] = 1.0F / _a[0]; _a[4] = 1.0F / _a[4]; _a[8] = 1.0F / _a[8]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
+    Matrix3x3 inverseAssumingDiagonal() const { Matrix3x3 ret = *this; ret.invertInPlaceAssumingDiagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
 
-    inline float determinant() const { return _a[0]*(_a[4]*_a[8] - _a[5]*_a[7]) - _a[1]*(_a[3]*_a[8] - _a[5]*_a[6]) + _a[2]*(_a[3]*_a[7] - _a[4]*_a[6]); } //<! Matrix determinant
+    float determinant() const { return _a[0]*(_a[4]*_a[8] - _a[5]*_a[7]) - _a[1]*(_a[3]*_a[8] - _a[5]*_a[6]) + _a[2]*(_a[3]*_a[7] - _a[4]*_a[6]); } //<! Matrix determinant
 
     Quaternion quaternion() const;
 protected:
