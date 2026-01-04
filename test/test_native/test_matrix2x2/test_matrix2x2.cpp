@@ -47,6 +47,45 @@ void test_readme()
     TEST_ASSERT_FALSE(v == z);
 }
 
+void test_matrix2x2_constructors()
+{
+    const Matrix2x2 A = {  2,  3,  5,  7 };
+    const Matrix2x2 B(  2,  3,  5,  7 );
+    const std::array<float, 4> a = {  2,  3,  5,  7 };
+    const Matrix2x2 C = Matrix2x2(a);
+    const Matrix2x2 D(std::array<float, 4>({  2,  3,  5,  7 }));
+    const float b[4] = { 2, 3, 5, 7 }; // NOLINT(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
+    const Matrix2x2 E(&b[0]);
+    const Matrix2x2 F = A;
+    const Matrix2x2 G(A);
+
+    TEST_ASSERT_TRUE(A == A); // NOLINT(misc-redundant-expression)
+    TEST_ASSERT_TRUE(A == B);
+    TEST_ASSERT_TRUE(A == C);
+    TEST_ASSERT_TRUE(A == D);
+    TEST_ASSERT_TRUE(A == E);
+    TEST_ASSERT_TRUE(A == F);
+    TEST_ASSERT_TRUE(A == G);
+
+    Matrix2x2 M {};
+    TEST_ASSERT_EQUAL(0.0F, M[0]);
+    TEST_ASSERT_EQUAL(0.0F, M[1]);
+    TEST_ASSERT_EQUAL(0.0F, M[2]);
+    TEST_ASSERT_EQUAL(0.0F, M[3]);
+
+    M.setOnes();
+    TEST_ASSERT_EQUAL(1.0F, M[0]);
+    TEST_ASSERT_EQUAL(1.0F, M[1]);
+    TEST_ASSERT_EQUAL(1.0F, M[2]);
+    TEST_ASSERT_EQUAL(1.0F, M[3]);
+
+    M.setConstant(-0.7F);
+    TEST_ASSERT_EQUAL(-0.7F, M[0]);
+    TEST_ASSERT_EQUAL(-0.7F, M[1]);
+    TEST_ASSERT_EQUAL(-0.7F, M[2]);
+    TEST_ASSERT_EQUAL(-0.7F, M[3]);
+}
+
 void test_Matrix2x2_unary()
 {
     // 0 1
@@ -89,9 +128,13 @@ void test_Matrix2x2_unary()
 
     //  2  3
     //  5  7
-    const Matrix2x2 A  ( 2, 3, 5, 7);
+    const Matrix2x2 A  (2, 3, 5, 7);
     TEST_ASSERT_EQUAL_FLOAT(-1.0F, A.determinant());
-    const Matrix2x2 ATE( 2, 5, 3, 7);
+    TEST_ASSERT_EQUAL_FLOAT(17.0F, A.sum());
+    TEST_ASSERT_EQUAL_FLOAT(4.25F, A.mean());
+    TEST_ASSERT_EQUAL_FLOAT(210.0F, A.prod());
+    TEST_ASSERT_EQUAL_FLOAT(9.0F, A.trace());
+    const Matrix2x2 ATE(2, 5, 3, 7);
 
     Matrix2x2 A_plus_A = A;
     A_plus_A += A;
@@ -136,6 +179,12 @@ void test_Matrix2x2_unary()
 
     const Matrix2x2 C_inv2 = C.inverse();
     TEST_ASSERT_TRUE(C_inv == C_inv2);
+
+    Matrix2x2 AJ(2, 3, 4, 5);
+    const Matrix2x2 AJ_adjoint(5, -3, -4, 2);
+    TEST_ASSERT_TRUE(AJ_adjoint == AJ.adjoint());
+    AJ.adjointInPlace();
+    TEST_ASSERT_TRUE(AJ_adjoint == AJ);
 
     TEST_ASSERT_TRUE(A * B != B * A);
 
@@ -240,6 +289,18 @@ void test_Matrix2x2_binary()
     TEST_ASSERT_EQUAL_FLOAT(7 * 71, DA[3]);
 }
 
+void test_Matrix2x2_Eigen_interworking()
+{
+    typedef Matrix2x2 Matrix2f;
+    const Matrix2f A(  2,  3,
+                        5,  7);
+    const Matrix2f B(29, 31,
+                      37, 41);
+    const Matrix2f A_times_B(
+        2*29 +  3*37,   2*31 +  3*41,
+        5*29 +  7*37, + 5*31 +  7*41);
+    TEST_ASSERT_TRUE(A_times_B == A * B);
+}
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
 int main(int argc, char **argv)
@@ -250,8 +311,10 @@ int main(int argc, char **argv)
     UNITY_BEGIN();
 
     RUN_TEST(test_readme);
+    RUN_TEST(test_matrix2x2_constructors);
     RUN_TEST(test_Matrix2x2_unary);
     RUN_TEST(test_Matrix2x2_binary);
+    RUN_TEST(test_Matrix2x2_Eigen_interworking);
 
     UNITY_END();
 }

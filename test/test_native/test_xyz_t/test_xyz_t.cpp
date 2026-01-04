@@ -11,6 +11,9 @@ void tearDown() {
 void test_xyz_t_assignment()
 {
     xyz_t a{2.0F, 3.0F, 5.0F};
+    TEST_ASSERT_EQUAL(10.0F, a.sum());
+    TEST_ASSERT_EQUAL(10.F/3.0F, a.mean());
+    TEST_ASSERT_EQUAL(30.0F, a.prod());
     const xyz_t b{7.0F, 11.0F, 13.0F};
 
     a = b;
@@ -24,6 +27,21 @@ void test_xyz_t_assignment()
     TEST_ASSERT_EQUAL(17.0F, a.z);
 
     a = 0.0F;
+    TEST_ASSERT_EQUAL(0.0F, a.x);
+    TEST_ASSERT_EQUAL(0.0F, a.y);
+    TEST_ASSERT_EQUAL(0.0F, a.z);
+
+    a.setOnes();
+    TEST_ASSERT_EQUAL(1.0F, a.x);
+    TEST_ASSERT_EQUAL(1.0F, a.y);
+    TEST_ASSERT_EQUAL(1.0F, a.z);
+
+    a.setConstant(-0.7F);
+    TEST_ASSERT_EQUAL(-0.7F, a.x);
+    TEST_ASSERT_EQUAL(-0.7F, a.y);
+    TEST_ASSERT_EQUAL(-0.7F, a.z);
+
+    a.setZero();
     TEST_ASSERT_EQUAL(0.0F, a.x);
     TEST_ASSERT_EQUAL(0.0F, a.y);
     TEST_ASSERT_EQUAL(0.0F, a.z);
@@ -99,7 +117,7 @@ void test_xyz_t_functions()
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(38.0F), a.magnitude());
 
     const xyz_t aNE{2/sqrt(38.0F), 3.0F/sqrt(38.0F), 5.0F/sqrt(38.0F)};
-    const xyz_t aN = a.normalize();
+    const xyz_t aN = a.normalized();
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN.magnitude());
     TEST_ASSERT_EQUAL_FLOAT(aNE.x, aN.x);
     TEST_ASSERT_EQUAL_FLOAT(aNE.y, aN.y);

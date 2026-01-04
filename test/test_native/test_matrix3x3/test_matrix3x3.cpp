@@ -64,6 +64,60 @@ void test_readme()
     TEST_ASSERT_TRUE(t != s);
 }
 
+void test_matrix3x3_constructors()
+{
+    const Matrix3x3 A = {  2,  3,  5,  7, 11, 13, 17, 19, 23 };
+    const Matrix3x3 B(  2,  3,  5,  7, 11, 13, 17, 19, 23 );
+    const std::array<float, 9> a = {  2,  3,  5,  7, 11, 13, 17, 19, 23 };
+    const Matrix3x3 C = Matrix3x3(a);
+    const Matrix3x3 D(std::array<float, 9>{  2,  3,  5,  7, 11, 13, 17, 19, 23 });
+    const float b[9] = {  2,  3,  5,  7, 11, 13, 17, 19, 23 }; // NOLINT(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)
+    const Matrix3x3 E(&b[0]);
+    const Matrix3x3 F = A;
+    const Matrix3x3 G(A);
+
+    TEST_ASSERT_TRUE(A == A); // NOLINT(misc-redundant-expression)
+    TEST_ASSERT_TRUE(A == B);
+    TEST_ASSERT_TRUE(A == C);
+    TEST_ASSERT_TRUE(A == D);
+    TEST_ASSERT_TRUE(A == E);
+    TEST_ASSERT_TRUE(A == F);
+    TEST_ASSERT_TRUE(A == G);
+
+    Matrix3x3 M {};
+    TEST_ASSERT_EQUAL(0.0F, M[0]);
+    TEST_ASSERT_EQUAL(0.0F, M[1]);
+    TEST_ASSERT_EQUAL(0.0F, M[2]);
+    TEST_ASSERT_EQUAL(0.0F, M[3]);
+    TEST_ASSERT_EQUAL(0.0F, M[4]);
+    TEST_ASSERT_EQUAL(0.0F, M[5]);
+    TEST_ASSERT_EQUAL(0.0F, M[6]);
+    TEST_ASSERT_EQUAL(0.0F, M[7]);
+    TEST_ASSERT_EQUAL(0.0F, M[8]);
+
+    M.setOnes();
+    TEST_ASSERT_EQUAL(1.0F, M[0]);
+    TEST_ASSERT_EQUAL(1.0F, M[1]);
+    TEST_ASSERT_EQUAL(1.0F, M[2]);
+    TEST_ASSERT_EQUAL(1.0F, M[3]);
+    TEST_ASSERT_EQUAL(1.0F, M[4]);
+    TEST_ASSERT_EQUAL(1.0F, M[5]);
+    TEST_ASSERT_EQUAL(1.0F, M[6]);
+    TEST_ASSERT_EQUAL(1.0F, M[7]);
+    TEST_ASSERT_EQUAL(1.0F, M[8]);
+
+    M.setConstant(-0.7F);
+    TEST_ASSERT_EQUAL(-0.7F, M[0]);
+    TEST_ASSERT_EQUAL(-0.7F, M[1]);
+    TEST_ASSERT_EQUAL(-0.7F, M[2]);
+    TEST_ASSERT_EQUAL(-0.7F, M[3]);
+    TEST_ASSERT_EQUAL(-0.7F, M[4]);
+    TEST_ASSERT_EQUAL(-0.7F, M[5]);
+    TEST_ASSERT_EQUAL(-0.7F, M[6]);
+    TEST_ASSERT_EQUAL(-0.7F, M[7]);
+    TEST_ASSERT_EQUAL(-0.7F, M[8]);
+}
+
 void test_matrix3x3_unary()
 {
     // 0 1 2
@@ -115,6 +169,11 @@ void test_matrix3x3_unary()
     // 17 19 23
     const Matrix3x3 A  ( 2,  3,  5,  7, 11, 13, 17, 19, 23);
     const Matrix3x3 ATE( 2,  7, 17,  3, 11, 19,  5, 13, 23);
+    TEST_ASSERT_EQUAL_FLOAT(-78.0F, A.determinant());
+    TEST_ASSERT_EQUAL_FLOAT(100.0F, A.sum());
+    TEST_ASSERT_EQUAL_FLOAT(100.0F/9.0F, A.mean());
+    TEST_ASSERT_EQUAL_FLOAT(223092870.0F, A.prod());
+    TEST_ASSERT_EQUAL_FLOAT(36.0F, A.trace());
 
     Matrix3x3 A_plus_A = A;
     A_plus_A += A;
@@ -142,6 +201,7 @@ void test_matrix3x3_unary()
     TEST_ASSERT_TRUE(A_plus_B == B + A);
 
     Matrix3x3 A_inv = A;
+    TEST_ASSERT_EQUAL_FLOAT(-78.0F, A.determinant());
     A_inv.invertInPlace();
     const Matrix3x3 A_times_A_inv = A * A_inv;
     TEST_ASSERT_EQUAL_FLOAT(1.0F, A_times_A_inv[0]);
@@ -155,9 +215,26 @@ void test_matrix3x3_unary()
     TEST_ASSERT_EQUAL_FLOAT(0.0F, A_times_A_inv[6]);
     TEST_ASSERT_FLOAT_WITHIN(5e-07, 0.0F, A_times_A_inv[7]);
 
+    const Matrix3x3 A_times_A_adj = A * A.adjoint();
+    const float A_determinant = A.determinant();
+    TEST_ASSERT_EQUAL_FLOAT(A_times_A_adj[0], A_times_A_inv[0]*A_determinant);
+    TEST_ASSERT_FLOAT_WITHIN(5e-06, A_times_A_adj[1], A_times_A_inv[1]*A_determinant);
+    TEST_ASSERT_FLOAT_WITHIN(5e-06, A_times_A_adj[2], A_times_A_inv[2]*A_determinant);
+    TEST_ASSERT_EQUAL_FLOAT(A_times_A_adj[3], A_times_A_inv[3]*A_determinant);
+    TEST_ASSERT_EQUAL_FLOAT(A_times_A_adj[4], A_times_A_inv[4]*A_determinant);
+    TEST_ASSERT_FLOAT_WITHIN(6e-06, A_times_A_adj[5], A_times_A_inv[5]*A_determinant);
+    TEST_ASSERT_EQUAL_FLOAT(A_times_A_adj[6], A_times_A_inv[6]*A_determinant);
+    TEST_ASSERT_FLOAT_WITHIN(4e-05, A_times_A_adj[7], A_times_A_inv[7]*A_determinant);
+    TEST_ASSERT_EQUAL_FLOAT(A_times_A_adj[8], A_times_A_inv[8]*A_determinant);
+
     const Matrix3x3 A_inv2 = A.inverse();
     TEST_ASSERT_TRUE(A_inv == A_inv2);
 
+    Matrix3x3 AJ(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    const Matrix3x3 AJ_adjoint(-3, 6, -3, 6, -12, 6, -3, 6, -3);
+    TEST_ASSERT_TRUE(AJ_adjoint == AJ.adjoint());
+    AJ.adjointInPlace();
+    TEST_ASSERT_TRUE(AJ_adjoint == AJ);
 
     TEST_ASSERT_TRUE(A * B != B * A);
 
@@ -372,6 +449,7 @@ int main(int argc, char **argv)
     UNITY_BEGIN();
 
     RUN_TEST(test_readme);
+    RUN_TEST(test_matrix3x3_constructors);
     RUN_TEST(test_matrix3x3_unary);
     RUN_TEST(test_matrix3x3_binary);
     RUN_TEST(test_matrix3x3_quaternion);

@@ -11,6 +11,9 @@ void tearDown() {
 void test_xy_t_assignment()
 {
     xy_t a{2.0F, 3.0F};
+    TEST_ASSERT_EQUAL(5.0F, a.sum());
+    TEST_ASSERT_EQUAL(2.5F, a.mean());
+    TEST_ASSERT_EQUAL(6.0F, a.prod());
     const xy_t b{7.0F, 11.0F};
 
     a = b;
@@ -22,6 +25,18 @@ void test_xy_t_assignment()
     TEST_ASSERT_EQUAL(17.0F, a.y);
 
     a = 0.0F;
+    TEST_ASSERT_EQUAL(0.0F, a.x);
+    TEST_ASSERT_EQUAL(0.0F, a.y);
+
+    a.setOnes();
+    TEST_ASSERT_EQUAL(1.0F, a.x);
+    TEST_ASSERT_EQUAL(1.0F, a.y);
+
+    a.setConstant(-0.7F);
+    TEST_ASSERT_EQUAL(-0.7F, a.x);
+    TEST_ASSERT_EQUAL(-0.7F, a.y);
+
+    a.setZero();
     TEST_ASSERT_EQUAL(0.0F, a.x);
     TEST_ASSERT_EQUAL(0.0F, a.y);
 }
@@ -92,7 +107,7 @@ void test_xy_t_functions()
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(13.0F), a.magnitude());
 
     const xy_t aNE{2/sqrt(13.0F), 3.0F/sqrt(13.0F)};
-    const xy_t aN = a.normalize();
+    const xy_t aN = a.normalized();
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN.magnitude());
     TEST_ASSERT_EQUAL_FLOAT(aNE.x, aN.x);
     TEST_ASSERT_EQUAL_FLOAT(aNE.y, aN.y);

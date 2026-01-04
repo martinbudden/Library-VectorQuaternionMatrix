@@ -293,7 +293,7 @@ Matrix3x3 Matrix3x3::fromEulerAnglesDegrees(float rollDegrees, float pitchDegree
 /*!
 Return the normalized vector
 */
-xy_t xy_t::normalize() const
+xy_t xy_t::normalized() const
 {
     const float r = reciprocalSqrtf(magnitudeSquared());
     return *this*r;
@@ -302,7 +302,7 @@ xy_t xy_t::normalize() const
 /*!
 Return the normalized vector
 */
-xyz_t xyz_t::normalize() const
+xyz_t xyz_t::normalized() const
 {
     const float r = reciprocalSqrtf(magnitudeSquared());
     return *this*r;
@@ -311,7 +311,7 @@ xyz_t xyz_t::normalize() const
 /*!
 Return the normalized quaternion
 */
-Quaternion Quaternion::normalize() const
+Quaternion Quaternion::normalized() const
 {
     const float r = reciprocalSqrtf(magnitudeSquared());
     return *this*r;

@@ -82,7 +82,7 @@ void test_quaternion_functions()
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(1108.0F), b.magnitude());
 
     const Quaternion aNE{2.0F/sqrt(87.0F), 3.0F/sqrt(87.0F), 5.0F/sqrt(87.0F), 7.0F/sqrt(87.0F)};
-    const Quaternion aN = a.normalize();
+    const Quaternion aN = a.normalized();
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT)
     TEST_ASSERT_FLOAT_WITHIN(0.00047, 1.0F, aN.magnitude());
     TEST_ASSERT_FLOAT_WITHIN(0.000081, aNE.getW(), aN.getW());

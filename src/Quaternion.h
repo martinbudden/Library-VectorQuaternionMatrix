@@ -18,28 +18,28 @@ public:
     static Quaternion fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees);
     static Quaternion fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees);
 public:
-    inline float getW() const { return w; }
-    inline float getX() const { return x; }
-    inline float getY() const { return y; }
-    inline float getZ() const { return z; }
-    inline void getWXYZ(float& w_, float& x_, float& y_, float& z_) const { w_ = w; x_ = x; y_ = y; z_ = z; }
-    inline void setToIdentity() { w = 1.0F; x = 0.0F; y = 0.0F; z = 0.0F; }
-    inline void set(float w_, float x_, float y_, float z_) { w = w_; x = x_; y = y_; z = z_; }
+    float getW() const { return w; }
+    float getX() const { return x; }
+    float getY() const { return y; }
+    float getZ() const { return z; }
+    void getWXYZ(float& w_, float& x_, float& y_, float& z_) const { w_ = w; x_ = x; y_ = y; z_ = z; }
+    void setToIdentity() { w = 1.0F; x = 0.0F; y = 0.0F; z = 0.0F; }
+    void set(float w_, float x_, float y_, float z_) { w = w_; x = x_; y = y_; z = z_; }
 public:
     // Equality operators
     bool operator==(const Quaternion& q) const { return w == q.w && x == q.x &&  y == q.y && z == q.z; }
     bool operator!=(const Quaternion& q) const { return w != q.w || x != q.x ||  y != q.y || z != q.z; }
 
     // Unary operations
-    inline Quaternion operator+() const { return *this; } //<! Unary plus
-    inline Quaternion operator-() const { return Quaternion(-w, -x, -y, -z); } //<! Unary negation
-    inline Quaternion conjugate() const { return Quaternion(w, -x, -y, -z); } //<! Conjugate
+    Quaternion operator+() const { return *this; } //<! Unary plus
+    Quaternion operator-() const { return Quaternion(-w, -x, -y, -z); } //<! Unary negation
+    Quaternion conjugate() const { return Quaternion(w, -x, -y, -z); } //<! Conjugate
 
-    inline Quaternion operator+=(const Quaternion& q) { w += q.w; x += q.x; y += q.y; z += q.z; return *this; } //<! Addition
-    inline Quaternion operator-=(const Quaternion& q) { w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this; } //<! Subtraction
-    inline Quaternion operator*=(float k) { w*=k; x*=k; y*=k; z*=k; return *this; } //<! Multiplication by a scalar
-    inline friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
-    inline Quaternion operator/=(float k) { const float r = 1.0F/k; w*=r; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
+    Quaternion operator+=(const Quaternion& q) { w += q.w; x += q.x; y += q.y; z += q.z; return *this; } //<! Addition
+    Quaternion operator-=(const Quaternion& q) { w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this; } //<! Subtraction
+    Quaternion operator*=(float k) { w*=k; x*=k; y*=k; z*=k; return *this; } //<! Multiplication by a scalar
+    friend Quaternion operator*(float k, const Quaternion& q) { return q*k; } //<! Pre-multiplication by a scalar
+    Quaternion operator/=(float k) { const float r = 1.0F/k; w*=r; x*=r; y*=r; z*=r; return *this; } //<! Division by a scalar
     Quaternion operator*=(const Quaternion& q) {
         const float wt = w*q.w - x*q.x - y*q.y - z*q.z;
         const float xt = w*q.x + x*q.w + y*q.z - z*q.y;
@@ -52,10 +52,10 @@ public:
     }
 
     // Binary operations
-    inline Quaternion operator+(const Quaternion& q) const { return Quaternion(w + q.w, x + q.x, y + q.y, z + q.z); } //<! Addition
-    inline Quaternion operator-(const Quaternion& q) const { return Quaternion(w - q.w, x - q.x, y - q.y, z - q.z); } //<! Subtraction
-    inline Quaternion operator*(float k) const { return Quaternion(w*k, x*k, y*k, z*k); } //<! Multiplication by a scalar
-    inline Quaternion operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
+    Quaternion operator+(const Quaternion& q) const { return Quaternion(w + q.w, x + q.x, y + q.y, z + q.z); } //<! Addition
+    Quaternion operator-(const Quaternion& q) const { return Quaternion(w - q.w, x - q.x, y - q.y, z - q.z); } //<! Subtraction
+    Quaternion operator*(float k) const { return Quaternion(w*k, x*k, y*k, z*k); } //<! Multiplication by a scalar
+    Quaternion operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     Quaternion operator*(const Quaternion& q) const {
         return Quaternion(
             w*q.w - x*q.x - y*q.y - z*q.z,
@@ -112,37 +112,40 @@ public:
     }
     xyz_t rotate(const xyz_t& v) const; //<! Rotate a vector
 public:
-    inline float magnitudeSquared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
+    float magnitudeSquared() const { return w*w + x*x + y*y +z*z; } //<! The square of the magnitude
     float magnitude() const { return sqrtf(magnitudeSquared()); } //<! The magnitude
-    Quaternion normalize() const; //<! Return the normalized quaternion
-    inline Quaternion normalizeInPlace() { *this=normalize(); return *this; } //<! Normalize, in-place
+    float squaredNorm() const { return magnitudeSquared(); } //<! The square of the magnitude (using Eigen library naming)
+    float norm() const { return magnitude(); } //<! The  magnitude (using Eigen library naming)
+    Quaternion normalized() const; //<! Return the normalized quaternion
+    Quaternion normalize() { *this=normalized(); return *this; } //<! Normalize, in-place (using Eigen library naming)
+    Quaternion normalizeInPlace() { *this=normalized(); return *this; } //<! Normalize, in-place
 
-    inline xyz_t imaginary() const { return xyz_t{x, y, z}; } //<! The imaginary part of the quaternion
-    inline xyz_t directionCosineMatrixZ() const { return xyz_t{2.0F*(w*y + x*z), 2.0F*(y*z - w*x), w*w - x*x - y*y + z*z }; } //!< Last column of the equivalent rotation matrix, but calculated more efficiently than a full conversion
+    xyz_t imaginary() const { return xyz_t{x, y, z}; } //<! The imaginary part of the quaternion
+    xyz_t directionCosineMatrixZ() const { return xyz_t{2.0F*(w*y + x*z), 2.0F*(y*z - w*x), w*w - x*x - y*y + z*z }; } //!< Last column of the equivalent rotation matrix, but calculated more efficiently than a full conversion
 
     // Euler angle calculations. Note that these are computationally expensive.
     float calculateRollRadians() const;
     float calculatePitchRadians() const;
     float calculateYawRadians() const;
 
-    inline float calculateRollDegrees() const  { return RADIANS_TO_DEGREES * calculateRollRadians(); }
-    inline float calculatePitchDegrees() const { return RADIANS_TO_DEGREES * calculatePitchRadians(); }
-    inline float calculateYawDegrees() const   { return RADIANS_TO_DEGREES * calculateYawRadians(); }
+    float calculateRollDegrees() const  { return RADIANS_TO_DEGREES * calculateRollRadians(); }
+    float calculatePitchDegrees() const { return RADIANS_TO_DEGREES * calculatePitchRadians(); }
+    float calculateYawDegrees() const   { return RADIANS_TO_DEGREES * calculateYawRadians(); }
 
     // Functions to calculate the sin, cos, and tan of the Euler angles.
     // Sometimes this can avoid the computationally expensive calculation of the angles themselves.
     float sinRoll() const;
     float sinRollClipped() const;
     float cosRoll() const;
-    inline float tanRoll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
-    inline float sinPitch() const { return 2.0F*(w*y - x*z); }
+    float tanRoll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
+    float sinPitch() const { return 2.0F*(w*y - x*z); }
     //! clip sin(pitchAngle) to +/-1.0F when pitch angle outside range [-90 degrees, 90 degrees]
     float sinPitchClipped() const { const float d = w*w - y*y; return std::signbit(d) ? std::copysignf(1.0F, sinPitch()) : sinPitch(); }
     float cosPitch() const;
     float tanPitch() const;
     float sinYaw() const;
     float cosYaw() const;
-    inline float tanYaw() const { return (w*z + x*y)/(0.5F - y*y - z*z); }
+    float tanYaw() const { return (w*z + x*y)/(0.5F - y*y - z*z); }
 public:
     float w;
     float x;
