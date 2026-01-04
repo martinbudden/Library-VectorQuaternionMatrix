@@ -35,7 +35,6 @@ public:
     float norm() const { return magnitude(); } //<! The  magnitude (using Eigen library naming)
     xy_t normalized() const; //<! Return the normalized vector
     xy_t normalize() { *this=normalized(); return *this; } //<! Normalize, in-place (using Eigen library naming)
-    xy_t normalizeInPlace() { *this=normalized(); return *this; } //<! Normalize, in-place
     xy_t absolute() const { return{std::fabs(x), std::fabs(y) };  }//<! Return the vector consisting of the absolute value of all components
     xy_t absoluteInPlace() { *this=absolute(); return *this; } //<! Absolute value of all components, in-place
     static float clamp(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! Clamp helper function
@@ -46,7 +45,7 @@ public:
     void setOnes() { x = 1.0F; y = 1.0F; }
     void setConstant(float value) { x = value; y = value; }
     float sum() const { return x + y; } 
-    float mean() const { return sum()/2.0F; } 
+    float mean() const { return sum()*0.5F; } 
     float prod() const { return x*y; } 
 public:
     float x;

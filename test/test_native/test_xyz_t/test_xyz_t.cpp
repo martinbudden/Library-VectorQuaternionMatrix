@@ -124,7 +124,7 @@ void test_xyz_t_functions()
     TEST_ASSERT_EQUAL_FLOAT(aNE.z, aN.z);
 
     xyz_t aN2 = a;
-    aN2.normalizeInPlace();
+    aN2.normalize();
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN2.magnitude());
     TEST_ASSERT_EQUAL_FLOAT(aNE.x, aN2.x);
     TEST_ASSERT_EQUAL_FLOAT(aNE.y, aN2.y);

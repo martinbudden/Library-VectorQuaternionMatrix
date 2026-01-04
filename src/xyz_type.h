@@ -35,8 +35,7 @@ public:
     float squaredNorm() const { return magnitudeSquared(); } //<! The square of the magnitude (using Eigen library naming)
     float norm() const { return magnitude(); } //<! The  magnitude (using Eigen library naming)
     xyz_t normalized() const; //<! Return the normalized vector
-    xyz_t normalize() { *this=normalized(); return *this; } //<! Normalize, in-place (using Eigen library naming)
-    xyz_t normalizeInPlace() { *this=normalized(); return *this; } //<! Normalize, in-place
+    xyz_t normalize() { *this=normalized(); return *this; } //<! Normalize, in-place
     xyz_t absolute() const { return{std::fabs(x), std::fabs(y), std::fabs(z) };  }//<! Return the vector consisting of the absolute value of all components
     xyz_t absoluteInPlace() { *this=absolute(); return *this; } //<! Absolute value of all components, in-place
     static float clamp(float value, float min, float max) { return value < min ? min : value > max ? max : value; } //<! clamp helper function
@@ -47,7 +46,7 @@ public:
     void setOnes() { x = 1.0F; y = 1.0F; z = 1.0F; }
     void setConstant(float value) { x = value; y = value; z = value; }
     float sum() const { return x + y + z; } 
-    float mean() const { return sum()/3.0F; } 
+    float mean() const { return sum()*(1.0F/3.0F); } 
     float prod() const { return x*y*z; } 
 public:
     float x;
