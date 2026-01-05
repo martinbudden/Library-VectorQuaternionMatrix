@@ -11,7 +11,7 @@
         "url": "https://github.com/martinbudden/Library-VectorQuaternionMatrix.git"
     },
     "license": "MIT",
-    "version": "0.4.7",
+    "version": "0.4.8",
     "frameworks": "*",
     "platforms": "*",
     "headers": ["xy_type.h", "xyz_type.h", "Matrix2x2.h", "Matrix3x3.h", "Quaternion.h", "FastTrigonometry.h"]
