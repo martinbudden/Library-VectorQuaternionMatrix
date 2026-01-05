@@ -2,6 +2,13 @@
 
 #include "xyz_type.h"
 
+
+struct acc_gyro_rps_t {
+    xyz_t gyroRPS;
+    xyz_t acc;
+};
+
+
 class Quaternion {
 public:
     Quaternion() : w(1.0F), x(0.0F), y(0.0F), z(0.0F) {}
