@@ -75,6 +75,27 @@ void test_matrix3x3_constructors()
     const Matrix3x3 E(&b[0]);
     const Matrix3x3 F = A;
     const Matrix3x3 G(A);
+    const Matrix3x3 H(xyz_t{2,3,5}, xyz_t{7,11,13}, xyz_t{17,19,23});
+    Matrix3x3 I;
+    I.setRow(0, xyz_t{ 2, 3, 5});
+    I.setRow(1, xyz_t{ 7,11,13});
+    I.setRow(2, xyz_t{17,19,23});
+    TEST_ASSERT_TRUE((xyz_t{ 2, 3, 5} == I.getRow(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 7,11,13} == I.getRow(1)));
+    TEST_ASSERT_TRUE((xyz_t{17,19,23} == I.getRow(2)));
+    TEST_ASSERT_TRUE((xyz_t{ 2, 7,17} == I.getColumn(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 3,11,19} == I.getColumn(1)));
+    TEST_ASSERT_TRUE((xyz_t{ 5,13,23} == I.getColumn(2)));
+    Matrix3x3 J;
+    J.setColumn(0, xyz_t{ 2, 7,17});
+    J.setColumn(1, xyz_t{ 3,11,19});
+    J.setColumn(2, xyz_t{ 5,13,23});
+    TEST_ASSERT_TRUE((xyz_t{ 2, 3, 5} == J.getRow(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 7,11,13} == J.getRow(1)));
+    TEST_ASSERT_TRUE((xyz_t{17,19,23} == J.getRow(2)));
+    TEST_ASSERT_TRUE((xyz_t{ 2, 7,17} == J.getColumn(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 3,11,19} == J.getColumn(1)));
+    TEST_ASSERT_TRUE((xyz_t{ 5,13,23} == J.getColumn(2)));
 
     TEST_ASSERT_TRUE(A == A); // NOLINT(misc-redundant-expression)
     TEST_ASSERT_TRUE(A == B);
@@ -83,6 +104,9 @@ void test_matrix3x3_constructors()
     TEST_ASSERT_TRUE(A == E);
     TEST_ASSERT_TRUE(A == F);
     TEST_ASSERT_TRUE(A == G);
+    TEST_ASSERT_TRUE(A == H);
+    TEST_ASSERT_TRUE(A == I);
+    TEST_ASSERT_TRUE(A == J);
 
     Matrix3x3 M {};
     TEST_ASSERT_EQUAL(0.0F, M[0]);

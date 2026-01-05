@@ -11,6 +11,10 @@ public:
     bool operator==(const xyz_t& v) const { return x == v.x &&  y == v.y && z == v.z; }
     bool operator!=(const xyz_t& v) const { return x != v.x ||  y != v.y || z != v.z; }
 
+    // Index operators
+    float operator[](size_t pos) const { return (pos == 0) ? x : (pos == 1) ? y : z; } //<! Index operator
+    float& operator[](size_t pos) { return (pos == 0) ? x : (pos == 1) ? y : z; } //<! Index operator
+
     // Unary operators
     xyz_t operator+() const { return *this; } //<! Unary plus
     xyz_t operator-() const { return xyz_t{-x, -y, -z }; } //<! Unary negation
@@ -28,6 +32,8 @@ public:
     xyz_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     float dot(const xyz_t& v) const { return  x*v.x + y*v.y + z*v.z; } //!< Vector dot product
     xyz_t cross(const xyz_t& v) const { return xyz_t{y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x}; } //!< Vector cross product
+    float distanceSquared(const xyz_t& v) const { return (x-v.x)*(x-v.x) + (y-v.y)*(y-v.y) + (z-v.z)*(z-v.z); } //!< Distance between two points squared
+    float distance(const xyz_t& v) const { return sqrtf(distanceSquared(v)); } //!< Distance between two points
 
     // Other functions
     float magnitudeSquared() const { return x*x + y*y + z*z; } //<! The square of the magnitude

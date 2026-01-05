@@ -11,6 +11,10 @@ public:
     bool operator==(const xy_t& v) const { return x == v.x &&  y == v.y; }
     bool operator!=(const xy_t& v) const { return x != v.x ||  y != v.y; }
 
+    // Index operators
+    float operator[](size_t pos) const { return (pos == 0) ? x : y; } //<! Index operator
+    float& operator[](size_t pos) { return (pos == 0) ? x : y; } //<! Index operator
+
     // Unary operators
     xy_t operator+() const { return *this; } //<! Unary plus
     xy_t operator-() const { return xy_t{-x, -y }; } //<! Unary negation
@@ -27,6 +31,8 @@ public:
     friend xy_t operator*(float k, const xy_t& v) { return v*k; } //<! Pre-multiplication by a scalar
     xy_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     float dot(const xy_t& v) const { return  x*v.x + y*v.y; } //!< Vector dot product
+    float distanceSquared(const xy_t& v) const { return (x-v.x)*(x-v.x) + (y-v.y)*(y-v.y); } //!< Distance between two points squared
+    float distance(const xy_t& v) const { return sqrtf(distanceSquared(v)); } //!< Distance between two points
 
     // Other functions
     float magnitudeSquared() const { return x*x + y*y; } //<! The square of the magnitude

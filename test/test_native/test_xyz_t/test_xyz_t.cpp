@@ -45,6 +45,16 @@ void test_xyz_t_assignment()
     TEST_ASSERT_EQUAL(0.0F, a.x);
     TEST_ASSERT_EQUAL(0.0F, a.y);
     TEST_ASSERT_EQUAL(0.0F, a.z);
+
+    a[0] = 2.0F;
+    a[1] = 3.0F;
+    a[2] = 5.0F;
+    TEST_ASSERT_EQUAL(2.0F, a.x);
+    TEST_ASSERT_EQUAL(3.0F, a.y);
+    TEST_ASSERT_EQUAL(5.0F, a.z);
+    TEST_ASSERT_EQUAL(2.0F, a[0]);
+    TEST_ASSERT_EQUAL(3.0F, a[1]);
+    TEST_ASSERT_EQUAL(5.0F, a[2]);
 }
 
 void test_xyz_t_operators()
@@ -134,6 +144,11 @@ void test_xyz_t_functions()
     TEST_ASSERT_TRUE(a_dot_b == a.dot(b));
     TEST_ASSERT_TRUE(a.magnitudeSquared() == a.dot(a));
     TEST_ASSERT_TRUE(b.magnitudeSquared() == b.dot(b));
+
+    TEST_ASSERT_EQUAL_FLOAT(233.0F, a.distanceSquared(b));
+    TEST_ASSERT_EQUAL_FLOAT(sqrtf(233.0F), a.distance(b));
+    TEST_ASSERT_EQUAL_FLOAT(233.0F, b.distanceSquared(a));
+    TEST_ASSERT_EQUAL_FLOAT(233.0F, (a-b).magnitudeSquared());
 
     const xyz_t a_cross_b = a.cross(b);
     TEST_ASSERT_EQUAL(3*17 - 5*11, a_cross_b.x);

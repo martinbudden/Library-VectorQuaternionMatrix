@@ -12,13 +12,15 @@ public:
     explicit Matrix2x2(const std::array<float, 4>& a) : _a(a) {}
     explicit Matrix2x2(const float a[4]) : _a({{ a[0], a[1], a[2], a[3] }}) {}
     Matrix2x2(float a0, float a1, float a2, float a3) : _a({{ a0, a1, a2, a3 }}) {}
+    Matrix2x2(const xy_t& v0, const xy_t& v1) { _a[0] = v0.x; _a[1] = v0.y, _a[2] = v1.x; _a[3] = v1.y; }
 public:
-    float operator[](size_t pos) const { return _a[pos]; } //<! Index operator
-    float& operator[](size_t pos) { return _a[pos]; } //<! Index operator
-
     // Equality operators
     bool operator!=(const Matrix2x2& m) const { for (size_t ii = 0; ii < _a.size(); ++ii) { if (_a[ii] != m[ii]) {return true;} } return false; } //<! Inequality operator
     bool operator==(const Matrix2x2& m) const { return !operator!=(m); } //<! Equality operator
+
+    // Index operators
+    float operator[](size_t pos) const { return _a[pos]; } //<! Index operator
+    float& operator[](size_t pos) { return _a[pos]; } //<! Index operator
 
     // Unary operations
     Matrix2x2 operator+() const { return *this; } //<! Unary plus
@@ -33,10 +35,8 @@ public:
     //! Unary multiplication
     Matrix2x2 operator*=(const Matrix2x2& m) {
         std::array<float, 4> a {{
-            _a[0]*m[0] + _a[1]*m[2],
-            _a[0]*m[1] + _a[1]*m[3],
-            _a[2]*m[0] + _a[3]*m[2],
-            _a[2]*m[1] + _a[3]*m[3],
+            _a[0]*m[0] + _a[1]*m[2],    _a[0]*m[1] + _a[1]*m[3],
+            _a[2]*m[0] + _a[3]*m[2],    _a[2]*m[1] + _a[3]*m[3],
         }};
         _a = a;
         return *this;
@@ -54,10 +54,8 @@ public:
     //! Multiplication
     Matrix2x2 operator*(const Matrix2x2& m) const {
         return Matrix2x2(
-            _a[0]*m[0] + _a[1]*m[2],
-            _a[0]*m[1] + _a[1]*m[3],
-            _a[2]*m[0] + _a[3]*m[2],
-            _a[2]*m[1] + _a[3]*m[3]
+            _a[0]*m[0] + _a[1]*m[2],    _a[0]*m[1] + _a[1]*m[3],
+            _a[2]*m[0] + _a[3]*m[2],    _a[2]*m[1] + _a[3]*m[3]
         );
     }
 
@@ -67,6 +65,23 @@ public:
 
     void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[3] = 1.0F; } //<! Sets matrix to identity matrix
     void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[3] = d; } //<! Sets diagonal of matrix to d
+
+    void setRow(size_t row, const xy_t& value) {
+        if (row == 0) {
+            _a[0] = value.x; _a[1] = value.y;
+        } else {
+            _a[2] = value.x; _a[3] = value.y;
+        }
+    }
+    xy_t getRow(size_t row) { return (row == 0) ? xy_t{_a[0],_a[1]} : xy_t{_a[2],_a[3]}; }
+    void setColumn(size_t column, const xy_t& value) {
+        if (column == 0) {
+            _a[0] = value.x; _a[2] = value.y;
+        } else {
+            _a[1] = value.x; _a[3] = value.y;
+        }
+    } 
+    xy_t getColumn(size_t column) { return (column == 0) ? xy_t{_a[0],_a[2]} : xy_t{_a[1],_a[3]}; }
 
     void addToDiagonalInPlace(const xy_t& v) { _a[0]+=v.x; _a[3]+=v.y; } //<! Add vector to diagonal of matrix, in-place
     void subtractFromDiagonalInPlace(const xy_t& v) { _a[0]-=v.x, _a[3]-=v.y; } //<! Subtract vector from diagonal of matrix, in-place
@@ -108,7 +123,7 @@ public:
     float mean() const { return sum()/4.0F; } 
     float prod() const { return _a[0]*_a[1]*_a[2]*_a[3]; } 
     float trace() const { return _a[0] + _a[3]; } 
-
+    float discriminant() const { const float t = trace(); return t*t - 4.0F*determinant(); }
 protected:
     std::array<float, 4> _a;
 };

@@ -58,6 +58,22 @@ void test_matrix2x2_constructors()
     const Matrix2x2 E(&b[0]);
     const Matrix2x2 F = A;
     const Matrix2x2 G(A);
+    const Matrix2x2 H(xy_t{2,3}, xy_t{5,7});
+    Matrix2x2 I;
+    I.setRow(0, xy_t{2,3});
+    I.setRow(1, xy_t{5,7});
+    TEST_ASSERT_TRUE((xy_t{2,3} == I.getRow(0)));
+    TEST_ASSERT_TRUE((xy_t{5,7} == I.getRow(1)));
+    TEST_ASSERT_TRUE((xy_t{2,5} == I.getColumn(0)));
+    TEST_ASSERT_TRUE((xy_t{3,7} == I.getColumn(1)));
+    Matrix2x2 J;
+    J.setColumn(0, xy_t{2,5});
+    J.setColumn(1, xy_t{3,7});
+    TEST_ASSERT_TRUE((xy_t{2,3} == J.getRow(0)));
+    TEST_ASSERT_TRUE((xy_t{5,7} == J.getRow(1)));
+    TEST_ASSERT_TRUE((xy_t{2,5} == J.getColumn(0)));
+    TEST_ASSERT_TRUE((xy_t{3,7} == J.getColumn(1)));
+
 
     TEST_ASSERT_TRUE(A == A); // NOLINT(misc-redundant-expression)
     TEST_ASSERT_TRUE(A == B);
@@ -66,6 +82,9 @@ void test_matrix2x2_constructors()
     TEST_ASSERT_TRUE(A == E);
     TEST_ASSERT_TRUE(A == F);
     TEST_ASSERT_TRUE(A == G);
+    TEST_ASSERT_TRUE(A == H);
+    TEST_ASSERT_TRUE(A == I);
+    TEST_ASSERT_TRUE(A == J);
 
     Matrix2x2 M {};
     TEST_ASSERT_EQUAL(0.0F, M[0]);

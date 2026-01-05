@@ -12,6 +12,11 @@ public:
     explicit Matrix3x3(const std::array<float, 9>& a) : _a(a) {}
     explicit Matrix3x3(const float a[9]) : _a({{ a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] }}) {}
     Matrix3x3(float a0, float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8) : _a({{ a0, a1, a2, a3, a4, a5, a6, a7, a8 }}) {}
+    Matrix3x3(const xyz_t& v0, const xyz_t& v1, const xyz_t& v2) { 
+        _a[0] = v0.x; _a[1] = v0.y, _a[2] = v0.z;
+        _a[3] = v1.x; _a[4] = v1.y, _a[5] = v1.z;
+        _a[6] = v2.x; _a[7] = v2.y, _a[8] = v2.z;
+    }
     //! Create rotation matrix from quaternion
     explicit Matrix3x3(const Quaternion& q) {
         const float w = q.getW();
@@ -19,25 +24,20 @@ public:
         const float y = q.getY();
         const float z = q.getZ();
         // see [Quaternion-derived rotation matrix](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Quaternion-derived_rotation_matrix), uses Hamilton convention
-        _a[0] = 1.0F - 2.0F*(y*y + z*z);
-        _a[1] = 2.0F*(x*y - w*z);
-        _a[2] = 2.0F*(w*y + x*z);
-        _a[3] = 2.0F*(w*z + x*y);
-        _a[4] = 1.0F - 2.0F*(x*x + z*z);
-        _a[5] = 2.0F*(y*z - w*x);
-        _a[6] = 2.0F*(x*z - w*y);
-        _a[7] = 2.0F*(w*x + y*z);
-        _a[8] = 1.0F - 2.0F*(x*x + y*y);
+        _a[0] = 1.0F - 2.0F*(y*y + z*z);    _a[1] = 2.0F*(x*y - w*z);           _a[2] = 2.0F*(w*y + x*z);
+        _a[3] = 2.0F*(w*z + x*y);           _a[4] = 1.0F - 2.0F*(x*x + z*z);    _a[5] = 2.0F*(y*z - w*x);
+        _a[6] = 2.0F*(x*z - w*y);           _a[7] = 2.0F*(w*x + y*z);           _a[8] = 1.0F - 2.0F*(x*x + y*y);
     }
     static Matrix3x3 fromEulerAnglesRadians(float rollRadians, float pitchRadians, float yawRadians);
     static Matrix3x3 fromEulerAnglesDegrees(float rollDegrees, float pitchDegrees, float yawDegrees);
 public:
-    float operator[](size_t pos) const { return _a[pos]; } //<! Index operator
-    float& operator[](size_t pos) { return _a[pos]; } //<! Index operator
-
     // Equality operators
     bool operator!=(const Matrix3x3& m) const { for (size_t ii = 0; ii < _a.size(); ++ii) { if (_a[ii] != m[ii]) {return true;} } return false; } //<! Inequality operator
     bool operator==(const Matrix3x3& m) const { return !operator!=(m); } //<! Equality operator
+
+    // Index operators
+    float operator[](size_t pos) const { return _a[pos]; } //<! Index operator
+    float& operator[](size_t pos) { return _a[pos]; } //<! Index operator
 
     // Unary operations
     Matrix3x3 operator+() const { return *this; } //<! Unary plus
@@ -52,15 +52,9 @@ public:
     //! Unary multiplication
     Matrix3x3 operator*=(const Matrix3x3& m) {
         std::array<float, 9> a {{
-            _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
-            _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],
-            _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8],
-            _a[3]*m[0] + _a[4]*m[3] + _a[5]*m[6],
-            _a[3]*m[1] + _a[4]*m[4] + _a[5]*m[7],
-            _a[3]*m[2] + _a[4]*m[5] + _a[5]*m[8],
-            _a[6]*m[0] + _a[7]*m[3] + _a[8]*m[6],
-            _a[6]*m[1] + _a[7]*m[4] + _a[8]*m[7],
-            _a[6]*m[2] + _a[7]*m[5] + _a[8]*m[8]
+            _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],   _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],   _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8],
+            _a[3]*m[0] + _a[4]*m[3] + _a[5]*m[6],   _a[3]*m[1] + _a[4]*m[4] + _a[5]*m[7],   _a[3]*m[2] + _a[4]*m[5] + _a[5]*m[8],
+            _a[6]*m[0] + _a[7]*m[3] + _a[8]*m[6],   _a[6]*m[1] + _a[7]*m[4] + _a[8]*m[7],   _a[6]*m[2] + _a[7]*m[5] + _a[8]*m[8]
         }};
         _a = a;
         return *this;
@@ -78,15 +72,9 @@ public:
     //! Multiplication
     Matrix3x3 operator*(const Matrix3x3& m) const {
         return Matrix3x3 (
-            _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],
-            _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],
-            _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8],
-            _a[3]*m[0] + _a[4]*m[3] + _a[5]*m[6],
-            _a[3]*m[1] + _a[4]*m[4] + _a[5]*m[7],
-            _a[3]*m[2] + _a[4]*m[5] + _a[5]*m[8],
-            _a[6]*m[0] + _a[7]*m[3] + _a[8]*m[6],
-            _a[6]*m[1] + _a[7]*m[4] + _a[8]*m[7],
-            _a[6]*m[2] + _a[7]*m[5] + _a[8]*m[8]
+            _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],   _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],   _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8], 
+            _a[3]*m[0] + _a[4]*m[3] + _a[5]*m[6],   _a[3]*m[1] + _a[4]*m[4] + _a[5]*m[7],   _a[3]*m[2] + _a[4]*m[5] + _a[5]*m[8],
+            _a[6]*m[0] + _a[7]*m[3] + _a[8]*m[6],   _a[6]*m[1] + _a[7]*m[4] + _a[8]*m[7],   _a[6]*m[2] + _a[7]*m[5] + _a[8]*m[8]
         );
     }
 
@@ -96,6 +84,27 @@ public:
 
     void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[4] = 1.0F; _a[8] = 1.0F; } //<! Sets matrix to identity matrix
     void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[4] = d; _a[8] = d; } //<! Sets diagonal of matrix to d
+
+    void setRow(size_t row, const xyz_t& value) {
+        if (row == 0) {
+            _a[0] = value.x; _a[1] = value.y; _a[2] = value.z;
+        } else if(row == 1) {
+            _a[3] = value.x; _a[4] = value.y; _a[5] = value.z;
+        } else {
+            _a[6] = value.x; _a[7] = value.y; _a[8] = value.z;
+        }
+    }
+    xyz_t getRow(size_t row) { return (row == 0) ? xyz_t{_a[0],_a[1],_a[2]} : (row == 1) ? xyz_t{_a[3],_a[4],_a[5]} : xyz_t{_a[6],_a[7],_a[8]}; }
+    void setColumn(size_t column, const xyz_t& value) {
+        if (column == 0) {
+            _a[0] = value.x; _a[3] = value.y; _a[6] = value.z;
+        } else if(column == 1) {
+            _a[1] = value.x; _a[4] = value.y; _a[7] = value.z;
+        } else {
+            _a[2] = value.x; _a[5] = value.y; _a[8] = value.z;
+        }
+    } 
+    xyz_t getColumn(size_t column) { return (column == 0) ? xyz_t{_a[0],_a[3],_a[6]} : (column == 1) ? xyz_t{_a[1],_a[4],_a[7]} : xyz_t{_a[2],_a[5],_a[8]}; }
 
     void addToDiagonalInPlace(const xyz_t& v) { _a[0]+=v.x; _a[4]+=v.y; _a[8]+=v.z; } //<! Add vector to diagonal of matrix, in-place
     void subtractFromDiagonalInPlace(const xyz_t& v) { _a[0]-=v.x, _a[4]-=v.y; _a[8]-=v.z; } //<! Subtract vector from diagonal of matrix, in-place
@@ -128,15 +137,9 @@ public:
         // A D G
         // B E H
         // C F I
-        _a[0] = A;
-        _a[1] = D;
-        _a[2] = G;
-        _a[3] = B;
-        _a[4] = E;
-        _a[5] = H;
-        _a[6] = C;
-        _a[7] = F;
-        _a[8] = I;
+        _a[0] = A;  _a[1] = D;  _a[2] = G;
+        _a[3] = B;  _a[4] = E;  _a[5] = H;
+        _a[6] = C;  _a[7] = F;  _a[8] = I;
     }
     Matrix3x3 adjoint() const { Matrix3x3 ret = *this; (void)ret.adjointInPlace(); return ret; } //<! Returns adjoint of matrix
 
@@ -164,15 +167,9 @@ public:
         // A D G
         // B E H
         // C F I
-        _a[0] = A/det;
-        _a[1] = D/det;
-        _a[2] = G/det;
-        _a[3] = B/det;
-        _a[4] = E/det;
-        _a[5] = H/det;
-        _a[6] = C/det;
-        _a[7] = F/det;
-        _a[8] = I/det;
+        _a[0] = A/det;  _a[1] = D/det;  _a[2] = G/det;
+        _a[3] = B/det;  _a[4] = E/det;  _a[5] = H/det;
+        _a[6] = C/det;  _a[7] = F/det;  _a[8] = I/det;
 
         return true;
     }
