@@ -2,7 +2,10 @@
 
 #include "xyz_type.h"
 
-
+/*!
+Combined accelerometer and gyroscope values.
+Gyroscope values in radians per second(RPS).
+*/
 struct acc_gyro_rps_t {
     xyz_t gyroRPS;
     xyz_t acc;
@@ -13,7 +16,7 @@ class Quaternion {
 public:
     Quaternion() : w(1.0F), x(0.0F), y(0.0F), z(0.0F) {}
     Quaternion(float w_, float x_, float y_, float z_) : w(w_), x(x_), y(y_), z(z_) {}
-	Quaternion(const xyz_t& src, const xyz_t& dst);
+    Quaternion(const xyz_t& src, const xyz_t& dst);
 public:
     static constexpr float M_PI_F = 3.14159265358979323846F;
     static constexpr float M_PI_2_F = M_PI_F / 2.0F;

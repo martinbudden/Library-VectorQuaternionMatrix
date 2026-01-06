@@ -299,7 +299,7 @@ void test_Matrix2x2_binary()
 
     //const Matrix2x2 A(  2,  3,
     //                    5,  7);
-    const Matrix2x2 D(67,  0, 
+    const Matrix2x2 D(67,  0,
                        0, 71);
     const Matrix2x2 DA = D * A;
     TEST_ASSERT_EQUAL_FLOAT(2 * 67, DA[0]);

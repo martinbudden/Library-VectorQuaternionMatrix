@@ -12,7 +12,7 @@ public:
     explicit Matrix3x3(const std::array<float, 9>& a) : _a(a) {}
     explicit Matrix3x3(const float a[9]) : _a({{ a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] }}) {}
     Matrix3x3(float a0, float a1, float a2, float a3, float a4, float a5, float a6, float a7, float a8) : _a({{ a0, a1, a2, a3, a4, a5, a6, a7, a8 }}) {}
-    Matrix3x3(const xyz_t& v0, const xyz_t& v1, const xyz_t& v2) { 
+    Matrix3x3(const xyz_t& v0, const xyz_t& v1, const xyz_t& v2) {
         _a[0] = v0.x; _a[1] = v0.y, _a[2] = v0.z;
         _a[3] = v1.x; _a[4] = v1.y, _a[5] = v1.z;
         _a[6] = v2.x; _a[7] = v2.y, _a[8] = v2.z;
@@ -72,7 +72,7 @@ public:
     //! Multiplication
     Matrix3x3 operator*(const Matrix3x3& m) const {
         return Matrix3x3 (
-            _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],   _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],   _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8], 
+            _a[0]*m[0] + _a[1]*m[3] + _a[2]*m[6],   _a[0]*m[1] + _a[1]*m[4] + _a[2]*m[7],   _a[0]*m[2] + _a[1]*m[5] + _a[2]*m[8],
             _a[3]*m[0] + _a[4]*m[3] + _a[5]*m[6],   _a[3]*m[1] + _a[4]*m[4] + _a[5]*m[7],   _a[3]*m[2] + _a[4]*m[5] + _a[5]*m[8],
             _a[6]*m[0] + _a[7]*m[3] + _a[8]*m[6],   _a[6]*m[1] + _a[7]*m[4] + _a[8]*m[7],   _a[6]*m[2] + _a[7]*m[5] + _a[8]*m[8]
         );
@@ -103,7 +103,7 @@ public:
         } else {
             _a[2] = value.x; _a[5] = value.y; _a[8] = value.z;
         }
-    } 
+    }
     xyz_t getColumn(size_t column) { return (column == 0) ? xyz_t{_a[0],_a[3],_a[6]} : (column == 1) ? xyz_t{_a[1],_a[4],_a[7]} : xyz_t{_a[2],_a[5],_a[8]}; }
 
     void addToDiagonalInPlace(const xyz_t& v) { _a[0]+=v.x; _a[4]+=v.y; _a[8]+=v.z; } //<! Add vector to diagonal of matrix, in-place
@@ -180,10 +180,10 @@ public:
 
     float determinant() const { return _a[0]*(_a[4]*_a[8] - _a[5]*_a[7]) - _a[1]*(_a[3]*_a[8] - _a[5]*_a[6]) + _a[2]*(_a[3]*_a[7] - _a[4]*_a[6]); } //<! Matrix determinant
 
-    float sum() const { return _a[0] + _a[1] + _a[2] + _a[3] + _a[4] + _a[5] + _a[6] + _a[7] + _a[8]; } 
-    float mean() const { return sum()/9.0F; } 
-    float prod() const { return _a[0]*_a[1]*_a[2]*_a[3]*_a[4]*_a[5]*_a[6]*_a[7]*_a[8]; } 
-    float trace() const { return _a[0] + _a[4] + _a[8]; } 
+    float sum() const { return _a[0] + _a[1] + _a[2] + _a[3] + _a[4] + _a[5] + _a[6] + _a[7] + _a[8]; }
+    float mean() const { return sum()/9.0F; }
+    float prod() const { return _a[0]*_a[1]*_a[2]*_a[3]*_a[4]*_a[5]*_a[6]*_a[7]*_a[8]; }
+    float trace() const { return _a[0] + _a[4] + _a[8]; }
 
     Quaternion quaternion() const;
 protected:

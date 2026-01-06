@@ -80,7 +80,7 @@ public:
         } else {
             _a[1] = value.x; _a[3] = value.y;
         }
-    } 
+    }
     xy_t getColumn(size_t column) { return (column == 0) ? xy_t{_a[0],_a[2]} : xy_t{_a[1],_a[3]}; }
 
     void addToDiagonalInPlace(const xy_t& v) { _a[0]+=v.x; _a[3]+=v.y; } //<! Add vector to diagonal of matrix, in-place
@@ -119,10 +119,10 @@ public:
 
     float determinant() const { return _a[0]*_a[3] -_a[1]*_a[2]; } //<! Matrix determinant
 
-    float sum() const { return _a[0] + _a[1] + _a[2] + _a[3]; } 
-    float mean() const { return sum()/4.0F; } 
-    float prod() const { return _a[0]*_a[1]*_a[2]*_a[3]; } 
-    float trace() const { return _a[0] + _a[3]; } 
+    float sum() const { return _a[0] + _a[1] + _a[2] + _a[3]; }
+    float mean() const { return sum()/4.0F; }
+    float prod() const { return _a[0]*_a[1]*_a[2]*_a[3]; }
+    float trace() const { return _a[0] + _a[3]; }
     float discriminant() const { const float t = trace(); return t*t - 4.0F*determinant(); }
 protected:
     std::array<float, 4> _a;

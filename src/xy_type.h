@@ -50,9 +50,9 @@ public:
     void setZero() { x = 0.0F; y = 0.0F; }
     void setOnes() { x = 1.0F; y = 1.0F; }
     void setConstant(float value) { x = value; y = value; }
-    float sum() const { return x + y; } 
-    float mean() const { return sum()*0.5F; } 
-    float prod() const { return x*y; } 
+    float sum() const { return x + y; }
+    float mean() const { return sum()*0.5F; }
+    float prod() const { return x*y; }
 public:
     float x;
     float y;
