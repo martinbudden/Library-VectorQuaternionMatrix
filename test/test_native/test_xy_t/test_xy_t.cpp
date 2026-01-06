@@ -135,6 +135,8 @@ void test_xy_t_functions()
     TEST_ASSERT_EQUAL_FLOAT(89.0F, b.distanceSquared(a));
     TEST_ASSERT_EQUAL_FLOAT(89.0F, (a-b).magnitudeSquared());
 
+    const float a_cross_b = a.cross(b);
+    TEST_ASSERT_EQUAL(2*11 - 3*7, a_cross_b);
 
     const xy_t d{-100, 200};
     const xy_t d_clamped = xy_t{-50, 50};

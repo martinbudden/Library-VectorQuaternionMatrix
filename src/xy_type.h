@@ -31,6 +31,7 @@ public:
     friend xy_t operator*(float k, const xy_t& v) { return v*k; } //<! Pre-multiplication by a scalar
     xy_t operator/(float k) const { const float r = 1.0F/k; return *this*r; } //<! Division by a scalar
     float dot(const xy_t& v) const { return  x*v.x + y*v.y; } //!< Vector dot product
+    float cross(const xy_t& v) const { return x*v.y - y*v.x; } //!< Z component of vector cross product of this and v extended to 3D
     float distanceSquared(const xy_t& v) const { return (x-v.x)*(x-v.x) + (y-v.y)*(y-v.y); } //!< Distance between two points squared
     float distance(const xy_t& v) const { return sqrtf(distanceSquared(v)); } //!< Distance between two points
 
