@@ -5,4 +5,5 @@
 .vscode/*.*
 !.vscode/settings.json
 
+_scratch/
 compile_commands.json
