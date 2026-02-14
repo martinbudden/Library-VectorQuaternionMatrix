@@ -68,166 +68,166 @@ void test_cos()
     TEST_ASSERT_EQUAL_FLOAT(cosf(-100.0F*DEGREES_TO_RADIANS), FastTrigonometry::cos(-100.0F*DEGREES_TO_RADIANS));
 }
 
-void test_sincos()
+void test_sin_cos()
 {
     constexpr float DEGREES_TO_RADIANS { static_cast<float>(M_PI) / 180.0F };
 
     float sin = 0.0F;
     float cos = 0.0F;
 
-    FastTrigonometry::sincos(0.0F, sin, cos);
+    FastTrigonometry::sin_cos(0.0F, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(0.0F, sin);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, cos);
 
-    FastTrigonometry::sincos(370.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(370.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(370.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(370.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-370.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-370.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-370.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-370.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(10.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(10.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(10.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(10.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(20.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(20.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(20.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(20.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(30.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(30.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(30.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(30.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(40.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(40.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(40.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(40.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(50.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(50.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(50.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(50.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(60.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(60.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(60.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(60.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(70.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(70.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(70.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(70.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(80.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(80.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(80.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(80.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(90.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(90.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(90.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_FLOAT_WITHIN(4.4E-08, cosf(90.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(100.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(100.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(100.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(100.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(110.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(110.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(110.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(110.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(120.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(120.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(120.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(120.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(130.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(130.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(130.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(130.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(140.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(140.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(140.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(140.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(150.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(150.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(150.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(150.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(160.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(160.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(160.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(160.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(170.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(170.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(170.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(170.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(180.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(180.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(0.0F, sin);
     TEST_ASSERT_EQUAL_FLOAT(-1.0F, cos);
 
-    FastTrigonometry::sincos(-10.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-10.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-10.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-10.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-20.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-20.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-20.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-20.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-30.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-30.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-30.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-30.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-40.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-40.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-40.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-40.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-50.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-50.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-50.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-50.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-60.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-60.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-60.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-60.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-70.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-70.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-70.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-70.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-80.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-80.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-80.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-80.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-90.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-90.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-90.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_FLOAT_WITHIN(4.4E-08, cosf(-90.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-100.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-100.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-100.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-100.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-110.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-110.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-110.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-110.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-120.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-120.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-120.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-120.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-130.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-130.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-130.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-130.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-140.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-140.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-140.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-140.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-150.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-150.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-150.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-150.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-160.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-160.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-160.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-160.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(-170.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(-170.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(sinf(-170.0F*DEGREES_TO_RADIANS), sin);
     TEST_ASSERT_EQUAL_FLOAT(cosf(-170.0F*DEGREES_TO_RADIANS), cos);
 
-    FastTrigonometry::sincos(180.0F*DEGREES_TO_RADIANS, sin, cos);
+    FastTrigonometry::sin_cos(180.0F*DEGREES_TO_RADIANS, sin, cos);
     TEST_ASSERT_EQUAL_FLOAT(0.0F, sin);
     TEST_ASSERT_EQUAL_FLOAT(-1.0F, cos);
 }
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
 
     RUN_TEST(test_sin);
     RUN_TEST(test_cos);
-    RUN_TEST(test_sincos);
+    RUN_TEST(test_sin_cos);
 
     UNITY_END();
 }

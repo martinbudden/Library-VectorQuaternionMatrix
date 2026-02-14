@@ -14,13 +14,13 @@ Quaternion              KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-calculateRollRadians    KEYWORD2
-calculatePitchRadians   KEYWORD2
-calculateYawRadians     KEYWORD2
+calculate_roll_radians    KEYWORD2
+calculate_pitch_radians   KEYWORD2
+calculate_yaw_radians     KEYWORD2
 
-calculateRollDegrees    KEYWORD2
-calculatePitchDegrees   KEYWORD2
-calculateYawDegrees     KEYWORD2
+calculate_roll_degrees    KEYWORD2
+calculate_pitch_degrees   KEYWORD2
+calculate_yaw_degrees     KEYWORD2
 
 
 #######################################

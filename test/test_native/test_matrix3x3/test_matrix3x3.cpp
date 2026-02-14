@@ -77,25 +77,25 @@ void test_matrix3x3_constructors()
     const Matrix3x3 G(A);
     const Matrix3x3 H(xyz_t{2,3,5}, xyz_t{7,11,13}, xyz_t{17,19,23});
     Matrix3x3 I;
-    I.setRow(0, xyz_t{ 2, 3, 5});
-    I.setRow(1, xyz_t{ 7,11,13});
-    I.setRow(2, xyz_t{17,19,23});
-    TEST_ASSERT_TRUE((xyz_t{ 2, 3, 5} == I.getRow(0)));
-    TEST_ASSERT_TRUE((xyz_t{ 7,11,13} == I.getRow(1)));
-    TEST_ASSERT_TRUE((xyz_t{17,19,23} == I.getRow(2)));
-    TEST_ASSERT_TRUE((xyz_t{ 2, 7,17} == I.getColumn(0)));
-    TEST_ASSERT_TRUE((xyz_t{ 3,11,19} == I.getColumn(1)));
-    TEST_ASSERT_TRUE((xyz_t{ 5,13,23} == I.getColumn(2)));
+    I.set_row(0, xyz_t{ 2, 3, 5});
+    I.set_row(1, xyz_t{ 7,11,13});
+    I.set_row(2, xyz_t{17,19,23});
+    TEST_ASSERT_TRUE((xyz_t{ 2, 3, 5} == I.get_row(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 7,11,13} == I.get_row(1)));
+    TEST_ASSERT_TRUE((xyz_t{17,19,23} == I.get_row(2)));
+    TEST_ASSERT_TRUE((xyz_t{ 2, 7,17} == I.get_column(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 3,11,19} == I.get_column(1)));
+    TEST_ASSERT_TRUE((xyz_t{ 5,13,23} == I.get_column(2)));
     Matrix3x3 J;
-    J.setColumn(0, xyz_t{ 2, 7,17});
-    J.setColumn(1, xyz_t{ 3,11,19});
-    J.setColumn(2, xyz_t{ 5,13,23});
-    TEST_ASSERT_TRUE((xyz_t{ 2, 3, 5} == J.getRow(0)));
-    TEST_ASSERT_TRUE((xyz_t{ 7,11,13} == J.getRow(1)));
-    TEST_ASSERT_TRUE((xyz_t{17,19,23} == J.getRow(2)));
-    TEST_ASSERT_TRUE((xyz_t{ 2, 7,17} == J.getColumn(0)));
-    TEST_ASSERT_TRUE((xyz_t{ 3,11,19} == J.getColumn(1)));
-    TEST_ASSERT_TRUE((xyz_t{ 5,13,23} == J.getColumn(2)));
+    J.set_column(0, xyz_t{ 2, 7,17});
+    J.set_column(1, xyz_t{ 3,11,19});
+    J.set_column(2, xyz_t{ 5,13,23});
+    TEST_ASSERT_TRUE((xyz_t{ 2, 3, 5} == J.get_row(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 7,11,13} == J.get_row(1)));
+    TEST_ASSERT_TRUE((xyz_t{17,19,23} == J.get_row(2)));
+    TEST_ASSERT_TRUE((xyz_t{ 2, 7,17} == J.get_column(0)));
+    TEST_ASSERT_TRUE((xyz_t{ 3,11,19} == J.get_column(1)));
+    TEST_ASSERT_TRUE((xyz_t{ 5,13,23} == J.get_column(2)));
 
     TEST_ASSERT_TRUE(A == A); // NOLINT(misc-redundant-expression)
     TEST_ASSERT_TRUE(A == B);
@@ -119,7 +119,7 @@ void test_matrix3x3_constructors()
     TEST_ASSERT_EQUAL(0.0F, M[7]);
     TEST_ASSERT_EQUAL(0.0F, M[8]);
 
-    M.setOnes();
+    M.set_ones();
     TEST_ASSERT_EQUAL(1.0F, M[0]);
     TEST_ASSERT_EQUAL(1.0F, M[1]);
     TEST_ASSERT_EQUAL(1.0F, M[2]);
@@ -130,7 +130,7 @@ void test_matrix3x3_constructors()
     TEST_ASSERT_EQUAL(1.0F, M[7]);
     TEST_ASSERT_EQUAL(1.0F, M[8]);
 
-    M.setConstant(-0.7F);
+    M.set_constant(-0.7F);
     TEST_ASSERT_EQUAL(-0.7F, M[0]);
     TEST_ASSERT_EQUAL(-0.7F, M[1]);
     TEST_ASSERT_EQUAL(-0.7F, M[2]);
@@ -178,7 +178,7 @@ void test_matrix3x3_unary()
     TEST_ASSERT_EQUAL_FLOAT(0.0F, I[7]);
 
     Matrix3x3 IZ = Z;
-    IZ.setToIdentity();
+    IZ.set_to_identity();
     TEST_ASSERT_TRUE(I == IZ);
 
     const Matrix3x3 D2(2.0F);
@@ -212,7 +212,7 @@ void test_matrix3x3_unary()
     const Matrix3x3 ATT = AT.transpose();
     TEST_ASSERT_TRUE(ATT == A);
     Matrix3x3 A2 = A; // NOLINT(misc-const-correctness)
-    A2.transposeInPlace();
+    A2.transpose_in_place();
     TEST_ASSERT_TRUE(ATE == A2);
 
     const Matrix3x3 B(29, 31, 37, 41, 43, 47, 53, 59, 61);
@@ -226,7 +226,7 @@ void test_matrix3x3_unary()
 
     Matrix3x3 A_inv = A;
     TEST_ASSERT_EQUAL_FLOAT(-78.0F, A.determinant());
-    A_inv.invertInPlace();
+    A_inv.invert_in_place();
     const Matrix3x3 A_times_A_inv = A * A_inv;
     TEST_ASSERT_EQUAL_FLOAT(1.0F, A_times_A_inv[0]);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, A_times_A_inv[4]);
@@ -257,7 +257,7 @@ void test_matrix3x3_unary()
     Matrix3x3 AJ(1, 2, 3, 4, 5, 6, 7, 8, 9);
     const Matrix3x3 AJ_adjoint(-3, 6, -3, 6, -12, 6, -3, 6, -3);
     TEST_ASSERT_TRUE(AJ_adjoint == AJ.adjoint());
-    AJ.adjointInPlace();
+    AJ.adjoint_in_place();
     TEST_ASSERT_TRUE(AJ_adjoint == AJ);
 
     TEST_ASSERT_TRUE(A * B != B * A);
@@ -278,7 +278,7 @@ void test_matrix3x3_unary()
 
     const Matrix3x3 D(29, 0, 0, 0, 31, 0, 0, 0, 37);
     Matrix3x3 D_inv = D;
-    D_inv.invertInPlaceAssumingDiagonal();
+    D_inv.invert_in_place_assuming_diagonal();
     TEST_ASSERT_EQUAL_FLOAT(1.0F / 29.0F, D_inv[0]);
     TEST_ASSERT_EQUAL_FLOAT(1.0F / 31.0F, D_inv[4]);
     TEST_ASSERT_EQUAL_FLOAT(1.0F / 37.0F, D_inv[8]);
@@ -295,38 +295,38 @@ void test_matrix3x3_unary()
     TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[6]);
     TEST_ASSERT_EQUAL_FLOAT(0.0F, D_times_D_inv[7]);
 
-    const Matrix3x3 D_inv2 = D.inverseAssumingDiagonal();
+    const Matrix3x3 D_inv2 = D.inverse_assuming_diagonal();
     TEST_ASSERT_EQUAL_FLOAT(1.0F / 29.0F, D_inv2[0]);
     TEST_ASSERT_EQUAL_FLOAT(1.0F / 31.0F, D_inv2[4]);
     TEST_ASSERT_EQUAL_FLOAT(1.0F / 37.0F, D_inv2[8]);
     TEST_ASSERT_TRUE(D_inv == D_inv2);
 
     const xyz_t v{2, 3, 5};
-    const Matrix3x3 DplusV = D.addToDiagonal(v);
+    const Matrix3x3 DplusV = D.add_to_diagonal(v);
     TEST_ASSERT_EQUAL_FLOAT(31, DplusV[0]);
     TEST_ASSERT_EQUAL_FLOAT(34, DplusV[4]);
     TEST_ASSERT_EQUAL_FLOAT(42, DplusV[8]);
     Matrix3x3 DplusVinPlace = D; // NOLINT(misc-const-correctness) false positive
-    DplusVinPlace.addToDiagonalInPlace(v);
+    DplusVinPlace.add_to_diagonal_in_place(v);
     TEST_ASSERT_TRUE(DplusV == DplusVinPlace);
 
-    const Matrix3x3 DminusV = D.subtractFromDiagonal(v);
+    const Matrix3x3 DminusV = D.subtract_from_diagonal(v);
     TEST_ASSERT_EQUAL_FLOAT(27, DminusV[0]);
     TEST_ASSERT_EQUAL_FLOAT(28, DminusV[4]);
     TEST_ASSERT_EQUAL_FLOAT(32, DminusV[8]);
     Matrix3x3 DminusVinPlace = D; // NOLINT(misc-const-correctness) false positive
-    DminusVinPlace.subtractFromDiagonalInPlace(v);
+    DminusVinPlace.subtract_from_diagonal_in_place(v);
     TEST_ASSERT_TRUE(DminusV == DminusVinPlace);
 
-    const Matrix3x3 DminusVplusV = DminusV.addToDiagonal(v);
+    const Matrix3x3 DminusVplusV = DminusV.add_to_diagonal(v);
     TEST_ASSERT_TRUE(D == DminusVplusV);
 
     const Matrix3x3 E(2, 0, 0, 0, 3, 0, 0, 0, 5);
     const Matrix3x3 DtimesE(29*2, 0, 0, 0, 31*3, 0, 0, 0, 37*5);
-    TEST_ASSERT_TRUE(DtimesE == D.multiplyAssumingDiagonal(E));
+    TEST_ASSERT_TRUE(DtimesE == D.multiply_assuming_diagonal(E));
 
     Matrix3x3 DtimesEinPlace = D;
-    DtimesEinPlace.multiplyAssumingDiagonalInPlace(E);
+    DtimesEinPlace.multiply_assuming_diagonal_in_place(E);
     TEST_ASSERT_TRUE(DtimesE == DtimesEinPlace);
 }
 
@@ -387,7 +387,7 @@ constexpr float degrees67inRadians = 67.0F * Quaternion::DEGREES_TO_RADIANS;
 
 void test_matrix3x3_quaternion()
 {
-    const Quaternion q0 = Quaternion::fromEulerAnglesRadians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
+    const Quaternion q0 = Quaternion::from_euler_angles_radians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
     TEST_ASSERT_EQUAL_FLOAT( 0.7986084F, q0.getW());
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     TEST_ASSERT_EQUAL_FLOAT(-0.07145791F, q0.getX());

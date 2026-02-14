@@ -28,15 +28,15 @@ void test_xy_t_assignment()
     TEST_ASSERT_EQUAL(0.0F, a.x);
     TEST_ASSERT_EQUAL(0.0F, a.y);
 
-    a.setOnes();
+    a.set_ones();
     TEST_ASSERT_EQUAL(1.0F, a.x);
     TEST_ASSERT_EQUAL(1.0F, a.y);
 
-    a.setConstant(-0.7F);
+    a.set_constant(-0.7F);
     TEST_ASSERT_EQUAL(-0.7F, a.x);
     TEST_ASSERT_EQUAL(-0.7F, a.y);
 
-    a.setZero();
+    a.set_zero();
     TEST_ASSERT_EQUAL(0.0F, a.x);
     TEST_ASSERT_EQUAL(0.0F, a.y);
 
@@ -110,7 +110,7 @@ void test_xy_t_functions()
     const xy_t a{2, 3};
     const xy_t b{7, 11};
 
-    TEST_ASSERT_EQUAL_FLOAT(13, a.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(13, a.magnitude_squared());
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(13.0F), a.magnitude());
 
     const xy_t aNE{2/sqrt(13.0F), 3.0F/sqrt(13.0F)};
@@ -127,13 +127,13 @@ void test_xy_t_functions()
 
     const float a_dot_b =  14 + 33;
     TEST_ASSERT_TRUE(a_dot_b == a.dot(b));
-    TEST_ASSERT_TRUE(a.magnitudeSquared() == a.dot(a));
-    TEST_ASSERT_TRUE(b.magnitudeSquared() == b.dot(b));
+    TEST_ASSERT_TRUE(a.magnitude_squared() == a.dot(a));
+    TEST_ASSERT_TRUE(b.magnitude_squared() == b.dot(b));
 
-    TEST_ASSERT_EQUAL_FLOAT(89.0F, a.distanceSquared(b));
+    TEST_ASSERT_EQUAL_FLOAT(89.0F, a.distance_squared(b));
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(89.0F), a.distance(b));
-    TEST_ASSERT_EQUAL_FLOAT(89.0F, b.distanceSquared(a));
-    TEST_ASSERT_EQUAL_FLOAT(89.0F, (a-b).magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(89.0F, b.distance_squared(a));
+    TEST_ASSERT_EQUAL_FLOAT(89.0F, (a-b).magnitude_squared());
 
     const float a_cross_b = a.cross(b);
     TEST_ASSERT_EQUAL(2*11 - 3*7, a_cross_b);
@@ -147,7 +147,7 @@ void test_xy_t_functions()
     TEST_ASSERT_TRUE(xy_t::clamp(e, -20, 20) == e_clamped);
 
     xy_t f{-100, 200};
-    f.clampInPlace(-20, 20);
+    f.clamp_in_place(-20, 20);
     const xy_t f_clamped = xy_t{-20, 20};
     TEST_ASSERT_TRUE(f == f_clamped);
 }

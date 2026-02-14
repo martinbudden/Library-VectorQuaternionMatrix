@@ -31,17 +31,17 @@ void test_xyz_t_assignment()
     TEST_ASSERT_EQUAL(0.0F, a.y);
     TEST_ASSERT_EQUAL(0.0F, a.z);
 
-    a.setOnes();
+    a.set_ones();
     TEST_ASSERT_EQUAL(1.0F, a.x);
     TEST_ASSERT_EQUAL(1.0F, a.y);
     TEST_ASSERT_EQUAL(1.0F, a.z);
 
-    a.setConstant(-0.7F);
+    a.set_constant(-0.7F);
     TEST_ASSERT_EQUAL(-0.7F, a.x);
     TEST_ASSERT_EQUAL(-0.7F, a.y);
     TEST_ASSERT_EQUAL(-0.7F, a.z);
 
-    a.setZero();
+    a.set_zero();
     TEST_ASSERT_EQUAL(0.0F, a.x);
     TEST_ASSERT_EQUAL(0.0F, a.y);
     TEST_ASSERT_EQUAL(0.0F, a.z);
@@ -123,7 +123,7 @@ void test_xyz_t_functions()
     const xyz_t a{2, 3, 5};
     const xyz_t b{7, 11, 17};
 
-    TEST_ASSERT_EQUAL_FLOAT(38, a.magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(38, a.magnitude_squared());
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(38.0F), a.magnitude());
 
     const xyz_t aNE{2/sqrt(38.0F), 3.0F/sqrt(38.0F), 5.0F/sqrt(38.0F)};
@@ -142,13 +142,13 @@ void test_xyz_t_functions()
 
     const float a_dot_b =  14 + 33 + 85;
     TEST_ASSERT_TRUE(a_dot_b == a.dot(b));
-    TEST_ASSERT_TRUE(a.magnitudeSquared() == a.dot(a));
-    TEST_ASSERT_TRUE(b.magnitudeSquared() == b.dot(b));
+    TEST_ASSERT_TRUE(a.magnitude_squared() == a.dot(a));
+    TEST_ASSERT_TRUE(b.magnitude_squared() == b.dot(b));
 
-    TEST_ASSERT_EQUAL_FLOAT(233.0F, a.distanceSquared(b));
+    TEST_ASSERT_EQUAL_FLOAT(233.0F, a.distance_squared(b));
     TEST_ASSERT_EQUAL_FLOAT(sqrtf(233.0F), a.distance(b));
-    TEST_ASSERT_EQUAL_FLOAT(233.0F, b.distanceSquared(a));
-    TEST_ASSERT_EQUAL_FLOAT(233.0F, (a-b).magnitudeSquared());
+    TEST_ASSERT_EQUAL_FLOAT(233.0F, b.distance_squared(a));
+    TEST_ASSERT_EQUAL_FLOAT(233.0F, (a-b).magnitude_squared());
 
     const xyz_t a_cross_b = a.cross(b);
     TEST_ASSERT_EQUAL(3*17 - 5*11, a_cross_b.x);
@@ -166,7 +166,7 @@ void test_xyz_t_functions()
     TEST_ASSERT_TRUE(xyz_t::clamp(e, -20, 20) == e_clamped);
 
     xyz_t f{-100, 200, 50};
-    f.clampInPlace(-20, 20);
+    f.clamp_in_place(-20, 20);
     const xyz_t f_clamped = xyz_t{-20, 20, 20};
     TEST_ASSERT_TRUE(f == f_clamped);
 }

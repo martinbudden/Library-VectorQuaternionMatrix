@@ -59,48 +59,48 @@ public:
         );
     }
 
-    void setZero() { _a.fill(0.0F); }
-    void setOnes() { _a.fill(1.0F); }
-    void setConstant(float value) { _a.fill(value); }
+    void set_zero() { _a.fill(0.0F); }
+    void set_ones() { _a.fill(1.0F); }
+    void set_constant(float value) { _a.fill(value); }
 
-    void setToIdentity() { _a.fill(0.0F); _a[0] = 1.0F; _a[3] = 1.0F; } //<! Sets matrix to identity matrix
-    void setToScaledIdentity(float d) { _a.fill(0.0F); _a[0] = d; _a[3] = d; } //<! Sets diagonal of matrix to d
+    void set_to_identity() { _a.fill(0.0F); _a[0] = 1.0F; _a[3] = 1.0F; } //<! Sets matrix to identity matrix
+    void set_to_scaled_identity(float d) { _a.fill(0.0F); _a[0] = d; _a[3] = d; } //<! Sets diagonal of matrix to d
 
-    void setRow(size_t row, const xy_t& value) {
+    void set_row(size_t row, const xy_t& value) {
         if (row == 0) {
             _a[0] = value.x; _a[1] = value.y;
         } else {
             _a[2] = value.x; _a[3] = value.y;
         }
     }
-    xy_t getRow(size_t row) { return (row == 0) ? xy_t{_a[0],_a[1]} : xy_t{_a[2],_a[3]}; }
-    void setColumn(size_t column, const xy_t& value) {
+    xy_t get_row(size_t row) { return (row == 0) ? xy_t{_a[0],_a[1]} : xy_t{_a[2],_a[3]}; }
+    void set_column(size_t column, const xy_t& value) {
         if (column == 0) {
             _a[0] = value.x; _a[2] = value.y;
         } else {
             _a[1] = value.x; _a[3] = value.y;
         }
     }
-    xy_t getColumn(size_t column) { return (column == 0) ? xy_t{_a[0],_a[2]} : xy_t{_a[1],_a[3]}; }
+    xy_t get_column(size_t column) { return (column == 0) ? xy_t{_a[0],_a[2]} : xy_t{_a[1],_a[3]}; }
 
-    void addToDiagonalInPlace(const xy_t& v) { _a[0]+=v.x; _a[3]+=v.y; } //<! Add vector to diagonal of matrix, in-place
-    void subtractFromDiagonalInPlace(const xy_t& v) { _a[0]-=v.x, _a[3]-=v.y; } //<! Subtract vector from diagonal of matrix, in-place
+    void add_to_diagonal_in_place(const xy_t& v) { _a[0]+=v.x; _a[3]+=v.y; } //<! Add vector to diagonal of matrix, in-place
+    void subtract_from_diagonal_in_place(const xy_t& v) { _a[0]-=v.x, _a[3]-=v.y; } //<! Subtract vector from diagonal of matrix, in-place
     //! Multiply by matrix, in-place, assuming both matrices are diagonal
-     void multiplyAssumingDiagonalInPlace(const Matrix2x2& m) { _a[0]*=m[0]; _a[3]*=m[3]; }
+     void multiply_assuming_diagonal_in_place(const Matrix2x2& m) { _a[0]*=m[0]; _a[3]*=m[3]; }
 
-    Matrix2x2 addToDiagonal(const xy_t& v) const { return Matrix2x2 (_a[0]+v.x, _a[1], _a[2], _a[3]+v.y); } //<! Add vector to diagonal of matrix
-    Matrix2x2 subtractFromDiagonal(const xy_t& v) const { return Matrix2x2 (_a[0]-v.x, _a[1], _a[2], _a[3]-v.y); } //<! Subtract vector from diagonal of matrix
+    Matrix2x2 add_to_diagonal(const xy_t& v) const { return Matrix2x2 (_a[0]+v.x, _a[1], _a[2], _a[3]+v.y); } //<! Add vector to diagonal of matrix
+    Matrix2x2 subtract_from_diagonal(const xy_t& v) const { return Matrix2x2 (_a[0]-v.x, _a[1], _a[2], _a[3]-v.y); } //<! Subtract vector from diagonal of matrix
     //! Multiply by matrix, assuming both matrices are diagonal
-    Matrix2x2 multiplyAssumingDiagonal(const Matrix2x2& m) const { return Matrix2x2 (_a[0]*m[0], 0.0F, 0.0F, _a[3]*m[3]); }
+    Matrix2x2 multiply_assuming_diagonal(const Matrix2x2& m) const { return Matrix2x2 (_a[0]*m[0], 0.0F, 0.0F, _a[3]*m[3]); }
 
-    void transposeInPlace() { float t = _a[1]; _a[1]= _a[2]; _a[2] = t; } //<! Transposes matrix, in=place
+    void transpose_in_place() { float t = _a[1]; _a[1]= _a[2]; _a[2] = t; } //<! Transposes matrix, in=place
     Matrix2x2 transpose() const { return Matrix2x2(_a[0], _a[2], _a[1], _a[3]); } //<! Returns transpose of matrix
 
-    void adjointInPlace() { float t = _a[0]; _a[0] = _a[3], _a[1]= -_a[1]; _a[2] = -_a[2], _a[3] = t; } //<! Transposes matrix, in=place
+    void adjoint_in_place() { float t = _a[0]; _a[0] = _a[3], _a[1]= -_a[1]; _a[2] = -_a[2], _a[3] = t; } //<! Transposes matrix, in=place
     Matrix2x2 adjoint() const { return Matrix2x2(_a[3], -_a[1], -_a[2], _a[0]); } //<! Returns transpose of matrix
 
     //! Invert matrix, in-place
-    bool invertInPlace() {
+    bool invert_in_place() {
         const float det = _a[0]*_a[3] -_a[1]*_a[2];
         if ((fabsf(det) <= std::numeric_limits<float>::epsilon())) {
             return false;
@@ -112,10 +112,10 @@ public:
         _a[3] = t/det;
         return true;
     }
-    Matrix2x2 inverse() const { Matrix2x2 ret = *this; (void)ret.invertInPlace(); return ret; } //<! Returns inverse of matrix
+    Matrix2x2 inverse() const { Matrix2x2 ret = *this; (void)ret.invert_in_place(); return ret; } //<! Returns inverse of matrix
 
-    void invertInPlaceAssumingDiagonal() { _a[0] = 1.0F / _a[0]; _a[3] = 1.0F / _a[3]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
-    Matrix2x2 inverseAssumingDiagonal() const { Matrix2x2 ret = *this; ret.invertInPlaceAssumingDiagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
+    void invert_in_place_assuming_diagonal() { _a[0] = 1.0F / _a[0]; _a[3] = 1.0F / _a[3]; } //<! Invert matrix in-place, assuming it is a diagonal matrix
+    Matrix2x2 inverse_assuming_diagonal() const { Matrix2x2 ret = *this; ret.invert_in_place_assuming_diagonal(); return ret; } //<! Returns inverse of matrix, assuming it is diagonal
 
     float determinant() const { return _a[0]*_a[3] -_a[1]*_a[2]; } //<! Matrix determinant
 
