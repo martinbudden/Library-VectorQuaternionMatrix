@@ -1,4 +1,4 @@
-#include "Matrix2x2.h"
+#include "matrix2x2.h"
 #include <unity.h>
 
 void setUp() {

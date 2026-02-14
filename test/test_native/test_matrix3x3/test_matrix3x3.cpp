@@ -1,4 +1,4 @@
-#include "Matrix3x3.h"
+#include "matrix3x3.h"
 #include <unity.h>
 
 void setUp() {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Quaternion.h"
+#include "quaternion.h"
 #include <array>
 #include <limits>
 

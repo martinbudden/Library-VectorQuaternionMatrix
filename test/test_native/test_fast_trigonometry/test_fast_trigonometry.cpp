@@ -1,5 +1,5 @@
-#include <FastTrigonometry.h>
 #include <cmath>
+#include <fast_trigonometry.h>
 
 #include <unity.h>
 

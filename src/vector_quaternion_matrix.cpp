@@ -1,6 +1,6 @@
-#include "FastTrigonometry.h"
-#include "Matrix3x3.h"
-#include "Quaternion.h"
+#include "fast_trigonometry.h"
+#include "matrix3x3.h"
+#include "quaternion.h"
 #include "xy_type.h"
 
 #include <cstdint>

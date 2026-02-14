@@ -1,4 +1,4 @@
-#include "Quaternion.h"
+#include "quaternion.h"
 #include <unity.h>
 
 void setUp() {
