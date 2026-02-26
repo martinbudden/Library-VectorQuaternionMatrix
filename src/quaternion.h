@@ -23,16 +23,16 @@ public:
     static constexpr float RADIANS_TO_DEGREES = 180.0F / M_PI_F;
     static constexpr float DEGREES_TO_RADIANS = M_PI_F / 180.0F;
 public:
-    static Quaternion from_euler_angles_radians(float rollRadians, float pitchRadians, float yawRadians);
-    static Quaternion from_euler_angles_radians(float rollRadians, float pitchRadians);
-    static Quaternion from_euler_angles_degrees(float rollDegrees, float pitchDegrees, float yawDegrees);
-    static Quaternion from_euler_angles_degrees(float rollDegrees, float pitchDegrees);
+    static Quaternion from_euler_angles_radians(float roll_radians, float pitch_radians, float yaw_radians);
+    static Quaternion from_euler_angles_radians(float roll_radians, float pitch_radians);
+    static Quaternion from_euler_angles_degrees(float roll_degrees, float pitch_degrees, float yaw_degrees);
+    static Quaternion from_euler_angles_degrees(float roll_degrees, float pitch_degrees);
 public:
-    float getW() const { return w; }
-    float getX() const { return x; }
-    float getY() const { return y; }
-    float getZ() const { return z; }
-    void getWXYZ(float& w_, float& x_, float& y_, float& z_) const { w_ = w; x_ = x; y_ = y; z_ = z; }
+    float get_w() const { return w; }
+    float get_x() const { return x; }
+    float get_y() const { return y; }
+    float get_z() const { return z; }
+    void get_wxyz(float& w_, float& x_, float& y_, float& z_) const { w_ = w; x_ = x; y_ = y; z_ = z; }
     void set_to_identity() { w = 1.0F; x = 0.0F; y = 0.0F; z = 0.0F; }
     void set(float w_, float x_, float y_, float z_) { w = w_; x = x_; y = y_; z = z_; }
 public:

@@ -19,17 +19,17 @@ public:
     }
     //! Create rotation matrix from quaternion
     explicit Matrix3x3(const Quaternion& q) {
-        const float w = q.getW();
-        const float x = q.getX();
-        const float y = q.getY();
-        const float z = q.getZ();
+        const float w = q.get_w();
+        const float x = q.get_x();
+        const float y = q.get_y();
+        const float z = q.get_z();
         // see [Quaternion-derived rotation matrix](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Quaternion-derived_rotation_matrix), uses Hamilton convention
         _a[0] = 1.0F - 2.0F*(y*y + z*z);    _a[1] = 2.0F*(x*y - w*z);           _a[2] = 2.0F*(w*y + x*z);
         _a[3] = 2.0F*(w*z + x*y);           _a[4] = 1.0F - 2.0F*(x*x + z*z);    _a[5] = 2.0F*(y*z - w*x);
         _a[6] = 2.0F*(x*z - w*y);           _a[7] = 2.0F*(w*x + y*z);           _a[8] = 1.0F - 2.0F*(x*x + y*y);
     }
-    static Matrix3x3 from_euler_angles_radians(float rollRadians, float pitchRadians, float yawRadians);
-    static Matrix3x3 from_euler_angles_degrees(float rollDegrees, float pitchDegrees, float yawDegrees);
+    static Matrix3x3 from_euler_angles_radians(float roll_radians, float pitch_radians, float yaw_radians);
+    static Matrix3x3 from_euler_angles_degrees(float roll_degrees, float pitch_degrees, float yaw_degrees);
 public:
     // Equality operators
     bool operator!=(const Matrix3x3& m) const { for (size_t ii = 0; ii < _a.size(); ++ii) { if (_a[ii] != m[ii]) {return true;} } return false; } //<! Inequality operator

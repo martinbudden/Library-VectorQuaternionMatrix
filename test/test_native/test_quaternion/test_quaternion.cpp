@@ -25,19 +25,19 @@ void test_quaternion_operators()
 
     Quaternion a2dividedBy2 = a2;
     a2dividedBy2 /= 2;
-    TEST_ASSERT_EQUAL_FLOAT(a.getW(), a2dividedBy2.getW());
-    TEST_ASSERT_EQUAL_FLOAT(a.getX(), a2dividedBy2.getX());
-    TEST_ASSERT_EQUAL_FLOAT(a.getY(), a2dividedBy2.getY());
-    TEST_ASSERT_EQUAL_FLOAT(a.getZ(), a2dividedBy2.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(a.get_w(), a2dividedBy2.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(a.get_x(), a2dividedBy2.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(a.get_y(), a2dividedBy2.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(a.get_z(), a2dividedBy2.get_z());
 
     const Quaternion b2{22, 26, 34, 46};
     TEST_ASSERT_TRUE(b2 == b*2);
     TEST_ASSERT_TRUE(b2 == 2*b);
     const Quaternion b2dividedBy2 = b2 / 2;
-    TEST_ASSERT_EQUAL_FLOAT(b.getW(), b2dividedBy2.getW());
-    TEST_ASSERT_EQUAL_FLOAT(b.getX(), b2dividedBy2.getX());
-    TEST_ASSERT_EQUAL_FLOAT(b.getY(), b2dividedBy2.getY());
-    TEST_ASSERT_EQUAL_FLOAT(b.getZ(), b2dividedBy2.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(b.get_w(), b2dividedBy2.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(b.get_x(), b2dividedBy2.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(b.get_y(), b2dividedBy2.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(b.get_z(), b2dividedBy2.get_z());
 
     TEST_ASSERT_TRUE(b == b2/2);
     TEST_ASSERT_TRUE(b == b2dividedBy2);
@@ -45,18 +45,18 @@ void test_quaternion_operators()
 
     const Quaternion a_plus_b =  a + b;
 
-    TEST_ASSERT_EQUAL(13, a_plus_b.getW());
-    TEST_ASSERT_EQUAL(16, a_plus_b.getX());
-    TEST_ASSERT_EQUAL(22, a_plus_b.getY());
-    TEST_ASSERT_EQUAL(30, a_plus_b.getZ());
+    TEST_ASSERT_EQUAL(13, a_plus_b.get_w());
+    TEST_ASSERT_EQUAL(16, a_plus_b.get_x());
+    TEST_ASSERT_EQUAL(22, a_plus_b.get_y());
+    TEST_ASSERT_EQUAL(30, a_plus_b.get_z());
     TEST_ASSERT_TRUE(a_plus_b == a + b);
 
     const Quaternion a_minus_b =  a - b;
 
-    TEST_ASSERT_EQUAL(-9, a_minus_b.getW());
-    TEST_ASSERT_EQUAL(-10, a_minus_b.getX());
-    TEST_ASSERT_EQUAL(-12, a_minus_b.getY());
-    TEST_ASSERT_EQUAL(-16, a_minus_b.getZ());
+    TEST_ASSERT_EQUAL(-9, a_minus_b.get_w());
+    TEST_ASSERT_EQUAL(-10, a_minus_b.get_x());
+    TEST_ASSERT_EQUAL(-12, a_minus_b.get_y());
+    TEST_ASSERT_EQUAL(-16, a_minus_b.get_z());
     TEST_ASSERT_TRUE(a_minus_b == a - b);
     TEST_ASSERT_TRUE(-a_minus_b == b - a);
 
@@ -85,21 +85,21 @@ void test_quaternion_functions()
     const Quaternion aN = a.normalized();
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT)
     TEST_ASSERT_FLOAT_WITHIN(0.00047, 1.0F, aN.magnitude());
-    TEST_ASSERT_FLOAT_WITHIN(0.000081, aNE.getW(), aN.getW());
+    TEST_ASSERT_FLOAT_WITHIN(0.000081, aNE.get_w(), aN.get_w());
 #else
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN.magnitude());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getW(), aN.getW());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getX(), aN.getX());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getY(), aN.getY());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getZ(), aN.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_w(), aN.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_x(), aN.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_y(), aN.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_z(), aN.get_z());
 #endif
     Quaternion aN2 = a;
     aN2.normalize_in_place();
     TEST_ASSERT_EQUAL_FLOAT(1.0F, aN2.magnitude());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getW(), aN2.getW());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getX(), aN2.getX());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getY(), aN2.getY());
-    TEST_ASSERT_EQUAL_FLOAT(aNE.getZ(), aN2.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_w(), aN2.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_x(), aN2.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_y(), aN2.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(aNE.get_z(), aN2.get_z());
 
     TEST_ASSERT_TRUE(a.magnitude_squared()*a.magnitude_squared() == (a*a).magnitude_squared());
     TEST_ASSERT_TRUE(a.magnitude_squared()*a.magnitude_squared() == (a*a.conjugate()).magnitude_squared());
@@ -307,17 +307,17 @@ void test_quaternion_rotate_x()
     qD.rotate_x(delta);
 
     const Quaternion qDExpected = Quaternion(cosf(delta/2.0F), sinf(delta/2.0F), 0, 0) * qI;
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), qD.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_w(), qD.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_x(), qD.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_y(), qD.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_z(), qD.get_z());
     TEST_ASSERT_TRUE(qDExpected == qD);
 
     const Quaternion q19 = Quaternion::from_euler_angles_radians(degrees19inRadians, 0, 0);
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), q19.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), q19.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), q19.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_w(), q19.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_x(), q19.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_y(), q19.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_z(), q19.get_z());
 #if !defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     TEST_ASSERT_TRUE(qDExpected == q19);
 #endif
@@ -331,17 +331,17 @@ void test_quaternion_rotate_y()
     qD.rotate_y(delta);
 
     const Quaternion qDExpected = Quaternion(cosf(delta/2.0F), 0, sinf(delta/2.0F), 0) *qI;
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), qD.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_w(), qD.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_x(), qD.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_y(), qD.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_z(), qD.get_z());
     TEST_ASSERT_TRUE(qDExpected == qD);
 
     const Quaternion q19 = Quaternion::from_euler_angles_radians(0, degrees19inRadians, 0);
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), q19.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), q19.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), q19.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_w(), q19.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_x(), q19.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_y(), q19.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_z(), q19.get_z());
 #if !defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     TEST_ASSERT_TRUE(qDExpected == q19);
 #endif
@@ -355,17 +355,17 @@ void test_quaternion_rotate_z()
     qD.rotate_z(delta);
 
     const Quaternion qDExpected = Quaternion(cosf(delta/2.0F), 0, 0, sinf(delta/2.0F)) *qI;
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), qD.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), qD.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), qD.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), qD.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_w(), qD.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_x(), qD.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_y(), qD.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_z(), qD.get_z());
     TEST_ASSERT_TRUE(qDExpected == qD);
 
     const Quaternion q19 = Quaternion::from_euler_angles_radians(0, 0, degrees19inRadians);
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getW(), q19.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getX(), q19.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getY(), q19.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qDExpected.getZ(), q19.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_w(), q19.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_x(), q19.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_y(), q19.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qDExpected.get_z(), q19.get_z());
 #if !defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     TEST_ASSERT_TRUE(qDExpected == q19);
 #endif
@@ -431,33 +431,33 @@ void test_roll_angle_clip()
     // float tan_roll() const { return (w*x + y*z)/(0.5F - x*x - y*y); }
     const Quaternion q0 = Quaternion::from_euler_angles_radians(degrees89inRadians, 0.0F, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(89.0, q0.calculate_roll_degrees());
-    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q0.getW()*q0.getX() + q0.getY()*q0.getZ());
-    TEST_ASSERT_FLOAT_WITHIN(0.0000003, 0.008726478F, 0.5F - q0.getX()*q0.getX() - q0.getY()*q0.getY());
-    TEST_ASSERT_EQUAL(false, std::signbit(0.5F - q0.getX()*q0.getX() - q0.getY()*q0.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q0.get_w()*q0.get_x() + q0.get_y()*q0.get_z());
+    TEST_ASSERT_FLOAT_WITHIN(0.0000003, 0.008726478F, 0.5F - q0.get_x()*q0.get_x() - q0.get_y()*q0.get_y());
+    TEST_ASSERT_EQUAL(false, std::signbit(0.5F - q0.get_x()*q0.get_x() - q0.get_y()*q0.get_y()));
     TEST_ASSERT_EQUAL(sinf(degrees89inRadians), q0.sin_roll());
     TEST_ASSERT_EQUAL(sinf(degrees89inRadians), q0.sin_roll_clipped());
 
     const Quaternion q1 = Quaternion::from_euler_angles_radians(-degrees89inRadians, 0.0F, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(-89.0F, q1.calculate_roll_degrees());
-    TEST_ASSERT_EQUAL_FLOAT(-0.4999238F, q1.getW()*q1.getX() + q1.getY()*q1.getZ());
-    TEST_ASSERT_FLOAT_WITHIN(0.0000003, 0.008726478F, 0.5F - q1.getX()*q1.getX() - q1.getY()*q1.getY());
-    TEST_ASSERT_EQUAL(false, std::signbit(0.5F - q1.getX()*q1.getX() - q1.getY()*q1.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(-0.4999238F, q1.get_w()*q1.get_x() + q1.get_y()*q1.get_z());
+    TEST_ASSERT_FLOAT_WITHIN(0.0000003, 0.008726478F, 0.5F - q1.get_x()*q1.get_x() - q1.get_y()*q1.get_y());
+    TEST_ASSERT_EQUAL(false, std::signbit(0.5F - q1.get_x()*q1.get_x() - q1.get_y()*q1.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sin_roll());
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sin_roll_clipped());
 
     const Quaternion q2 = Quaternion::from_euler_angles_radians(degrees91inRadians, 0.0F, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(91.0, q2.calculate_roll_degrees());
-    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.getW()*q2.getX() + q2.getY()*q2.getZ());
-    TEST_ASSERT_FLOAT_WITHIN(0.0000003, -0.00872612F, 0.5F - q2.getX()*q2.getX() - q2.getY()*q2.getY());
-    TEST_ASSERT_EQUAL(true, std::signbit(0.5F - q2.getX()*q2.getX() - q2.getY()*q2.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.get_w()*q2.get_x() + q2.get_y()*q2.get_z());
+    TEST_ASSERT_FLOAT_WITHIN(0.0000003, -0.00872612F, 0.5F - q2.get_x()*q2.get_x() - q2.get_y()*q2.get_y());
+    TEST_ASSERT_EQUAL(true, std::signbit(0.5F - q2.get_x()*q2.get_x() - q2.get_y()*q2.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(degrees91inRadians), q2.sin_roll());
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.sin_roll_clipped());
 
     const Quaternion q3 = Quaternion::from_euler_angles_radians(-degrees91inRadians, 0.0F, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(-91.0, q3.calculate_roll_degrees());
-    TEST_ASSERT_EQUAL_FLOAT(-0.4999238F, q3.getW()*q3.getX() + q3.getY()*q3.getZ());
-    TEST_ASSERT_FLOAT_WITHIN(0.0000003, -0.00872612F, 0.5F - q3.getX()*q3.getX() - q3.getY()*q3.getY());
-    TEST_ASSERT_EQUAL(true, std::signbit(0.5F - q3.getX()*q3.getX() - q3.getY()*q3.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(-0.4999238F, q3.get_w()*q3.get_x() + q3.get_y()*q3.get_z());
+    TEST_ASSERT_FLOAT_WITHIN(0.0000003, -0.00872612F, 0.5F - q3.get_x()*q3.get_x() - q3.get_y()*q3.get_y());
+    TEST_ASSERT_EQUAL(true, std::signbit(0.5F - q3.get_x()*q3.get_x() - q3.get_y()*q3.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees91inRadians), q3.sin_roll());
     TEST_ASSERT_EQUAL_FLOAT(-1.0F, q3.sin_roll_clipped());
 }
@@ -469,12 +469,12 @@ void test_pitch_angle_clip()
     const Quaternion q0 = Quaternion::from_euler_angles_radians(0.0F, degrees89inRadians, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q0.magnitude_squared());
     TEST_ASSERT_EQUAL_FLOAT(89.0, q0.calculate_pitch_degrees());
-    TEST_ASSERT_FLOAT_WITHIN(0.0000004, 0.01745278F, q0.getW()*q0.getW() - q0.getY()*q0.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.7132504F, q0.getW());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q0.getX());
-    TEST_ASSERT_EQUAL_FLOAT(0.7009092, q0.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q0.getZ());
-    TEST_ASSERT_EQUAL(false, std::signbit(q0.getW()*q0.getW() - q0.getY()*q0.getY()));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, 0.01745278F, q0.get_w()*q0.get_w() - q0.get_y()*q0.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.7132504F, q0.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q0.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(0.7009092, q0.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q0.get_z());
+    TEST_ASSERT_EQUAL(false, std::signbit(q0.get_w()*q0.get_w() - q0.get_y()*q0.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(degrees89inRadians), q0.sin_pitch());
     TEST_ASSERT_EQUAL_FLOAT(sinf(degrees89inRadians), q0.sin_pitch_clipped());
 
@@ -482,38 +482,38 @@ void test_pitch_angle_clip()
     const Quaternion q2 = Quaternion::from_euler_angles_radians(0.0F, degrees91inRadians, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.magnitude_squared());
     TEST_ASSERT_EQUAL_FLOAT(89.0, q2.calculate_pitch_degrees());
-    TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q2.getW()*q2.getW() - q2.getY()*q2.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.getW()*q2.getY() - q2.getX()*q2.getZ());
-    TEST_ASSERT_EQUAL_FLOAT(0.7009092F, q2.getW());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q2.getX());
-    TEST_ASSERT_EQUAL_FLOAT(0.7132504, q2.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q2.getZ());
-    TEST_ASSERT_EQUAL(true, std::signbit(q2.getW()*q2.getW() - q2.getY()*q2.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q2.get_w()*q2.get_w() - q2.get_y()*q2.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.get_w()*q2.get_y() - q2.get_x()*q2.get_z());
+    TEST_ASSERT_EQUAL_FLOAT(0.7009092F, q2.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q2.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(0.7132504, q2.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q2.get_z());
+    TEST_ASSERT_EQUAL(true, std::signbit(q2.get_w()*q2.get_w() - q2.get_y()*q2.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(degrees91inRadians), q2.sin_pitch());
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q2.sin_pitch_clipped());
 
     const Quaternion q1 = Quaternion::from_euler_angles_radians(0.0F, -degrees89inRadians, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q1.magnitude_squared());
     TEST_ASSERT_EQUAL_FLOAT(-89.0, q1.calculate_pitch_degrees());
-    TEST_ASSERT_FLOAT_WITHIN(0.0000004, 0.01745278F, q1.getW()*q1.getW() - q1.getY()*q1.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.7132504F, q1.getW());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q1.getX());
-    TEST_ASSERT_EQUAL_FLOAT(-0.7009092, q1.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q1.getZ());
-    TEST_ASSERT_EQUAL(false, std::signbit(q1.getW()*q1.getW() - q1.getY()*q1.getY()));
+    TEST_ASSERT_FLOAT_WITHIN(0.0000004, 0.01745278F, q1.get_w()*q1.get_w() - q1.get_y()*q1.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.7132504F, q1.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q1.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(-0.7009092, q1.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q1.get_z());
+    TEST_ASSERT_EQUAL(false, std::signbit(q1.get_w()*q1.get_w() - q1.get_y()*q1.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sin_pitch());
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees89inRadians), q1.sin_pitch_clipped());
 
     const Quaternion q3 = Quaternion::from_euler_angles_radians(0.0F, -degrees91inRadians, 0.0F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, q3.magnitude_squared());
     TEST_ASSERT_EQUAL_FLOAT(-89.0, q3.calculate_pitch_degrees());
-    TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q3.getW()*q3.getW() - q3.getY()*q3.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.getW()*q2.getY() - q2.getX()*q2.getZ());
-    TEST_ASSERT_EQUAL_FLOAT(0.7009092, q3.getW());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q3.getX());
-    TEST_ASSERT_EQUAL_FLOAT(-0.7132504F, q3.getY());
-    TEST_ASSERT_EQUAL_FLOAT(0.0F, q3.getZ());
-    TEST_ASSERT_EQUAL(true, std::signbit(q3.getW()*q3.getW() - q3.getY()*q3.getY()));
+    TEST_ASSERT_EQUAL_FLOAT(-0.01745245F, q3.get_w()*q3.get_w() - q3.get_y()*q3.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.4999238F, q2.get_w()*q2.get_y() - q2.get_x()*q2.get_z());
+    TEST_ASSERT_EQUAL_FLOAT(0.7009092, q3.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q3.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(-0.7132504F, q3.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(0.0F, q3.get_z());
+    TEST_ASSERT_EQUAL(true, std::signbit(q3.get_w()*q3.get_w() - q3.get_y()*q3.get_y()));
     TEST_ASSERT_EQUAL_FLOAT(sinf(-degrees91inRadians), q3.sin_pitch());
     TEST_ASSERT_EQUAL_FLOAT(-1.0F, q3.sin_pitch_clipped());
 

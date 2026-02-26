@@ -99,24 +99,24 @@ Create a Quaternion from roll, pitch, and yaw Euler angles (in radians).
 See:
 https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Euler_angles_(in_3-2-1_sequence)_to_quaternion_conversion
 */
-Quaternion Quaternion::from_euler_angles_radians(float rollRadians, float pitchRadians, float yawRadians)
+Quaternion Quaternion::from_euler_angles_radians(float roll_radians, float pitch_radians, float yaw_radians)
 {
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     // NOLINTBEGIN(misc-const-correctness)
     float sin_half_roll {};
     float cos_half_roll {};
-    FastTrigonometry::sin_cos(0.5F*rollRadians, sin_half_roll, cos_half_roll);
+    FastTrigonometry::sin_cos(0.5F*roll_radians, sin_half_roll, cos_half_roll);
     float sin_half_pitch {};
     float cos_half_pitch {};
-    FastTrigonometry::sin_cos(0.5F*pitchRadians, sin_half_pitch, cos_half_pitch);
+    FastTrigonometry::sin_cos(0.5F*pitch_radians, sin_half_pitch, cos_half_pitch);
     float sin_half_yaw {};
     float cos_half_yaw {};
-    FastTrigonometry::sin_cos(0.5F*yawRadians, sin_half_yaw, cos_half_yaw);
+    FastTrigonometry::sin_cos(0.5F*yaw_radians, sin_half_yaw, cos_half_yaw);
     // NOLINTEND(misc-const-correctness)
 #else
-    const float half_roll = 0.5F * rollRadians;
-    const float half_pitch = 0.5F * pitchRadians;
-    const float half_yaw = 0.5F * yawRadians;
+    const float half_roll = 0.5F * roll_radians;
+    const float half_pitch = 0.5F * pitch_radians;
+    const float half_yaw = 0.5F * yaw_radians;
 
     const float sin_half_roll = sinf(half_roll);
     const float cos_half_roll = cosf(half_roll);
@@ -136,20 +136,20 @@ Quaternion Quaternion::from_euler_angles_radians(float rollRadians, float pitchR
 /*!
 Create a Quaternion from roll and pitch Euler angles (in radians), assumes yaw angle is zero.
 */
-Quaternion Quaternion::from_euler_angles_radians(float rollRadians, float pitchRadians)
+Quaternion Quaternion::from_euler_angles_radians(float roll_radians, float pitch_radians)
 {
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     // NOLINTBEGIN(misc-const-correctness)
     float sin_half_roll {};
     float cos_half_roll {};
-    FastTrigonometry::sin_cos(0.5F*rollRadians, sin_half_roll, cos_half_roll);
+    FastTrigonometry::sin_cos(0.5F*roll_radians, sin_half_roll, cos_half_roll);
     float sin_half_pitch {};
     float cos_half_pitch {};
-    FastTrigonometry::sin_cos(0.5F*pitchRadians, sin_half_pitch, cos_half_pitch);
+    FastTrigonometry::sin_cos(0.5F*pitch_radians, sin_half_pitch, cos_half_pitch);
     // NOLINTEND(misc-const-correctness)
 #else
-    const float half_roll = 0.5F * rollRadians;
-    const float half_pitch = 0.5F * pitchRadians;
+    const float half_roll = 0.5F * roll_radians;
+    const float half_pitch = 0.5F * pitch_radians;
 
     const float sin_half_roll = sinf(half_roll);
     const float cos_half_roll = cosf(half_roll);
@@ -167,17 +167,17 @@ Quaternion Quaternion::from_euler_angles_radians(float rollRadians, float pitchR
 /*!
 Create a Quaternion from roll, pitch, and yaw Euler angles (in degrees).
 */
-Quaternion Quaternion::from_euler_angles_degrees(float rollDegrees, float pitchDegrees, float yawDegrees)
+Quaternion Quaternion::from_euler_angles_degrees(float roll_degrees, float pitch_degrees, float yaw_degrees)
 {
-    return from_euler_angles_radians(rollDegrees*DEGREES_TO_RADIANS, pitchDegrees*DEGREES_TO_RADIANS, yawDegrees*DEGREES_TO_RADIANS);
+    return from_euler_angles_radians(roll_degrees*DEGREES_TO_RADIANS, pitch_degrees*DEGREES_TO_RADIANS, yaw_degrees*DEGREES_TO_RADIANS);
 }
 
 /*!
 Create a Quaternion from roll and pitch Euler angles (in degrees), assumes yaw angle is zero.
 */
-Quaternion Quaternion::from_euler_angles_degrees(float rollDegrees, float pitchDegrees)
+Quaternion Quaternion::from_euler_angles_degrees(float roll_degrees, float pitch_degrees)
 {
-    return from_euler_angles_radians(rollDegrees*DEGREES_TO_RADIANS, pitchDegrees*DEGREES_TO_RADIANS);
+    return from_euler_angles_radians(roll_degrees*DEGREES_TO_RADIANS, pitch_degrees*DEGREES_TO_RADIANS);
 }
 
 /*!
@@ -247,47 +247,47 @@ _a[7] - _a[5] = 2(wx + yz) - 2(yz - wx) = 4xw
 /*!
 Create a Rotation Matrix from roll, pitch, and yaw Euler angles (in degrees).
 */
-Matrix3x3 Matrix3x3::from_euler_angles_radians(float rollRadians, float pitchRadians, float yawRadians)
+Matrix3x3 Matrix3x3::from_euler_angles_radians(float roll_radians, float pitch_radians, float yaw_radians)
 {
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
     // NOLINTBEGIN(misc-const-correctness)
-    float sinPhi {};
-    float cosPhi {};
-    FastTrigonometry::sin_cos(rollRadians, sinPhi, cosPhi);
-    float sinTheta {};
-    float cosTheta {};
-    FastTrigonometry::sin_cos(pitchRadians, sinTheta, cosTheta);
-    float sinPsi {};
-    float cosPsi {};
-    FastTrigonometry::sin_cos(yawRadians, sinPsi, cosPsi);
+    float sin_phi {};
+    float cos_phi {};
+    FastTrigonometry::sin_cos(roll_radians, sin_phi, cos_phi);
+    float sin_theta {};
+    float cos_theta {};
+    FastTrigonometry::sin_cos(pitch_radians, sin_theta, cos_theta);
+    float sin_psi {};
+    float cos_psi {};
+    FastTrigonometry::sin_cos(yaw_radians, sin_psi, cos_psi);
     // NOLINTEND(misc-const-correctness)
 #else
-    const float sinPhi = sinf(rollRadians);
-    const float cosPhi = cosf(rollRadians);
-    const float sinTheta = sinf(pitchRadians);
-    const float cosTheta = cosf(pitchRadians);
-    const float sinPsi = sinf(yawRadians);
-    const float cosPsi = cosf(yawRadians);
+    const float sin_phi = sinf(roll_radians);
+    const float cos_phi = cosf(roll_radians);
+    const float sin_theta = sinf(pitch_radians);
+    const float cos_theta = cosf(pitch_radians);
+    const float sin_psi = sinf(yaw_radians);
+    const float cos_psi = cosf(yaw_radians);
 #endif
     return Matrix3x3 {
-         cosTheta*cosPsi,
-        -cosPhi*sinPsi + sinPhi*sinTheta*cosPsi,
-         sinPhi*sinPsi + cosPhi*sinTheta*cosPsi,
-         cosTheta*sinPsi,
-         cosPhi*cosPsi + sinPhi*sinTheta*sinPsi,
-        -sinPhi*cosPsi + cosPhi*sinTheta*sinPsi,
-        -sinTheta,
-         sinPhi*cosTheta,
-         cosPhi*cosTheta
+         cos_theta*cos_psi,
+        -cos_phi*sin_psi + sin_phi*sin_theta*cos_psi,
+         sin_phi*sin_psi + cos_phi*sin_theta*cos_psi,
+         cos_theta*sin_psi,
+         cos_phi*cos_psi + sin_phi*sin_theta*sin_psi,
+        -sin_phi*cos_psi + cos_phi*sin_theta*sin_psi,
+        -sin_theta,
+         sin_phi*cos_theta,
+         cos_phi*cos_theta
     };
 }
 
 /*!
 Create a Rotation Matrix from roll, pitch, and yaw Euler angles (in degrees).
 */
-Matrix3x3 Matrix3x3::from_euler_angles_degrees(float rollDegrees, float pitchDegrees, float yawDegrees)
+Matrix3x3 Matrix3x3::from_euler_angles_degrees(float roll_degrees, float pitch_degrees, float yaw_degrees)
 {
-    return from_euler_angles_radians(rollDegrees*Quaternion::DEGREES_TO_RADIANS, pitchDegrees*Quaternion::DEGREES_TO_RADIANS, yawDegrees*Quaternion::DEGREES_TO_RADIANS);
+    return from_euler_angles_radians(roll_degrees*Quaternion::DEGREES_TO_RADIANS, pitch_degrees*Quaternion::DEGREES_TO_RADIANS, yaw_degrees*Quaternion::DEGREES_TO_RADIANS);
 }
 
 /*!

@@ -388,27 +388,27 @@ constexpr float degrees67inRadians = 67.0F * Quaternion::DEGREES_TO_RADIANS;
 void test_matrix3x3_quaternion()
 {
     const Quaternion q0 = Quaternion::from_euler_angles_radians(degrees19inRadians, degrees43inRadians, degrees67inRadians);
-    TEST_ASSERT_EQUAL_FLOAT( 0.7986084F, q0.getW());
+    TEST_ASSERT_EQUAL_FLOAT( 0.7986084F, q0.get_w());
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_TRIGONOMETRY)
-    TEST_ASSERT_EQUAL_FLOAT(-0.07145791F, q0.getX());
+    TEST_ASSERT_EQUAL_FLOAT(-0.07145791F, q0.get_x());
 #else
-    TEST_ASSERT_EQUAL_FLOAT(-0.07145718F, q0.getX());
+    TEST_ASSERT_EQUAL_FLOAT(-0.07145718F, q0.get_x());
 #endif
-    TEST_ASSERT_EQUAL_FLOAT( 0.386186F, q0.getY());
-    TEST_ASSERT_EQUAL_FLOAT( 0.4560472F, q0.getZ());
+    TEST_ASSERT_EQUAL_FLOAT( 0.386186F, q0.get_y());
+    TEST_ASSERT_EQUAL_FLOAT( 0.4560472F, q0.get_z());
     const Matrix3x3 m0 = Matrix3x3(q0);
     // test uses w-form
     TEST_ASSERT_FALSE(m0[8] < 0.0F);
     TEST_ASSERT_FALSE(m0[0] < -m0[4]);
     const Quaternion m0q = m0.quaternion();
 #if defined(LIBRARY_VECTOR_QUATERNION_MATRIX_USE_FAST_RECIPROCAL_SQUARE_ROOT)
-    TEST_ASSERT_FLOAT_WITHIN(0.00047, q0.getW(), m0q.getW());
-    TEST_ASSERT_FLOAT_WITHIN(0.00021, q0.getX(), m0q.getX());
+    TEST_ASSERT_FLOAT_WITHIN(0.00047, q0.get_w(), m0q.get_w());
+    TEST_ASSERT_FLOAT_WITHIN(0.00021, q0.get_x(), m0q.get_x());
 #else
-    TEST_ASSERT_EQUAL_FLOAT(q0.getW(), m0q.getW());
-    TEST_ASSERT_EQUAL_FLOAT(q0.getX(), m0q.getX());
-    TEST_ASSERT_EQUAL_FLOAT(q0.getY(), m0q.getY());
-    TEST_ASSERT_EQUAL_FLOAT(q0.getZ(), m0q.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(q0.get_w(), m0q.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(q0.get_x(), m0q.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(q0.get_y(), m0q.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(q0.get_z(), m0q.get_z());
 #endif
 
     const Quaternion qX(0.25F, sqrtf(50.0F/64.0F), 0.125F, 0.375F);
@@ -419,10 +419,10 @@ void test_matrix3x3_quaternion()
     TEST_ASSERT_TRUE(mX[8] < 0.0F);
     TEST_ASSERT_TRUE(mX[0] > mX[4]);
     const Quaternion mXq = mX.quaternion();
-    TEST_ASSERT_EQUAL_FLOAT(qX.getW(), mXq.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qX.getX(), mXq.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qX.getY(), mXq.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qX.getZ(), mXq.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qX.get_w(), mXq.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qX.get_x(), mXq.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qX.get_y(), mXq.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qX.get_z(), mXq.get_z());
 
     const Quaternion qY(0.25F, 0.125F, sqrtf(50.0F/64.0F), 0.375F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, qY.magnitude());
@@ -432,10 +432,10 @@ void test_matrix3x3_quaternion()
     TEST_ASSERT_TRUE(mY[8] < 0.0F);
     TEST_ASSERT_FALSE(mY[0] > mY[4]);
     const Quaternion mYq = mY.quaternion();
-    TEST_ASSERT_EQUAL_FLOAT(qY.getW(), mYq.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qY.getX(), mYq.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qY.getY(), mYq.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qY.getZ(), mYq.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qY.get_w(), mYq.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qY.get_x(), mYq.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qY.get_y(), mYq.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qY.get_z(), mYq.get_z());
 
     const Quaternion qZ(0.25F, 0.125F, 0.375F, sqrtf(50.0F/64.0F));
     TEST_ASSERT_EQUAL_FLOAT(1.0F, qZ.magnitude());
@@ -445,10 +445,10 @@ void test_matrix3x3_quaternion()
     TEST_ASSERT_FALSE(mZ[8] < 0.0F);
     TEST_ASSERT_TRUE(mZ[0] < -mZ[4]);
     const Quaternion mZq = mZ.quaternion();
-    TEST_ASSERT_EQUAL_FLOAT(qZ.getW(), mZq.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qZ.getX(), mZq.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qZ.getY(), mZq.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qZ.getZ(), mZq.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qZ.get_w(), mZq.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qZ.get_x(), mZq.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qZ.get_y(), mZq.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qZ.get_z(), mZq.get_z());
 
     const Quaternion qW(sqrtf(50.0F/64.0F), 0.25F, 0.125F, 0.375F);
     TEST_ASSERT_EQUAL_FLOAT(1.0F, qW.magnitude());
@@ -458,10 +458,10 @@ void test_matrix3x3_quaternion()
     TEST_ASSERT_FALSE(mW[8] < 0.0F);
     TEST_ASSERT_FALSE(mW[0] < -mW[4]);
     const Quaternion mWq = mW.quaternion();
-    TEST_ASSERT_EQUAL_FLOAT(qW.getW(), mWq.getW());
-    TEST_ASSERT_EQUAL_FLOAT(qW.getX(), mWq.getX());
-    TEST_ASSERT_EQUAL_FLOAT(qW.getY(), mWq.getY());
-    TEST_ASSERT_EQUAL_FLOAT(qW.getZ(), mWq.getZ());
+    TEST_ASSERT_EQUAL_FLOAT(qW.get_w(), mWq.get_w());
+    TEST_ASSERT_EQUAL_FLOAT(qW.get_x(), mWq.get_x());
+    TEST_ASSERT_EQUAL_FLOAT(qW.get_y(), mWq.get_y());
+    TEST_ASSERT_EQUAL_FLOAT(qW.get_z(), mWq.get_z());
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,cppcoreguidelines-init-variables,readability-magic-numbers)
 
